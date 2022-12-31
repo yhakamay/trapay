@@ -32,7 +32,7 @@ export default function EventCard(props: EventCardProps) {
 
   return (
     <Link href={`/e/${id}`}>
-      <Card>
+      <Card w="sm">
         <CardHeader>
           <Image src={imageUrl} alt="" fit="cover" w="full" h="3xs" />
         </CardHeader>
