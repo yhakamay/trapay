@@ -1,10 +1,13 @@
+import { Payment } from "./payment";
+
 export type Event = {
   id: string;
   title: string;
   description: string;
-  date: Date;
-  createdAt: Date;
+  date: string;
+  createdAt: string;
   imageUrl: string;
+  payments: Array<Payment>;
 };
 
 //export const eventConverter = {
