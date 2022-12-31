@@ -11,7 +11,7 @@ import Link from "next/link";
 type EventCardProps = {
   id: string;
   title: string;
-  createdAt: Date;
+  createdAt: string;
   description?: string;
   imageUrl?: string;
 };
