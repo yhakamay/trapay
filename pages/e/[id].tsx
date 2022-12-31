@@ -25,7 +25,7 @@ import { useRef } from "react";
 import { events } from "../../events";
 import { Event } from "../../types/event";
 
-export default function EventDetailsPage(props: { event: Event }) {
+export default function EventDetails(props: { event: Event }) {
   const { event } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef() as React.MutableRefObject<HTMLInputElement>;
