@@ -1,6 +1,8 @@
+import { AddIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
+  Button,
   Center,
   Heading,
   HStack,
@@ -27,6 +29,9 @@ export default function Header() {
         <HStack>
           <Heading>TraPay</Heading>
           <Spacer />
+          <Button as="a" href="/new" leftIcon={<AddIcon />}>
+            New
+          </Button>
           <Menu>
             <MenuButton>
               <Avatar
