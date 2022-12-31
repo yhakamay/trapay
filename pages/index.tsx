@@ -16,7 +16,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box px={{ base: "4", md: "8" }}>
-        <Wrap>
+        <Wrap justify="center">
           {events.map((event) => (
             <>
               <WrapItem>
