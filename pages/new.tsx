@@ -34,7 +34,13 @@ export default function NewEvent() {
   const [description, setDescription] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [newMemberName, setNewMemberName] = useState<string>("");
-  const [memberNames, setMemberNames] = useState<string[]>([]);
+  const me: User = {
+    id: auth.currentUser?.uid ?? "",
+    name: auth.currentUser?.displayName ?? "",
+    email: auth.currentUser?.email ?? "",
+    photoURL: auth.currentUser?.photoURL ?? "",
+  };
+  const [members, setMembers] = useState<User[]>([me]);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -73,7 +79,13 @@ export default function NewEvent() {
             <InputRightElement mr="2">
               <IconButton
                 onClick={() => {
-                  setMemberNames([...memberNames, newMemberName]);
+                  const newMember: User = {
+                    id: null,
+                    name: newMemberName,
+                    email: null,
+                    photoURL: null,
+                  };
+                  setMembers([...members, newMember]);
                   setNewMemberName("");
                 }}
                 disabled={newMemberName === ""}
@@ -84,22 +96,20 @@ export default function NewEvent() {
             </InputRightElement>
           </InputGroup>
           <Wrap>
-            {memberNames.map((memberName, i) => (
+            {members.map((member, i) => (
               <>
-                <Tag key={i} borderRadius="full">
+                <Tag size="md" key={i} borderRadius="full">
                   <Avatar
-                    src={undefined}
-                    size="xs"
-                    name={memberName}
+                    src={member.photoURL ?? undefined}
+                    size="2xs"
+                    name={member.name}
                     ml={-1}
                     mr={2}
                   />
-                  <TagLabel>{memberName}</TagLabel>
+                  <TagLabel>{member.name}</TagLabel>
                   <TagCloseButton
                     onClick={() =>
-                      setMemberNames(
-                        memberNames.filter((m) => m !== memberName)
-                      )
+                      setMembers(members.filter((m) => m !== member))
                     }
                   />
                 </Tag>
@@ -135,7 +145,7 @@ export default function NewEvent() {
     );
 
     await Promise.all(
-      memberNames.map((memberName) => addMember(membersRef, memberName))
+      members.map((memberName) => addMember(membersRef, memberName))
     );
 
     // Add this event to the user's events
@@ -149,14 +159,9 @@ export default function NewEvent() {
 
   async function addMember(
     membersRef: CollectionReference<User>,
-    memberName: string
+    member: User
   ): Promise<void> {
-    await addDoc<User>(membersRef, {
-      id: null,
-      name: memberName,
-      photoURL: null,
-      email: null,
-    });
+    await addDoc<User>(membersRef, member);
   }
 
   async function copyEventToUser(eventId: string, event: Event): Promise<void> {
