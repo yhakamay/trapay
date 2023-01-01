@@ -1,34 +1,40 @@
-import { Payment } from "./payment";
+import {
+  DocumentData,
+  FirestoreDataConverter,
+  QueryDocumentSnapshot,
+  SnapshotOptions,
+  WithFieldValue,
+} from "firebase/firestore";
 
 export type Event = {
-  id: string;
+  id?: string | null;
   title: string;
-  description: string;
+  description: string | null;
   date: string;
-  createdAt: string;
-  imageUrl: string;
-  payments: Array<Payment>;
+  createdAt?: string | null;
+  imageUrl: string | null;
 };
 
-//export const eventConverter = {
-//  toFirestore: (event: Event) => ({
-//    title: event.title,
-//    description: event.description,
-//    date: event.date,
-//    imageUrl: event.imageUrl,
-//  }),
-//  fromFirestore: (
-//    snapshot: firebase.firestore.QueryDocumentSnapshot,
-//    options: firebase.firestore.SnapshotOptions
-//  ) => {
-//    const data = snapshot.data(options);
+export const eventConverter: FirestoreDataConverter<Event> = {
+  toFirestore: (event: WithFieldValue<Event>): DocumentData => ({
+    title: event.title,
+    description: event.description,
+    date: event.date,
+    imageUrl: event.imageUrl,
+  }),
+  fromFirestore: (
+    snapshot: QueryDocumentSnapshot,
+    options: SnapshotOptions
+  ): Event => {
+    const data = snapshot.data(options);
 
-//    return {
-//      id: snapshot.id,
-//      title: data.title,
-//      description: data.description,
-//      date: data.date,
-//      imageUrl: data.imageUrl,
-//    };
-//  },
-//};
+    return {
+      id: snapshot.id,
+      title: data.title,
+      description: data.description,
+      date: data.date,
+      createdAt: data.createdAt,
+      imageUrl: data.imageUrl,
+    };
+  },
+};
