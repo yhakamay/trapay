@@ -1,6 +1,5 @@
 import { AddIcon } from "@chakra-ui/icons";
 import {
-  Avatar,
   Box,
   Button,
   Center,
@@ -8,9 +7,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Tag,
-  TagCloseButton,
-  TagLabel,
   Textarea,
   VStack,
   Wrap,
@@ -25,6 +21,7 @@ import {
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import UserTag from "../components/atoms/user_tag";
 import { auth, db } from "../firebaseConfig";
 import { Event, eventConverter } from "../types/event";
 import { User, userConverter } from "../types/user";
@@ -97,23 +94,12 @@ export default function NewEvent() {
           </InputGroup>
           <Wrap>
             {members.map((member, i) => (
-              <>
-                <Tag size="md" key={i} borderRadius="full">
-                  <Avatar
-                    src={member.photoURL ?? undefined}
-                    size="2xs"
-                    name={member.name}
-                    ml={-1}
-                    mr={2}
-                  />
-                  <TagLabel>{member.name}</TagLabel>
-                  <TagCloseButton
-                    onClick={() =>
-                      setMembers(members.filter((m) => m !== member))
-                    }
-                  />
-                </Tag>
-              </>
+              <UserTag
+                key={i}
+                user={member}
+                deletable={member.id !== me.id}
+                onDelete={() => setMembers(members.filter((m) => m !== member))}
+              />
             ))}
           </Wrap>
           <Box h="8" />
