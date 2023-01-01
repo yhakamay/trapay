@@ -6,23 +6,23 @@ import {
   WithFieldValue,
 } from "firebase/firestore";
 
-export type Member = {
+export type User = {
   id?: string | null;
   name: string;
   email: string | null;
   imageUrl: string | null;
 };
 
-export const memberConverter: FirestoreDataConverter<Member> = {
-  toFirestore: (member: WithFieldValue<Member>): DocumentData => ({
-    name: member.name,
-    email: member.email,
-    imageUrl: member.imageUrl,
+export const userConverter: FirestoreDataConverter<User> = {
+  toFirestore: (user: WithFieldValue<User>): DocumentData => ({
+    name: user.name,
+    email: user.email,
+    imageUrl: user.imageUrl,
   }),
   fromFirestore: (
     snapshot: QueryDocumentSnapshot,
     options: SnapshotOptions
-  ): Member => {
+  ): User => {
     const data = snapshot.data(options);
 
     return {

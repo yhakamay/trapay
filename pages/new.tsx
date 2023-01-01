@@ -23,7 +23,7 @@ import {
 import { useState } from "react";
 import { db } from "../firebaseConfig";
 import { eventConverter } from "../types/event";
-import { Member, memberConverter } from "../types/member";
+import { User, userConverter } from "../types/user";
 
 export default function NewEvent() {
   const [title, setTitle] = useState<string>("");
@@ -110,7 +110,7 @@ export default function NewEvent() {
 
     // Add members to the members collection
     const membersRef = collection(docRef, "members").withConverter(
-      memberConverter
+      userConverter
     );
 
     await Promise.all(
@@ -121,10 +121,10 @@ export default function NewEvent() {
   }
 
   async function addMember(
-    membersRef: CollectionReference<Member>,
+    membersRef: CollectionReference<User>,
     memberName: string
   ): Promise<void> {
-    await addDoc<Member>(membersRef, {
+    await addDoc<User>(membersRef, {
       id: null,
       name: memberName,
       imageUrl: null,

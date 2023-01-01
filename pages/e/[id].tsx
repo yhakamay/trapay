@@ -24,9 +24,13 @@ import { GetServerSideProps } from "next";
 import { useRef } from "react";
 import { events } from "../../events";
 import { Event } from "../../types/event";
+import { Payment } from "../../types/payment";
 
-export default function EventDetails(props: { event: Event }) {
-  const { event } = props;
+export default function EventDetails(props: {
+  event: Event;
+  payments: Array<Payment>;
+}) {
+  const { event, payments } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef() as React.MutableRefObject<HTMLInputElement>;
 
@@ -45,7 +49,7 @@ export default function EventDetails(props: { event: Event }) {
             </VStack>
           </Card>
           <VStack divider={<StackDivider />} spacing="4">
-            {event.payments.map((payment) => (
+            {payments.map((payment) => (
               <Box key={payment.id} w={{ base: "sm", md: "lg" }}>
                 <HStack spacing="4">
                   <Avatar boxSize="10"></Avatar>
@@ -100,7 +104,7 @@ export default function EventDetails(props: { event: Event }) {
   );
 
   function getTotal() {
-    return event.payments.reduce((acc, payment) => acc + payment.amount, 0);
+    return payments.reduce((acc, payment) => acc + payment.amount, 0);
   }
 
   function deletePayment(id: string) {
