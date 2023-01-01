@@ -1,37 +1,24 @@
+import { CalendarIcon } from "@chakra-ui/icons";
 import {
-  AddIcon,
-  CalendarIcon,
-  ChevronDownIcon,
-  DeleteIcon,
-} from "@chakra-ui/icons";
-import {
-  Avatar,
   Box,
-  Button,
-  Card,
   Center,
   Heading,
   HStack,
-  IconButton,
-  Input,
-  Menu,
-  MenuButton,
-  MenuItem,
-  MenuList,
   Spacer,
   Spinner,
-  StackDivider,
   Text,
-  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 import { GetServerSideProps } from "next";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
+import TotalCard from "../../components/molecules/total_card";
+import NewPaymentForm from "../../components/organisms/new_payment_form";
+import PaymentsList from "../../components/organisms/payments_list";
 import { db } from "../../firebaseConfig";
 import { eventConverter } from "../../types/event";
 import { Payment, paymentConverter } from "../../types/payment";
@@ -95,97 +82,22 @@ export default function EventDetails(props: EventDetailsProps) {
             </Text>
           </HStack>
           <Text>{event.description}</Text>
-          <Card w={{ base: "sm", md: "lg" }}>
-            <VStack>
-              <Spacer />
-              <Text>Total</Text>
-              <Heading size="lg">{getTotal()}</Heading>
-              <Spacer />
-            </VStack>
-          </Card>
-          <Box w={{ base: "sm", md: "lg" }}>
-            <HStack spacing="4">
-              <VStack w="full">
-                <Input
-                  onChange={(e) => setNewPaymentTitle(e.target.value)}
-                  value={newPaymentTitle}
-                  placeholder="Title"
-                />
-                <HStack spacing="4" w="full">
-                  <Input
-                    onChange={(e) =>
-                      setNewPaymentAmount(Number(e.target.value))
-                    }
-                    value={newPaymentAmount}
-                    placeholder="Amount"
-                    type="number"
-                  />
-                  <Menu>
-                    <MenuButton
-                      w="full"
-                      as={Button}
-                      rightIcon={<ChevronDownIcon />}
-                    >
-                      Paid by
-                    </MenuButton>
-                    <MenuList>
-                      {members?.map((member) => (
-                        <MenuItem
-                          key={member.id}
-                          onClick={() => setNewPaymentBy(member)}
-                        >
-                          <Avatar
-                            size="sm"
-                            src={member.photoURL ?? undefined}
-                            name={member.name}
-                            mr="2"
-                          />
-                          {member.name}
-                        </MenuItem>
-                      ))}
-                    </MenuList>
-                  </Menu>
-                </HStack>
-              </VStack>
-              <IconButton
-                icon={<AddIcon />}
-                onClick={addPayment}
-                aria-label={"add"}
-              />
-            </HStack>
-          </Box>
-          <VStack divider={<StackDivider />} spacing="4">
-            {payments?.map((payment) => (
-              <Box key={payment.id} w={{ base: "sm", md: "lg" }}>
-                <HStack spacing="4">
-                  <Avatar
-                    src={payment.paidBy.photoURL ?? undefined}
-                    name={payment.paidBy.name}
-                    boxSize="10"
-                  ></Avatar>
-                  <Spacer />
-                  <Text>{payment.title}</Text>
-                  <Spacer />
-                  <Heading size="lg">{payment.amount}</Heading>
-                  <IconButton
-                    onClick={() => deletePayment(payment.id!)}
-                    aria-label={"delete"}
-                    variant="ghost"
-                    color="tomato"
-                    icon={<DeleteIcon />}
-                  />
-                </HStack>
-              </Box>
-            ))}
-          </VStack>
+          <TotalCard payments={payments!} />
+          <NewPaymentForm
+            members={members!}
+            setNewPaymentTitle={setNewPaymentTitle}
+            setNewPaymentAmount={setNewPaymentAmount}
+            setNewPaymentBy={setNewPaymentBy}
+            newPaymentTitle={newPaymentTitle}
+            newPaymentAmount={newPaymentAmount}
+            addPayment={addPayment}
+            newPaymentBy={newPaymentBy}
+          />
+          <PaymentsList payments={payments!} deletePayment={deletePayment} />
         </VStack>
       </Box>
     </Center>
   );
-
-  function getTotal() {
-    return payments?.reduce((acc, payment) => acc + payment.amount, 0);
-  }
 
   async function addPayment() {
     if (!newPaymentTitle || !newPaymentAmount || !newPaymentBy) {
@@ -204,9 +116,9 @@ export default function EventDetails(props: EventDetailsProps) {
     await addDoc(paymentsRef, payment);
   }
 
-  function deletePayment(id: string) {
+  async function deletePayment(id: string) {
     const paymentRef = doc(paymentsRef, id);
-    deleteDoc(paymentRef);
+    await deleteDoc(paymentRef);
   }
 }
 
