@@ -81,7 +81,7 @@ export default function EventDetails(props: EventDetailsProps) {
               {formattedDate}
             </Text>
           </HStack>
-          <Text>{event.description}</Text>
+          <Text alignSelf="start">{event.description}</Text>
           <TotalCard payments={payments!} />
           <NewPaymentForm
             members={members!}
