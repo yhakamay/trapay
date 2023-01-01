@@ -14,12 +14,7 @@ import {
   VStack,
   Wrap,
 } from "@chakra-ui/react";
-import {
-  addDoc,
-  collection,
-  CollectionReference,
-  DocumentData,
-} from "firebase/firestore";
+import { addDoc, collection, CollectionReference } from "firebase/firestore";
 import { useState } from "react";
 import { db } from "../firebaseConfig";
 import { eventConverter } from "../types/event";
