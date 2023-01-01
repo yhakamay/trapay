@@ -10,14 +10,14 @@ export type User = {
   id?: string | null;
   name: string;
   email: string | null;
-  imageUrl: string | null;
+  photoURL: string | null;
 };
 
 export const userConverter: FirestoreDataConverter<User> = {
   toFirestore: (user: WithFieldValue<User>): DocumentData => ({
     name: user.name,
     email: user.email,
-    imageUrl: user.imageUrl,
+    photoURL: user.photoURL,
   }),
   fromFirestore: (
     snapshot: QueryDocumentSnapshot,
@@ -29,7 +29,7 @@ export const userConverter: FirestoreDataConverter<User> = {
       id: snapshot.id,
       name: data.name,
       email: data.email,
-      imageUrl: data.imageUrl,
+      photoURL: data.photoURL,
     };
   },
 };

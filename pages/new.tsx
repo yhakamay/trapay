@@ -122,7 +122,7 @@ export default function NewEvent() {
     await addDoc<User>(membersRef, {
       id: null,
       name: memberName,
-      imageUrl: null,
+      photoURL: null,
       email: null,
     });
   }
