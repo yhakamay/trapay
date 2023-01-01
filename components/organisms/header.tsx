@@ -29,7 +29,7 @@ export default function Header() {
       <Box as="nav" px={{ base: "4", md: "8" }} py="4">
         <HStack>
           <NextLink href="/">
-            <Heading>TraPay</Heading>
+            <Heading size="lg">TraPay</Heading>
           </NextLink>
           <Spacer />
           <Button as="a" href="/new" leftIcon={<AddIcon />}>
@@ -38,7 +38,7 @@ export default function Header() {
           <Menu>
             <MenuButton>
               <Avatar
-                size={{ base: "sm", md: "md" }}
+                size="sm"
                 cursor="pointer"
                 name={user?.displayName ?? ""}
                 src={user?.photoURL ?? undefined}
