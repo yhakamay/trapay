@@ -1,10 +1,12 @@
 import Head from "next/head";
+import NextImage from "next/image";
 import {
   Box,
   Center,
   Container,
   Heading,
   Image,
+  Spacer,
   Spinner,
   Text,
   VStack,
@@ -27,6 +29,7 @@ export default function Home() {
     ? collection(userRef, "events").withConverter(eventConverter)
     : null;
   const [events, loading, error] = useCollectionData(eventsRef);
+  const noEvents = events?.length === 0;
 
   if (!user) {
     return (
@@ -71,18 +74,31 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Box px={{ base: "4", md: "8" }}>
-        <Wrap justify="center">
-          {events?.map((event) => (
-            <WrapItem key={event.id}>
-              <EventCard
-                id={event.id?.toString() ?? ""}
-                title={event.title}
-                date={event.date ?? ""}
-                description={event.description ?? ""}
-              />
-            </WrapItem>
-          ))}
-        </Wrap>
+        {noEvents ? (
+          <VStack>
+            <NextImage
+              src="/void.svg"
+              alt="no events"
+              width="300"
+              height="300"
+            />
+            <Box h="8" />
+            <Text>No events yet. Add one!</Text>
+          </VStack>
+        ) : (
+          <Wrap justify="center">
+            {events?.map((event) => (
+              <WrapItem key={event.id}>
+                <EventCard
+                  id={event.id?.toString() ?? ""}
+                  title={event.title}
+                  date={event.date ?? ""}
+                  description={event.description ?? ""}
+                />
+              </WrapItem>
+            ))}
+          </Wrap>
+        )}
       </Box>
     </>
   );
