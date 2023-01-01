@@ -23,6 +23,7 @@ import {
   getDoc,
   setDoc,
 } from "firebase/firestore";
+import { useRouter } from "next/router";
 import { useState } from "react";
 import { auth, db } from "../firebaseConfig";
 import { Event, eventConverter } from "../types/event";
@@ -35,6 +36,7 @@ export default function NewEvent() {
   const [newMemberName, setNewMemberName] = useState<string>("");
   const [memberNames, setMemberNames] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const router = useRouter();
 
   return (
     <Center>
@@ -140,6 +142,9 @@ export default function NewEvent() {
     await copyEventToUser(eventRef.id, event);
 
     setLoading(false);
+
+    // Redirect to the event page
+    router.push(`/e/${eventRef.id}`);
   }
 
   async function addMember(
