@@ -20,7 +20,7 @@ type NewPaymentFormProps = {
   setNewPaymentAmount: (amount: number) => void;
   setNewPaymentBy: (user: User) => void;
   newPaymentTitle: string;
-  newPaymentAmount: number;
+  newPaymentAmount: number | undefined;
   newPaymentBy?: User;
   addPayment: () => void;
 };
@@ -49,7 +49,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
           <HStack spacing="4" w="full">
             <Input
               onChange={(e) => setNewPaymentAmount(Number(e.target.value))}
-              value={newPaymentAmount}
+              value={newPaymentAmount || undefined}
               placeholder="Amount"
               type="number"
             />
@@ -77,6 +77,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
           </HStack>
         </VStack>
         <IconButton
+          disabled={!newPaymentTitle || !newPaymentAmount || !newPaymentBy}
           icon={<AddIcon />}
           onClick={addPayment}
           aria-label={"add"}
