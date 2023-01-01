@@ -11,6 +11,7 @@ import {
   Tag,
   TagCloseButton,
   TagLabel,
+  Textarea,
   VStack,
   Wrap,
 } from "@chakra-ui/react";
@@ -29,6 +30,8 @@ import { User, userConverter } from "../types/user";
 
 export default function NewEvent() {
   const [title, setTitle] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [date, setDate] = useState<string>("");
   const [newMemberName, setNewMemberName] = useState<string>("");
   const [memberNames, setMemberNames] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -44,8 +47,20 @@ export default function NewEvent() {
               placeholder="Title"
             />
           </InputGroup>
+          <Textarea
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+            placeholder="Description (optional)"
+            resize="none"
+          />
           <InputGroup>
-            <Input placeholder="Select Date and Time" size="md" type="date" />
+            <Input
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              placeholder="Select Date and Time"
+              size="md"
+              type="date"
+            />
           </InputGroup>
           <InputGroup>
             <Input
@@ -133,8 +148,8 @@ export default function NewEvent() {
       );
       await setDoc(doc(eventsRef, eventRef.id), {
         title,
-        description: null,
-        date: "",
+        description,
+        date,
         imageUrl: null,
       });
     }
