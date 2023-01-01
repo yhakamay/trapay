@@ -15,24 +15,51 @@ import {
   HStack,
   IconButton,
   Spacer,
+  Spinner,
   StackDivider,
   Text,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
+import { collection, doc } from "firebase/firestore";
 import { GetServerSideProps } from "next";
 import { useRef } from "react";
-import { events } from "../../events";
-import { Event } from "../../types/event";
-import { Payment } from "../../types/payment";
+import {
+  useCollectionData,
+  useDocumentData,
+} from "react-firebase-hooks/firestore";
+import { db } from "../../firebaseConfig";
+import { eventConverter } from "../../types/event";
 
-export default function EventDetails(props: {
-  event: Event;
-  payments: Array<Payment>;
-}) {
-  const { event, payments } = props;
+type EventDetailsProps = {
+  id: string;
+};
+
+export default function EventDetails(props: EventDetailsProps) {
+  const { id } = props;
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const eventsRef = collection(db, "events");
+  const eventRef = doc(eventsRef, id).withConverter(eventConverter);
+  const [event, loading, error] = useDocumentData(eventRef);
+  const paymentsRef = collection(eventRef, "payments");
+  const [payments, loadingPayments] = useCollectionData(paymentsRef);
+
+  if (loading) {
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
+  }
+
+  if (error || !event) {
+    return (
+      <Center>
+        <Text>Something went wrong.</Text>
+      </Center>
+    );
+  }
 
   return (
     <Center>
@@ -49,7 +76,7 @@ export default function EventDetails(props: {
             </VStack>
           </Card>
           <VStack divider={<StackDivider />} spacing="4">
-            {payments.map((payment) => (
+            {payments?.map((payment) => (
               <Box key={payment.id} w={{ base: "sm", md: "lg" }}>
                 <HStack spacing="4">
                   <Avatar boxSize="10"></Avatar>
@@ -104,7 +131,7 @@ export default function EventDetails(props: {
   );
 
   function getTotal() {
-    return payments.reduce((acc, payment) => acc + payment.amount, 0);
+    return payments?.reduce((acc, payment) => acc + payment.amount, 0);
   }
 
   function deletePayment(id: string) {
@@ -114,7 +141,5 @@ export default function EventDetails(props: {
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
   const id = context.params?.id as string;
-  const event = events.find((event) => event.id === id);
-
-  return { props: { event } };
+  return { props: { id } };
 };
