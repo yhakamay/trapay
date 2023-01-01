@@ -1,6 +1,5 @@
 import { AddIcon } from "@chakra-ui/icons";
 import {
-  Avatar,
   Box,
   Button,
   Center,
@@ -8,9 +7,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Tag,
-  TagCloseButton,
-  TagLabel,
   Textarea,
   VStack,
   Wrap,
@@ -25,6 +21,7 @@ import {
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import UserTag from "../components/atoms/user_tag";
 import { auth, db } from "../firebaseConfig";
 import { Event, eventConverter } from "../types/event";
 import { User, userConverter } from "../types/user";
@@ -34,7 +31,13 @@ export default function NewEvent() {
   const [description, setDescription] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [newMemberName, setNewMemberName] = useState<string>("");
-  const [memberNames, setMemberNames] = useState<string[]>([]);
+  const me: User = {
+    id: auth.currentUser?.uid ?? "",
+    name: auth.currentUser?.displayName ?? "",
+    email: auth.currentUser?.email ?? "",
+    photoURL: auth.currentUser?.photoURL ?? "",
+  };
+  const [members, setMembers] = useState<User[]>([me]);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
 
@@ -73,7 +76,13 @@ export default function NewEvent() {
             <InputRightElement mr="2">
               <IconButton
                 onClick={() => {
-                  setMemberNames([...memberNames, newMemberName]);
+                  const newMember: User = {
+                    id: null,
+                    name: newMemberName,
+                    email: null,
+                    photoURL: null,
+                  };
+                  setMembers([...members, newMember]);
                   setNewMemberName("");
                 }}
                 disabled={newMemberName === ""}
@@ -84,26 +93,13 @@ export default function NewEvent() {
             </InputRightElement>
           </InputGroup>
           <Wrap>
-            {memberNames.map((memberName, i) => (
-              <>
-                <Tag key={i} borderRadius="full">
-                  <Avatar
-                    src={undefined}
-                    size="xs"
-                    name={memberName}
-                    ml={-1}
-                    mr={2}
-                  />
-                  <TagLabel>{memberName}</TagLabel>
-                  <TagCloseButton
-                    onClick={() =>
-                      setMemberNames(
-                        memberNames.filter((m) => m !== memberName)
-                      )
-                    }
-                  />
-                </Tag>
-              </>
+            {members.map((member, i) => (
+              <UserTag
+                key={i}
+                user={member}
+                deletable={member.id !== me.id}
+                onDelete={() => setMembers(members.filter((m) => m !== member))}
+              />
             ))}
           </Wrap>
           <Box h="8" />
@@ -135,7 +131,7 @@ export default function NewEvent() {
     );
 
     await Promise.all(
-      memberNames.map((memberName) => addMember(membersRef, memberName))
+      members.map((memberName) => addMember(membersRef, memberName))
     );
 
     // Add this event to the user's events
@@ -149,14 +145,9 @@ export default function NewEvent() {
 
   async function addMember(
     membersRef: CollectionReference<User>,
-    memberName: string
+    member: User
   ): Promise<void> {
-    await addDoc<User>(membersRef, {
-      id: null,
-      name: memberName,
-      photoURL: null,
-      email: null,
-    });
+    await addDoc<User>(membersRef, member);
   }
 
   async function copyEventToUser(eventId: string, event: Event): Promise<void> {
