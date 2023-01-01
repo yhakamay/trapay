@@ -1,3 +1,4 @@
+import NextLink from "next/link";
 import { AddIcon } from "@chakra-ui/icons";
 import {
   Avatar,
@@ -27,7 +28,9 @@ export default function Header() {
     <Box as="section" pb={{ base: "12", md: "24" }}>
       <Box as="nav" px={{ base: "4", md: "8" }} py="4">
         <HStack>
-          <Heading>TraPay</Heading>
+          <NextLink href="/">
+            <Heading>TraPay</Heading>
+          </NextLink>
           <Spacer />
           <Button as="a" href="/new" leftIcon={<AddIcon />}>
             New
