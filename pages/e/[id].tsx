@@ -43,8 +43,6 @@ type EventDetailsProps = {
 
 export default function EventDetails(props: EventDetailsProps) {
   const { id } = props;
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const eventsRef = collection(db, "events");
   const eventRef = doc(eventsRef, id).withConverter(eventConverter);
   const [event, loading, error] = useDocumentData(eventRef);
