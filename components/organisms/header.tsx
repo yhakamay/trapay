@@ -15,9 +15,11 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebaseConfig";
 import SignOutButton from "../molecules/sign_out_button";
+import { useRouter } from "next/router";
 
 export default function Header() {
   const [user] = useAuthState(auth);
+  const router = useRouter();
 
   if (!user) return <></>;
 
@@ -29,7 +31,7 @@ export default function Header() {
             <Heading size="lg">TraPay</Heading>
           </NextLink>
           <Spacer />
-          <Button as="a" href="/new" leftIcon={<AddIcon />}>
+          <Button onClick={() => router.push("/new")} leftIcon={<AddIcon />}>
             New
           </Button>
           <Menu>
