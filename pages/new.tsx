@@ -14,9 +14,16 @@ import {
   VStack,
   Wrap,
 } from "@chakra-ui/react";
-import { addDoc, collection, CollectionReference } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  CollectionReference,
+  doc,
+  getDoc,
+  setDoc,
+} from "firebase/firestore";
 import { useState } from "react";
-import { db } from "../firebaseConfig";
+import { auth, db } from "../firebaseConfig";
 import { eventConverter } from "../types/event";
 import { User, userConverter } from "../types/user";
 
@@ -96,7 +103,7 @@ export default function NewEvent() {
 
     // Save this event to the Firestore events/id then redirect to the event page
     const eventsRef = collection(db, "events").withConverter(eventConverter);
-    const docRef = await addDoc(eventsRef, {
+    const eventRef = await addDoc(eventsRef, {
       title,
       description: null,
       date: "",
@@ -104,7 +111,7 @@ export default function NewEvent() {
     });
 
     // Add members to the members collection
-    const membersRef = collection(docRef, "members").withConverter(
+    const membersRef = collection(eventRef, "members").withConverter(
       userConverter
     );
 
@@ -113,6 +120,24 @@ export default function NewEvent() {
     ).then(() => {
       setLoading(false);
     });
+
+    // Add this event to the user's events collection
+    const uid = auth.currentUser?.uid;
+    const usersRef = collection(db, "users").withConverter(userConverter);
+    const userRef = doc(usersRef, uid);
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      const eventsRef = collection(userRef, "events").withConverter(
+        eventConverter
+      );
+      await setDoc(doc(eventsRef, eventRef.id), {
+        title,
+        description: null,
+        date: "",
+        imageUrl: null,
+      });
+    }
   }
 
   async function addMember(
