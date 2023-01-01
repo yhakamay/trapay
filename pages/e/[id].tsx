@@ -1,11 +1,5 @@
 import { AddIcon, ChevronDownIcon, DeleteIcon } from "@chakra-ui/icons";
 import {
-  AlertDialog,
-  AlertDialogBody,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogOverlay,
   Avatar,
   Box,
   Button,
@@ -15,9 +9,6 @@ import {
   HStack,
   IconButton,
   Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
   Menu,
   MenuButton,
   MenuItem,
@@ -61,7 +52,7 @@ export default function EventDetails(props: EventDetailsProps) {
   );
   const [payments, loadingPayments] = useCollectionData(paymentsRef);
   const [newPaymentTitle, setNewPaymentTitle] = useState("");
-  const [newPaymentAmount, setNewPaymentAmount] = useState<number>();
+  const [newPaymentAmount, setNewPaymentAmount] = useState<number>(0);
   const [newPaymentBy, setNewPaymentBy] = useState<User>();
 
   if (loading || loadingMembers || loadingPayments) {
@@ -107,35 +98,8 @@ export default function EventDetails(props: EventDetailsProps) {
                   <Text>{payment.title}</Text>
                   <Spacer />
                   <Heading size="lg">{payment.amount}</Heading>
-                  <AlertDialog
-                    isOpen={isOpen}
-                    leastDestructiveRef={cancelRef}
-                    onClose={onClose}
-                  >
-                    <AlertDialogOverlay>
-                      <AlertDialogContent>
-                        <AlertDialogHeader>Delete payment</AlertDialogHeader>
-                        <AlertDialogBody>
-                          {"Are you sure? You can't undo this action."}
-                        </AlertDialogBody>
-                        <AlertDialogFooter>
-                          <Button onClick={onClose}>Cancel</Button>
-                          <Button
-                            colorScheme="red"
-                            onClick={() => {
-                              deletePayment(payment.id!);
-                              onClose();
-                            }}
-                            ml={3}
-                          >
-                            Delete
-                          </Button>
-                        </AlertDialogFooter>
-                      </AlertDialogContent>
-                    </AlertDialogOverlay>
-                  </AlertDialog>
                   <IconButton
-                    onClick={onOpen}
+                    onClick={() => deletePayment(payment.id!)}
                     aria-label={"delete"}
                     variant="ghost"
                     color="tomato"
@@ -215,6 +179,9 @@ export default function EventDetails(props: EventDetailsProps) {
       amount: newPaymentAmount,
       paidBy: newPaymentBy,
     };
+
+    setNewPaymentTitle("");
+    setNewPaymentAmount(0);
 
     await addDoc(paymentsRef, payment);
   }
