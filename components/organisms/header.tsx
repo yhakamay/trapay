@@ -4,13 +4,10 @@ import {
   Avatar,
   Box,
   Button,
-  Center,
   Heading,
   HStack,
-  Link,
   Menu,
   MenuButton,
-  MenuDivider,
   MenuItem,
   MenuList,
   Spacer,
@@ -46,19 +43,8 @@ export default function Header() {
             </MenuButton>
             <MenuList>
               <MenuItem>
-                <Link
-                  color="grey"
-                  cursor="not-allowed"
-                  w="full"
-                  textAlign="center"
-                >
-                  Profile
-                </Link>
-              </MenuItem>
-              <MenuDivider />
-              <Center>
                 <SignOutButton />
-              </Center>
+              </MenuItem>
             </MenuList>
           </Menu>
         </HStack>
