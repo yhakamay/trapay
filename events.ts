@@ -9,22 +9,6 @@ export const events: Array<Event> = [
     date: "2020-01-01",
     createdAt: new Date().toISOString(),
     imageUrl: "https://picsum.photos/200/300",
-    payments: [
-      {
-        id: "1",
-        title: "Payment 1",
-        amount: 100,
-        createdAt: new Date().toISOString(),
-        paidBy: "Yusuke",
-      },
-      {
-        id: "2",
-        title: "Payment 2",
-        amount: 200,
-        createdAt: new Date().toISOString(),
-        paidBy: "Yusuke",
-      },
-    ],
   },
   {
     id: "2",
@@ -34,7 +18,6 @@ export const events: Array<Event> = [
     date: "2020-01-02",
     createdAt: new Date().toISOString(),
     imageUrl: "https://picsum.photos/200/300",
-    payments: [],
   },
   {
     id: "3",
@@ -44,7 +27,6 @@ export const events: Array<Event> = [
     date: "2020-01-03",
     createdAt: new Date().toISOString(),
     imageUrl: "https://picsum.photos/200/300",
-    payments: [],
   },
   {
     id: "4",
@@ -54,7 +36,6 @@ export const events: Array<Event> = [
     date: "2020-01-04",
     createdAt: new Date().toISOString(),
     imageUrl: "https://picsum.photos/20/300",
-    payments: [],
   },
   {
     id: "5",
@@ -64,6 +45,5 @@ export const events: Array<Event> = [
     date: "2020-01-05",
     createdAt: new Date().toISOString(),
     imageUrl: "https://picsum.photos/200/300",
-    payments: [],
   },
 ];
