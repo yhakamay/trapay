@@ -1,9 +1,64 @@
 import Head from "next/head";
-import { Box, Wrap, WrapItem } from "@chakra-ui/react";
-import { events } from "../events";
+import {
+  Box,
+  Center,
+  Container,
+  Heading,
+  Image,
+  Spinner,
+  Text,
+  VStack,
+  Wrap,
+  WrapItem,
+} from "@chakra-ui/react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import EventCard from "../components/molecules/event_card";
+import { SignInButton } from "../components/molecules/sign_in_button";
+import { auth, db } from "../firebaseConfig";
+import { collection, doc } from "firebase/firestore";
+import { eventConverter } from "../types/event";
 
 export default function Home() {
+  const [user] = useAuthState(auth);
+  const usersRef = collection(db, "users");
+  const userRef = user ? doc(usersRef, user.uid) : null;
+  const eventsRef = userRef
+    ? collection(userRef, "events").withConverter(eventConverter)
+    : null;
+  const [events, loading, error] = useCollectionData(eventsRef);
+
+  if (!user) {
+    return (
+      <>
+        <Container py={{ base: "12", md: "24" }}>
+          <VStack spacing="8">
+            <Heading>TraPay</Heading>
+            <Text>Split the bill with your friends easily!</Text>
+            <SignInButton />
+            <Image src="/hello.svg" alt="hello" boxSize="300px" />
+          </VStack>
+        </Container>
+      </>
+    );
+  }
+
+  if (loading) {
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
+  }
+
+  if (error) {
+    return (
+      <Center>
+        <Text>{error.message}</Text>
+      </Center>
+    );
+  }
+
   return (
     <>
       <Head>
@@ -17,15 +72,15 @@ export default function Home() {
       </Head>
       <Box px={{ base: "4", md: "8" }}>
         <Wrap justify="center">
-          {events.map((event) => (
+          {events?.map((event) => (
             <>
               <WrapItem>
                 <EventCard
                   key={event.id}
-                  id={event.id.toString()}
+                  id={event.id?.toString() ?? ""}
                   title={event.title}
-                  createdAt={event.createdAt}
-                  description={event.description}
+                  date={event.date ?? ""}
+                  description={event.description ?? ""}
                 />
               </WrapItem>
             </>
