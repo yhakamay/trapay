@@ -51,10 +51,10 @@ export default function Home() {
               <WrapItem>
                 <EventCard
                   key={event.id}
-                  id={event.id.toString()}
+                  id={event.id?.toString() ?? ""}
                   title={event.title}
-                  createdAt={event.createdAt}
-                  description={event.description}
+                  createdAt={event.createdAt ?? ""}
+                  description={event.description ?? ""}
                 />
               </WrapItem>
             </>
