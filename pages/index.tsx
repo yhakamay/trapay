@@ -73,17 +73,14 @@ export default function Home() {
       <Box px={{ base: "4", md: "8" }}>
         <Wrap justify="center">
           {events?.map((event) => (
-            <>
-              <WrapItem>
-                <EventCard
-                  key={event.id}
-                  id={event.id?.toString() ?? ""}
-                  title={event.title}
-                  date={event.date ?? ""}
-                  description={event.description ?? ""}
-                />
-              </WrapItem>
-            </>
+            <WrapItem key={event.id}>
+              <EventCard
+                id={event.id?.toString() ?? ""}
+                title={event.title}
+                date={event.date ?? ""}
+                description={event.description ?? ""}
+              />
+            </WrapItem>
           ))}
         </Wrap>
       </Box>
