@@ -53,7 +53,7 @@ export default function Home() {
                   key={event.id}
                   id={event.id?.toString() ?? ""}
                   title={event.title}
-                  createdAt={event.createdAt ?? ""}
+                  date={event.date ?? ""}
                   description={event.description ?? ""}
                 />
               </WrapItem>

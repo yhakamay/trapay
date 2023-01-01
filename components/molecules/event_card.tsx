@@ -11,7 +11,7 @@ import Link from "next/link";
 type EventCardProps = {
   id: string;
   title: string;
-  createdAt: string;
+  date: string;
   description?: string;
   imageUrl?: string;
 };
@@ -20,11 +20,11 @@ export default function EventCard(props: EventCardProps) {
   const {
     id,
     title,
-    createdAt,
+    date,
     description,
     imageUrl = "https://source.unsplash.com/random",
   } = props;
-  const formattedDate = new Date(createdAt).toLocaleDateString("en-US", {
+  const formattedDate = new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
     day: "numeric",
