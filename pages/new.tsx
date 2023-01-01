@@ -25,7 +25,7 @@ import {
 } from "firebase/firestore";
 import { useState } from "react";
 import { auth, db } from "../firebaseConfig";
-import { eventConverter } from "../types/event";
+import { Event, eventConverter } from "../types/event";
 import { User, userConverter } from "../types/user";
 
 export default function NewEvent() {
@@ -116,14 +116,16 @@ export default function NewEvent() {
   async function saveEvent(): Promise<void> {
     setLoading(true);
 
+    const event: Event = {
+      title,
+      description,
+      date,
+      imageUrl: null,
+    };
+
     // Save this event to the Firestore events/id then redirect to the event page
     const eventsRef = collection(db, "events").withConverter(eventConverter);
-    const eventRef = await addDoc(eventsRef, {
-      title,
-      description: null,
-      date: "",
-      imageUrl: null,
-    });
+    const eventRef = await addDoc(eventsRef, event);
 
     // Add members to the members collection
     const membersRef = collection(eventRef, "members").withConverter(
@@ -132,27 +134,12 @@ export default function NewEvent() {
 
     await Promise.all(
       memberNames.map((memberName) => addMember(membersRef, memberName))
-    ).then(() => {
-      setLoading(false);
-    });
+    );
 
-    // Add this event to the user's events collection
-    const uid = auth.currentUser?.uid;
-    const usersRef = collection(db, "users").withConverter(userConverter);
-    const userRef = doc(usersRef, uid);
-    const userDoc = await getDoc(userRef);
+    // Add this event to the user's events
+    await copyEventToUser(eventRef.id, event);
 
-    if (userDoc.exists()) {
-      const eventsRef = collection(userRef, "events").withConverter(
-        eventConverter
-      );
-      await setDoc(doc(eventsRef, eventRef.id), {
-        title,
-        description,
-        date,
-        imageUrl: null,
-      });
-    }
+    setLoading(false);
   }
 
   async function addMember(
@@ -165,5 +152,20 @@ export default function NewEvent() {
       photoURL: null,
       email: null,
     });
+  }
+
+  async function copyEventToUser(eventId: string, event: Event): Promise<void> {
+    // Add this event to the user's events collection
+    const uid = auth.currentUser?.uid;
+    const usersRef = collection(db, "users").withConverter(userConverter);
+    const userRef = doc(usersRef, uid);
+    const userDoc = await getDoc(userRef);
+
+    if (userDoc.exists()) {
+      const eventsRef = collection(userRef, "events").withConverter(
+        eventConverter
+      );
+      await setDoc(doc(eventsRef, eventId), event);
+    }
   }
 }

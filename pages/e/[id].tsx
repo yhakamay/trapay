@@ -1,4 +1,9 @@
-import { AddIcon, ChevronDownIcon, DeleteIcon } from "@chakra-ui/icons";
+import {
+  AddIcon,
+  CalendarIcon,
+  ChevronDownIcon,
+  DeleteIcon,
+} from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -38,8 +43,6 @@ type EventDetailsProps = {
 
 export default function EventDetails(props: EventDetailsProps) {
   const { id } = props;
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const cancelRef = useRef() as React.MutableRefObject<HTMLInputElement>;
   const eventsRef = collection(db, "events");
   const eventRef = doc(eventsRef, id).withConverter(eventConverter);
   const [event, loading, error] = useDocumentData(eventRef);
@@ -54,6 +57,14 @@ export default function EventDetails(props: EventDetailsProps) {
   const [newPaymentTitle, setNewPaymentTitle] = useState("");
   const [newPaymentAmount, setNewPaymentAmount] = useState<number>(0);
   const [newPaymentBy, setNewPaymentBy] = useState<User>();
+  const formattedDate = new Date(event?.date ?? "").toLocaleDateString(
+    "en-US",
+    {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    }
+  );
 
   if (loading || loadingMembers || loadingPayments) {
     return (
@@ -75,7 +86,14 @@ export default function EventDetails(props: EventDetailsProps) {
     <Center>
       <Box w={{ base: "sm", md: "lg" }}>
         <VStack spacing="4">
-          <Heading>{event.title}</Heading>
+          <HStack w="full" justify="space-between">
+            <Heading>{event.title}</Heading>
+            <Spacer />
+            <CalendarIcon color="grey" />
+            <Text color="grey" fontSize="sm">
+              {formattedDate}
+            </Text>
+          </HStack>
           <Text>{event.description}</Text>
           <Card w={{ base: "sm", md: "lg" }}>
             <VStack>
