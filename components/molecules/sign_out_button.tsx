@@ -19,9 +19,7 @@ export default function SignOutButton() {
 
   function signOut() {
     setLoading(true);
-    setTimeout(() => {
-      auth.signOut();
-      setLoading(false);
-    }, 1500);
+    auth.signOut();
+    setLoading(false);
   }
 }
