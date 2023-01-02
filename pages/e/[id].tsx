@@ -11,6 +11,7 @@ import {
 } from "@chakra-ui/react";
 import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
 import { GetServerSideProps } from "next";
+import Head from "next/head";
 import { useState } from "react";
 import {
   useCollectionData,
@@ -70,33 +71,38 @@ export default function EventDetails(props: EventDetailsProps) {
   }
 
   return (
-    <Center>
-      <Box w={{ base: "sm", md: "lg" }}>
-        <VStack spacing="4">
-          <HStack w="full" justify="space-between">
-            <Heading>{event.title}</Heading>
-            <Spacer />
-            <CalendarIcon color="grey" />
-            <Text color="grey" fontSize="sm">
-              {formattedDate}
-            </Text>
-          </HStack>
-          <Text alignSelf="start">{event.description}</Text>
-          <TotalCard payments={payments!} />
-          <NewPaymentForm
-            members={members!}
-            setNewPaymentTitle={setNewPaymentTitle}
-            setNewPaymentAmount={setNewPaymentAmount}
-            setNewPaymentBy={setNewPaymentBy}
-            newPaymentTitle={newPaymentTitle}
-            newPaymentAmount={newPaymentAmount}
-            addPayment={addPayment}
-            newPaymentBy={newPaymentBy}
-          />
-          <PaymentsList payments={payments!} deletePayment={deletePayment} />
-        </VStack>
-      </Box>
-    </Center>
+    <>
+      <Head>
+        <title>{event.title}</title>
+      </Head>
+      <Center>
+        <Box w={{ base: "sm", md: "lg" }}>
+          <VStack spacing="4">
+            <HStack w="full" justify="space-between">
+              <Heading>{event.title}</Heading>
+              <Spacer />
+              <CalendarIcon color="grey" />
+              <Text color="grey" fontSize="sm">
+                {formattedDate}
+              </Text>
+            </HStack>
+            <Text alignSelf="start">{event.description}</Text>
+            <TotalCard payments={payments!} />
+            <NewPaymentForm
+              members={members!}
+              setNewPaymentTitle={setNewPaymentTitle}
+              setNewPaymentAmount={setNewPaymentAmount}
+              setNewPaymentBy={setNewPaymentBy}
+              newPaymentTitle={newPaymentTitle}
+              newPaymentAmount={newPaymentAmount}
+              addPayment={addPayment}
+              newPaymentBy={newPaymentBy}
+            />
+            <PaymentsList payments={payments!} deletePayment={deletePayment} />
+          </VStack>
+        </Box>
+      </Center>
+    </>
   );
 
   async function addPayment() {
