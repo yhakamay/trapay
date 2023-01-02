@@ -15,33 +15,21 @@ import EventCard from "../components/molecules/event_card";
 import { auth, db } from "../firebaseConfig";
 import { collection, doc } from "firebase/firestore";
 import { eventConverter } from "../types/event";
+import { useRouter } from "next/router";
+import { userConverter } from "../types/user";
 
 export default function Home() {
-  const [user] = useAuthState(auth);
-  const usersRef = collection(db, "users");
+  const router = useRouter();
+  const [user, loadingUser, errorUser] = useAuthState(auth);
+  const usersRef = collection(db, "users").withConverter(userConverter);
   const userRef = user ? doc(usersRef, user.uid) : null;
   const eventsRef = userRef
     ? collection(userRef, "events").withConverter(eventConverter)
     : null;
-  const [events, loading, error] = useCollectionData(eventsRef);
+  const [events, loadingEvents, errorEvents] = useCollectionData(eventsRef);
   const noEvents = events?.length === 0;
 
-  if (!user) {
-    return (
-      <>
-        <Container py={{ base: "12", md: "24" }}>
-          <VStack spacing="8">
-            <Heading>TraPay</Heading>
-            <Text>Split the bill with your friends easily!</Text>
-            <SignInButton />
-            <Image src="/hello.svg" alt="hello" boxSize="300px" />
-          </VStack>
-        </Container>
-      </>
-    );
-  }
-
-  if (loading) {
+  if (!router.isReady || loadingUser || loadingEvents) {
     return (
       <Center>
         <Spinner />
@@ -49,10 +37,14 @@ export default function Home() {
     );
   }
 
-  if (error) {
+  if (!user) {
+    router.push("/login");
+  }
+
+  if (errorUser || errorEvents) {
     return (
       <Center>
-        <Text>{error.message}</Text>
+        <Text>Something went wrong</Text>
       </Center>
     );
   }
