@@ -1,4 +1,3 @@
-import Head from "next/head";
 import NextImage from "next/image";
 import {
   Box,
@@ -51,15 +50,6 @@ export default function Home() {
 
   return (
     <>
-      <Head>
-        <title>TraPay</title>
-        <meta
-          name="description"
-          content="Split the bill with your friends easily!"
-        />
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
       <Box px={{ base: "4", md: "8" }}>
         {noEvents ? (
           <VStack>
