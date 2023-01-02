@@ -20,6 +20,7 @@ import {
   getDoc,
   setDoc,
 } from "firebase/firestore";
+import Head from "next/head";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -57,73 +58,80 @@ export default function NewEvent() {
   }
 
   return (
-    <Center>
-      <Box w={{ base: "sm", md: "lg" }}>
-        <VStack spacing="4">
-          <InputGroup>
-            <Input
-              value={title}
-              onChange={(e) => setTitle(e.target.value)}
-              placeholder="Title"
-            />
-          </InputGroup>
-          <Textarea
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            placeholder="Description (optional)"
-            resize="none"
-          />
-          <InputGroup>
-            <Input
-              value={date}
-              onChange={(e) => setDate(e.target.value)}
-              placeholder="Select Date and Time"
-              size="md"
-              type="date"
-            />
-          </InputGroup>
-          <InputGroup>
-            <Input
-              value={newMemberName}
-              onChange={(e) => setNewMemberName(e.target.value)}
-              placeholder="Members"
-            />
-            <InputRightElement mr="2">
-              <IconButton
-                onClick={() => {
-                  const newMember: User = {
-                    id: null,
-                    name: newMemberName,
-                    email: null,
-                    photoURL: null,
-                  };
-                  setMembers([...members, newMember]);
-                  setNewMemberName("");
-                }}
-                disabled={newMemberName === ""}
-                icon={<AddIcon />}
-                aria-label={"add"}
-                variant="unstyled"
+    <>
+      <Head>
+        <title>New Event</title>
+      </Head>
+      <Center>
+        <Box w={{ base: "sm", md: "lg" }}>
+          <VStack spacing="4">
+            <InputGroup>
+              <Input
+                value={title}
+                onChange={(e) => setTitle(e.target.value)}
+                placeholder="Title"
               />
-            </InputRightElement>
-          </InputGroup>
-          <Wrap>
-            {members.map((member, i) => (
-              <UserTag
-                key={i}
-                user={member}
-                deletable={member.id !== me.id}
-                onDelete={() => setMembers(members.filter((m) => m !== member))}
+            </InputGroup>
+            <Textarea
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              placeholder="Description (optional)"
+              resize="none"
+            />
+            <InputGroup>
+              <Input
+                value={date}
+                onChange={(e) => setDate(e.target.value)}
+                placeholder="Select Date and Time"
+                size="md"
+                type="date"
               />
-            ))}
-          </Wrap>
-          <Box h="8" />
-          <Button isLoading={loading} onClick={saveEvent}>
-            Save
-          </Button>
-        </VStack>
-      </Box>
-    </Center>
+            </InputGroup>
+            <InputGroup>
+              <Input
+                value={newMemberName}
+                onChange={(e) => setNewMemberName(e.target.value)}
+                placeholder="Members"
+              />
+              <InputRightElement mr="2">
+                <IconButton
+                  onClick={() => {
+                    const newMember: User = {
+                      id: null,
+                      name: newMemberName,
+                      email: null,
+                      photoURL: null,
+                    };
+                    setMembers([...members, newMember]);
+                    setNewMemberName("");
+                  }}
+                  disabled={newMemberName === ""}
+                  icon={<AddIcon />}
+                  aria-label={"add"}
+                  variant="unstyled"
+                />
+              </InputRightElement>
+            </InputGroup>
+            <Wrap>
+              {members.map((member, i) => (
+                <UserTag
+                  key={i}
+                  user={member}
+                  deletable={member.id !== me.id}
+                  onDelete={() =>
+                    setMembers(members.filter((m) => m !== member))
+                  }
+                />
+              ))}
+            </Wrap>
+            <Box h="8" />
+            <Button isLoading={loading} onClick={saveEvent}>
+              Save
+            </Button>
+          </VStack>
+        </Box>
+      </Center>
+    </>
   );
 
   async function saveEvent(): Promise<void> {

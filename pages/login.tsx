@@ -11,6 +11,7 @@ import { SignInButton } from "../components/molecules/sign_in_button";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebaseConfig";
+import Head from "next/head";
 
 export default function Login() {
   const router = useRouter();
@@ -37,13 +38,18 @@ export default function Login() {
   }
 
   return (
-    <Container py={{ base: "12", md: "24" }}>
-      <VStack spacing="8">
-        <Heading>TraPay</Heading>
-        <Text>Split the bill with your friends easily!</Text>
-        <SignInButton />
-        <NextImage src="/hello.svg" alt="hello" width="300" height="300" />
-      </VStack>
-    </Container>
+    <>
+      <Head>
+        <title>TraPay Login</title>
+      </Head>
+      <Container py={{ base: "12", md: "24" }}>
+        <VStack spacing="8">
+          <Heading>TraPay</Heading>
+          <Text>Split the bill with your friends easily!</Text>
+          <SignInButton />
+          <NextImage src="/hello.svg" alt="hello" width="300" height="300" />
+        </VStack>
+      </Container>
+    </>
   );
 }
