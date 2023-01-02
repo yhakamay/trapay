@@ -9,8 +9,9 @@ export default function SignOutButton() {
     <Button
       onClick={signOut}
       isLoading={loading}
+      w="full"
+      variant="unstyled"
       color="tomato"
-      variant="ghost"
     >
       Sign Out
     </Button>
@@ -18,9 +19,7 @@ export default function SignOutButton() {
 
   function signOut() {
     setLoading(true);
-    setTimeout(() => {
-      auth.signOut();
-      setLoading(false);
-    }, 1500);
+    auth.signOut();
+    setLoading(false);
   }
 }
