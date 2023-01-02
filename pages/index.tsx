@@ -3,10 +3,6 @@ import NextImage from "next/image";
 import {
   Box,
   Center,
-  Container,
-  Heading,
-  Image,
-  Spacer,
   Spinner,
   Text,
   VStack,
@@ -16,7 +12,6 @@ import {
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import EventCard from "../components/molecules/event_card";
-import { SignInButton } from "../components/molecules/sign_in_button";
 import { auth, db } from "../firebaseConfig";
 import { collection, doc } from "firebase/firestore";
 import { eventConverter } from "../types/event";
