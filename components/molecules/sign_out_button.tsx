@@ -9,8 +9,9 @@ export default function SignOutButton() {
     <Button
       onClick={signOut}
       isLoading={loading}
+      w="full"
+      variant="unstyled"
       color="tomato"
-      variant="ghost"
     >
       Sign Out
     </Button>
