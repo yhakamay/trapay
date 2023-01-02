@@ -7,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Spinner,
   Textarea,
   VStack,
   Wrap,
@@ -21,12 +22,14 @@ import {
 } from "firebase/firestore";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import UserTag from "../components/atoms/user_tag";
 import { auth, db } from "../firebaseConfig";
 import { Event, eventConverter } from "../types/event";
 import { User, userConverter } from "../types/user";
 
 export default function NewEvent() {
+  const [user, loadingUser, errorUser] = useAuthState(auth);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [date, setDate] = useState<string>("");
@@ -40,6 +43,18 @@ export default function NewEvent() {
   const [members, setMembers] = useState<User[]>([me]);
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
+
+  if (!router.isReady || loadingUser) {
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
+  }
+
+  if (!user) {
+    router.push("/login");
+  }
 
   return (
     <Center>
