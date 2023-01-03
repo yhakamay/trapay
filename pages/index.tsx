@@ -71,7 +71,7 @@ export default function Home() {
                   title={event.title}
                   date={event.date ?? ""}
                   description={event.description ?? ""}
-                  h="md"
+                  h="xs"
                 />
               </WrapItem>
             ))}
