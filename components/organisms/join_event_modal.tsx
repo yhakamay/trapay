@@ -24,7 +24,10 @@ export default function JoinEventModal(props: JoinEventModalProps) {
       closeOnOverlayClick={false}
       closeOnEsc={false}
     >
-      <ModalOverlay />
+      <ModalOverlay
+        bg="blackAlpha.300"
+        backdropFilter="blur(10px) hue-rotate(90deg)"
+      />
       <ModalContent>
         <ModalHeader>Join this event?</ModalHeader>
         <ModalBody>{"You're invited! Join the event first."}</ModalBody>
