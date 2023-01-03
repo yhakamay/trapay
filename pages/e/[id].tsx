@@ -11,6 +11,8 @@ import {
 import { collection, doc } from "firebase/firestore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
+import { useRouter } from "next/router";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import CopyToClipboardButton from "../../components/atoms/copy_to_clipboard_button";
 import EventDate from "../../components/atoms/event_date";
@@ -18,7 +20,7 @@ import Loading from "../../components/atoms/loading";
 import TotalCard from "../../components/molecules/total_card";
 import NewPaymentForm from "../../components/organisms/new_payment_form";
 import PaymentsList from "../../components/organisms/payments_list";
-import { db } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
 import { eventConverter } from "../../types/event";
 
 type EventDetailsProps = {
@@ -27,12 +29,18 @@ type EventDetailsProps = {
 
 export default function EventDetails(props: EventDetailsProps) {
   const { id } = props;
+  const router = useRouter();
+  const [user] = useAuthState(auth);
   const eventsRef = collection(db, "events");
   const eventRef = doc(eventsRef, id).withConverter(eventConverter);
   const [event, loading, error] = useDocumentData(eventRef);
 
-  if (loading) {
+  if (!router.isReady || loading) {
     return <Loading />;
+  }
+
+  if (!user) {
+    router.push(`/login?e=${id}`);
   }
 
   if (error || !event) {
