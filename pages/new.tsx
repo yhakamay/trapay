@@ -175,7 +175,11 @@ export default function NewEvent() {
     membersRef: CollectionReference<User>,
     member: User
   ): Promise<void> {
-    await addDoc<User>(membersRef, member);
+    if (member.id) {
+      setDoc<User>(doc(membersRef, member.id), member);
+    } else {
+      await addDoc<User>(membersRef, member);
+    }
   }
 
   async function copyEventToUser(eventId: string, event: Event): Promise<void> {
