@@ -22,7 +22,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import Head from "next/head";
-import Image from "next/image";
+import NextImage from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -68,7 +68,12 @@ export default function NewEvent() {
         <Box w={{ base: "sm", md: "lg" }}>
           <VStack spacing="4">
             <Heading>Add new event</Heading>
-            <Image src="/new.svg" alt={"new event"} width="200" height="200" />
+            <NextImage
+              src="/new.svg"
+              alt={"new event"}
+              width="200"
+              height="200"
+            />
             <InputGroup>
               <Input
                 value={title}
