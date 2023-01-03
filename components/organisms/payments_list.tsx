@@ -10,15 +10,16 @@ import {
   Box,
   Text,
 } from "@chakra-ui/react";
+import { CollectionReference, deleteDoc, doc } from "firebase/firestore";
 import { Payment } from "../../types/payment";
 
 type PaymentsListProps = {
   payments: Payment[];
-  deletePayment: (id: string) => void;
+  paymentsRef: CollectionReference<Payment>;
 };
 
 export default function PaymentsList(props: PaymentsListProps) {
-  const { payments, deletePayment } = props;
+  const { payments, paymentsRef } = props;
 
   return (
     <VStack divider={<StackDivider />} spacing="4">
@@ -46,4 +47,9 @@ export default function PaymentsList(props: PaymentsListProps) {
       ))}
     </VStack>
   );
+
+  async function deletePayment(id: string) {
+    const paymentRef = doc(paymentsRef, id);
+    await deleteDoc(paymentRef);
+  }
 }

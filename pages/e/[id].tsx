@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
+import { addDoc, collection, doc } from "firebase/firestore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useState } from "react";
@@ -107,7 +107,7 @@ export default function EventDetails(props: EventDetailsProps) {
               addPayment={addPayment}
               newPaymentBy={newPaymentBy}
             />
-            <PaymentsList payments={payments!} deletePayment={deletePayment} />
+            <PaymentsList payments={payments!} paymentsRef={paymentsRef} />
           </VStack>
         </Box>
       </Center>
@@ -129,11 +129,6 @@ export default function EventDetails(props: EventDetailsProps) {
     setNewPaymentAmount(0);
 
     await addDoc(paymentsRef, payment);
-  }
-
-  async function deletePayment(id: string) {
-    const paymentRef = doc(paymentsRef, id);
-    await deleteDoc(paymentRef);
   }
 }
 
