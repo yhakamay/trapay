@@ -5,7 +5,6 @@ import {
   Heading,
   HStack,
   Spacer,
-  Spinner,
   Text,
   VStack,
 } from "@chakra-ui/react";
@@ -15,6 +14,7 @@ import Head from "next/head";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import CopyToClipboardButton from "../../components/atoms/copy_to_clipboard_button";
 import EventDate from "../../components/atoms/event_date";
+import Loading from "../../components/atoms/loading";
 import TotalCard from "../../components/molecules/total_card";
 import NewPaymentForm from "../../components/organisms/new_payment_form";
 import PaymentsList from "../../components/organisms/payments_list";
@@ -32,11 +32,7 @@ export default function EventDetails(props: EventDetailsProps) {
   const [event, loading, error] = useDocumentData(eventRef);
 
   if (loading) {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
+    return <Loading />;
   }
 
   if (error || !event) {

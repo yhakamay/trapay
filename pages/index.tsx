@@ -1,13 +1,5 @@
 import NextImage from "next/image";
-import {
-  Box,
-  Center,
-  Spinner,
-  Text,
-  VStack,
-  Wrap,
-  WrapItem,
-} from "@chakra-ui/react";
+import { Box, Center, Text, VStack, Wrap, WrapItem } from "@chakra-ui/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import EventCard from "../components/molecules/event_card";
@@ -16,6 +8,7 @@ import { collection, doc } from "firebase/firestore";
 import { eventConverter } from "../types/event";
 import { useRouter } from "next/router";
 import { userConverter } from "../types/user";
+import Loading from "../components/atoms/loading";
 
 export default function Home() {
   const router = useRouter();
@@ -29,11 +22,7 @@ export default function Home() {
   const noEvents = events?.length === 0;
 
   if (!router.isReady || loadingUser || loadingEvents) {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
+    return <Loading />;
   }
 
   if (!user) {

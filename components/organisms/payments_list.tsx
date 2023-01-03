@@ -9,8 +9,6 @@ import {
   IconButton,
   Box,
   Text,
-  Center,
-  Spinner,
 } from "@chakra-ui/react";
 import {
   collection,
@@ -21,6 +19,7 @@ import {
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Event } from "../../types/event";
 import { paymentConverter } from "../../types/payment";
+import Loading from "../atoms/loading";
 
 type PaymentsListProps = {
   eventRef: DocumentReference<Event>;
@@ -34,11 +33,7 @@ export default function PaymentsList(props: PaymentsListProps) {
   const [payments, loadingPayments] = useCollectionData(paymentsRef);
 
   if (loadingPayments) {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
+    return <Loading />;
   }
 
   return (

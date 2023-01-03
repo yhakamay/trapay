@@ -8,7 +8,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Spinner,
   Textarea,
   VStack,
   Wrap,
@@ -26,6 +25,7 @@ import NextImage from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Loading from "../components/atoms/loading";
 import UserTag from "../components/atoms/user_tag";
 import { auth, db } from "../firebaseConfig";
 import { Event, eventConverter } from "../types/event";
@@ -48,11 +48,7 @@ export default function NewEvent() {
   const router = useRouter();
 
   if (!router.isReady || loadingUser) {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
+    return <Loading />;
   }
 
   if (!user) {

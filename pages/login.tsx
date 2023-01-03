@@ -1,28 +1,18 @@
 import NextImage from "next/image";
-import {
-  Container,
-  VStack,
-  Heading,
-  Text,
-  Center,
-  Spinner,
-} from "@chakra-ui/react";
+import { Container, VStack, Heading, Text, Center } from "@chakra-ui/react";
 import { SignInButton } from "../components/molecules/sign_in_button";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebaseConfig";
 import Head from "next/head";
+import Loading from "../components/atoms/loading";
 
 export default function Login() {
   const router = useRouter();
   const [user, loading, error] = useAuthState(auth);
 
   if (!router.isReady || loading) {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
+    return <Loading />;
   }
 
   if (error) {
