@@ -1,9 +1,10 @@
+import NextImage from "next/image";
 import {
   Card,
   CardBody,
   CardHeader,
+  Container,
   Heading,
-  Image,
   Text,
 } from "@chakra-ui/react";
 import Link from "next/link";
@@ -18,14 +19,7 @@ type EventCardProps = {
 };
 
 export default function EventCard(props: EventCardProps) {
-  const {
-    id,
-    title,
-    date,
-    description,
-    imageUrl = "https://source.unsplash.com/random",
-    h,
-  } = props;
+  const { id, title, date, description, imageUrl = "/friends.svg", h } = props;
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -36,7 +30,14 @@ export default function EventCard(props: EventCardProps) {
     <Link href={`/e/${id}`}>
       <Card w="sm" h={h} overflow="hidden">
         <CardHeader>
-          <Image src={imageUrl} alt="" fit="cover" w="full" h="3xs" />
+          <Container w="full" h="100" overflow="hidden" position="relative">
+            <NextImage
+              src={imageUrl}
+              alt="cover"
+              fill={true}
+              style={{ objectFit: "contain" }}
+            />
+          </Container>
         </CardHeader>
         <CardBody>
           <Heading>{title}</Heading>
