@@ -9,7 +9,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { addDoc, collection, doc } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useState } from "react";
@@ -23,7 +23,7 @@ import NewPaymentForm from "../../components/organisms/new_payment_form";
 import PaymentsList from "../../components/organisms/payments_list";
 import { db } from "../../firebaseConfig";
 import { eventConverter } from "../../types/event";
-import { Payment, paymentConverter } from "../../types/payment";
+import { paymentConverter } from "../../types/payment";
 import { User, userConverter } from "../../types/user";
 
 type EventDetailsProps = {
@@ -104,8 +104,8 @@ export default function EventDetails(props: EventDetailsProps) {
               setNewPaymentBy={setNewPaymentBy}
               newPaymentTitle={newPaymentTitle}
               newPaymentAmount={newPaymentAmount}
-              addPayment={addPayment}
               newPaymentBy={newPaymentBy}
+              paymentsRef={paymentsRef}
             />
             <PaymentsList payments={payments!} paymentsRef={paymentsRef} />
           </VStack>
@@ -113,23 +113,6 @@ export default function EventDetails(props: EventDetailsProps) {
       </Center>
     </>
   );
-
-  async function addPayment() {
-    if (!newPaymentTitle || !newPaymentAmount || !newPaymentBy) {
-      return;
-    }
-
-    const payment: Payment = {
-      title: newPaymentTitle,
-      amount: newPaymentAmount,
-      paidBy: newPaymentBy,
-    };
-
-    setNewPaymentTitle("");
-    setNewPaymentAmount(0);
-
-    await addDoc(paymentsRef, payment);
-  }
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {

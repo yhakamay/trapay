@@ -12,6 +12,8 @@ import {
   IconButton,
   Box,
 } from "@chakra-ui/react";
+import { addDoc, CollectionReference } from "firebase/firestore";
+import { Payment } from "../../types/payment";
 import { User } from "../../types/user";
 
 type NewPaymentFormProps = {
@@ -22,7 +24,7 @@ type NewPaymentFormProps = {
   newPaymentTitle: string;
   newPaymentAmount: number | undefined;
   newPaymentBy?: User;
-  addPayment: () => void;
+  paymentsRef: CollectionReference<Payment>;
 };
 
 export default function NewPaymentForm(props: NewPaymentFormProps) {
@@ -34,7 +36,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
     newPaymentTitle,
     newPaymentAmount,
     newPaymentBy,
-    addPayment,
+    paymentsRef,
   } = props;
 
   return (
@@ -85,4 +87,21 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
       </HStack>
     </Box>
   );
+
+  async function addPayment() {
+    if (!newPaymentTitle || !newPaymentAmount || !newPaymentBy) {
+      return;
+    }
+
+    const payment: Payment = {
+      title: newPaymentTitle,
+      amount: newPaymentAmount,
+      paidBy: newPaymentBy,
+    };
+
+    setNewPaymentTitle("");
+    setNewPaymentAmount(0);
+
+    await addDoc(paymentsRef, payment);
+  }
 }
