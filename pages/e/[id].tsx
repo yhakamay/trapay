@@ -17,6 +17,7 @@ import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
+import CopyToClipboardButton from "../../components/atoms/copy_to_clipboard_button";
 import TotalCard from "../../components/molecules/total_card";
 import NewPaymentForm from "../../components/organisms/new_payment_form";
 import PaymentsList from "../../components/organisms/payments_list";
@@ -53,6 +54,7 @@ export default function EventDetails(props: EventDetailsProps) {
       day: "numeric",
     }
   );
+  const [copied, setCopied] = useState(false);
 
   if (loading || loadingMembers || loadingPayments) {
     return (
@@ -87,6 +89,13 @@ export default function EventDetails(props: EventDetailsProps) {
               </Text>
             </HStack>
             <Text alignSelf="start">{event.description}</Text>
+            <HStack w="full" justify="end">
+              <CopyToClipboardButton
+                eventId={event.id!}
+                copied={copied}
+                setCopied={setCopied}
+              />
+            </HStack>
             <TotalCard payments={payments!} />
             <NewPaymentForm
               members={members!}
