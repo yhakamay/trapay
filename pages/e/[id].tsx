@@ -14,6 +14,7 @@ import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import CopyToClipboardButton from "../../components/atoms/copy_to_clipboard_button";
+import EventDate from "../../components/atoms/event_date";
 import TotalCard from "../../components/molecules/total_card";
 import NewPaymentForm from "../../components/organisms/new_payment_form";
 import PaymentsList from "../../components/organisms/payments_list";
@@ -29,14 +30,6 @@ export default function EventDetails(props: EventDetailsProps) {
   const eventsRef = collection(db, "events");
   const eventRef = doc(eventsRef, id).withConverter(eventConverter);
   const [event, loading, error] = useDocumentData(eventRef);
-  const formattedDate = new Date(event?.date ?? "").toLocaleDateString(
-    "en-US",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }
-  );
 
   if (loading) {
     return (
@@ -66,9 +59,7 @@ export default function EventDetails(props: EventDetailsProps) {
               <Heading>{event.title}</Heading>
               <Spacer />
               <CalendarIcon color="grey" />
-              <Text color="grey" fontSize="sm">
-                {formattedDate}
-              </Text>
+              <EventDate date={new Date(event.date ?? "")} />
             </HStack>
             <Text alignSelf="start">{event.description}</Text>
             <HStack w="full" justify="end">
