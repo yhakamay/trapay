@@ -14,6 +14,7 @@ type EventCardProps = {
   date: string;
   description?: string;
   imageUrl?: string;
+  h?: string;
 };
 
 export default function EventCard(props: EventCardProps) {
@@ -23,6 +24,7 @@ export default function EventCard(props: EventCardProps) {
     date,
     description,
     imageUrl = "https://source.unsplash.com/random",
+    h,
   } = props;
   const formattedDate = new Date(date).toLocaleDateString("en-US", {
     year: "numeric",
@@ -32,7 +34,7 @@ export default function EventCard(props: EventCardProps) {
 
   return (
     <Link href={`/e/${id}`}>
-      <Card w="sm">
+      <Card w="sm" h={h} overflow="hidden">
         <CardHeader>
           <Image src={imageUrl} alt="" fit="cover" w="full" h="3xs" />
         </CardHeader>
