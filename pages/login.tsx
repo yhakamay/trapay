@@ -6,8 +6,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebaseConfig";
 import Head from "next/head";
 import Loading from "../components/atoms/loading";
+import { GetServerSideProps } from "next";
 
-export default function Login() {
+type LoginProps = {
+  id?: string;
+};
+
+export default function Login(props: LoginProps) {
+  const { id } = props;
   const router = useRouter();
   const [user, loading, error] = useAuthState(auth);
 
@@ -24,7 +30,11 @@ export default function Login() {
   }
 
   if (user) {
-    router.push("/");
+    if (id) {
+      router.push(`/e/${id}`);
+    } else {
+      router.push("/");
+    }
   }
 
   return (
@@ -43,3 +53,13 @@ export default function Login() {
     </>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const { e } = context.query;
+
+  return {
+    props: {
+      id: e ?? null,
+    },
+  };
+};
