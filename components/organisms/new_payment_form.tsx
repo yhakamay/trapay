@@ -34,9 +34,9 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
   const membersRef = collection(eventRef, "members").withConverter(
     userConverter
   );
-  const [members, loadingMembers] = useCollectionData(membersRef);
+  const [members, loading] = useCollectionData(membersRef);
 
-  if (loadingMembers) {
+  if (loading) {
     return null;
   }
 
