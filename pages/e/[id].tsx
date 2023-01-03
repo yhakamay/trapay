@@ -12,7 +12,6 @@ import {
 import { collection, doc } from "firebase/firestore";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useState } from "react";
 import { useDocumentData } from "react-firebase-hooks/firestore";
 import CopyToClipboardButton from "../../components/atoms/copy_to_clipboard_button";
 import TotalCard from "../../components/molecules/total_card";
@@ -38,7 +37,6 @@ export default function EventDetails(props: EventDetailsProps) {
       day: "numeric",
     }
   );
-  const [copied, setCopied] = useState(false);
 
   if (loading) {
     return (
@@ -74,11 +72,7 @@ export default function EventDetails(props: EventDetailsProps) {
             </HStack>
             <Text alignSelf="start">{event.description}</Text>
             <HStack w="full" justify="end">
-              <CopyToClipboardButton
-                eventId={event.id!}
-                copied={copied}
-                setCopied={setCopied}
-              />
+              <CopyToClipboardButton eventId={event.id!} />
             </HStack>
             <TotalCard eventRef={eventRef} />
             <NewPaymentForm eventRef={eventRef} />

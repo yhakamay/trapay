@@ -1,16 +1,16 @@
 import { CheckIcon, LinkIcon } from "@chakra-ui/icons";
 import { Button, HStack, Text } from "@chakra-ui/react";
+import { useState } from "react";
 
 type CopyToClipboardButtonProps = {
   eventId: string;
-  copied: boolean;
-  setCopied: (copied: boolean) => void;
 };
 
 export default function CopyToClipboardButton(
   props: CopyToClipboardButtonProps
 ) {
-  const { eventId, copied, setCopied } = props;
+  const { eventId } = props;
+  const [copied, setCopied] = useState(false);
 
   return (
     <Button
