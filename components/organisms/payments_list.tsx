@@ -9,17 +9,37 @@ import {
   IconButton,
   Box,
   Text,
+  Center,
+  Spinner,
 } from "@chakra-ui/react";
-import { CollectionReference, deleteDoc, doc } from "firebase/firestore";
-import { Payment } from "../../types/payment";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  DocumentReference,
+} from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { Event } from "../../types/event";
+import { paymentConverter } from "../../types/payment";
 
 type PaymentsListProps = {
-  payments: Payment[];
-  paymentsRef: CollectionReference<Payment>;
+  eventRef: DocumentReference<Event>;
 };
 
 export default function PaymentsList(props: PaymentsListProps) {
-  const { payments, paymentsRef } = props;
+  const { eventRef } = props;
+  const paymentsRef = collection(eventRef, "payments").withConverter(
+    paymentConverter
+  );
+  const [payments, loadingPayments] = useCollectionData(paymentsRef);
+
+  if (loadingPayments) {
+    return (
+      <Center>
+        <Spinner />
+      </Center>
+    );
+  }
 
   return (
     <VStack divider={<StackDivider />} spacing="4">

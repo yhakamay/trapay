@@ -12,32 +12,33 @@ import {
   IconButton,
   Box,
 } from "@chakra-ui/react";
-import { addDoc, CollectionReference } from "firebase/firestore";
-import { Payment } from "../../types/payment";
-import { User } from "../../types/user";
+import { addDoc, collection, DocumentReference } from "firebase/firestore";
+import { useState } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { Event } from "../../types/event";
+import { Payment, paymentConverter } from "../../types/payment";
+import { User, userConverter } from "../../types/user";
 
 type NewPaymentFormProps = {
-  members: User[];
-  setNewPaymentTitle: (title: string) => void;
-  setNewPaymentAmount: (amount: number) => void;
-  setNewPaymentBy: (user: User) => void;
-  newPaymentTitle: string;
-  newPaymentAmount: number | undefined;
-  newPaymentBy?: User;
-  paymentsRef: CollectionReference<Payment>;
+  eventRef: DocumentReference<Event>;
 };
 
 export default function NewPaymentForm(props: NewPaymentFormProps) {
-  const {
-    members,
-    setNewPaymentTitle,
-    setNewPaymentAmount,
-    setNewPaymentBy,
-    newPaymentTitle,
-    newPaymentAmount,
-    newPaymentBy,
-    paymentsRef,
-  } = props;
+  const { eventRef } = props;
+  const [newPaymentTitle, setNewPaymentTitle] = useState("");
+  const [newPaymentAmount, setNewPaymentAmount] = useState<number>(0);
+  const [newPaymentBy, setNewPaymentBy] = useState<User>();
+  const paymentsRef = collection(eventRef, "payments").withConverter(
+    paymentConverter
+  );
+  const membersRef = collection(eventRef, "members").withConverter(
+    userConverter
+  );
+  const [members, loadingMembers] = useCollectionData(membersRef);
+
+  if (loadingMembers) {
+    return null;
+  }
 
   return (
     <Box w={{ base: "sm", md: "lg" }}>
