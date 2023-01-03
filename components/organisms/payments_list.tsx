@@ -30,9 +30,9 @@ export default function PaymentsList(props: PaymentsListProps) {
   const paymentsRef = collection(eventRef, "payments").withConverter(
     paymentConverter
   );
-  const [payments, loadingPayments] = useCollectionData(paymentsRef);
+  const [payments, loading] = useCollectionData(paymentsRef);
 
-  if (loadingPayments) {
+  if (loading) {
     return <Loading />;
   }
 
