@@ -1,22 +1,16 @@
 import { CalendarIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Button,
   Center,
   Heading,
   HStack,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
   Spacer,
   Text,
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
 import { collection, doc } from "firebase/firestore";
+import { User as FirebaseUser } from "firebase/auth";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
@@ -33,7 +27,8 @@ import NewPaymentForm from "../../components/organisms/new_payment_form";
 import PaymentsList from "../../components/organisms/payments_list";
 import { auth, db } from "../../firebaseConfig";
 import { eventConverter } from "../../types/event";
-import { User, userConverter } from "../../types/user";
+import { userConverter } from "../../types/user";
+import JoinEventModal from "../../components/organisms/join_event_modal";
 
 type EventDetailsProps = {
   id: string;
@@ -50,7 +45,7 @@ export default function EventDetails(props: EventDetailsProps) {
     userConverter
   );
   const [members] = useCollectionData(membersRef);
-  const { isOpen, onOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+  const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
 
   if (!router.isReady || loading) {
     return <Loading />;
@@ -68,36 +63,14 @@ export default function EventDetails(props: EventDetailsProps) {
     );
   }
 
-  // check if members contain user
-  members?.some((member) => {
-    const isMember = member.id === user?.uid;
-
-    if (isMember && isOpen) {
-      onClose();
-    }
-  });
+  closeModalIfMember(user, isOpen, onClose);
 
   return (
     <>
       <Head>
         <title>{event.title}</title>
       </Head>
-      <Modal
-        isOpen={isOpen}
-        isCentered={true}
-        onClose={onClose}
-        closeOnOverlayClick={false}
-        closeOnEsc={false}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Join this event?</ModalHeader>
-          <ModalBody>{"You're invited! Join the event first."}</ModalBody>
-          <ModalFooter>
-            <Button onClick={onClose}>Close</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <JoinEventModal isOpen={isOpen} onClose={onClose} />
       <Center>
         <Box w={{ base: "sm", md: "lg" }}>
           <VStack spacing="4">
@@ -119,6 +92,20 @@ export default function EventDetails(props: EventDetailsProps) {
       </Center>
     </>
   );
+
+  function closeModalIfMember(
+    user: FirebaseUser | null | undefined,
+    isOpen: boolean,
+    onClose: () => void
+  ) {
+    members?.some((member) => {
+      const isMember = member.id === user?.uid;
+
+      if (isMember && isOpen) {
+        onClose();
+      }
+    });
+  }
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
