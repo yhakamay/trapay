@@ -1,20 +1,25 @@
-import { Button } from "@chakra-ui/react";
+import { Box, HStack, Text } from "@chakra-ui/react";
+import Link from "next/link";
 import { useState } from "react";
 import { auth } from "../../firebaseConfig";
+import { MdLogout } from "react-icons/md";
 
 export default function SignOutButton() {
   const [loading, setLoading] = useState(false);
 
   return (
-    <Button
-      onClick={signOut}
-      isLoading={loading}
-      w="full"
-      variant="unstyled"
-      color="tomato"
-    >
-      Sign Out
-    </Button>
+    <Box w="full">
+      <Link href="/login" onClick={signOut}>
+        {loading ? (
+          <Text>Signing out...</Text>
+        ) : (
+          <HStack>
+            <Text>Sign out</Text>
+            <MdLogout />
+          </HStack>
+        )}
+      </Link>
+    </Box>
   );
 
   function signOut() {
