@@ -1,4 +1,3 @@
-import { ChevronDownIcon, AddIcon } from "@chakra-ui/icons";
 import {
   HStack,
   VStack,
@@ -15,6 +14,7 @@ import {
 import { addDoc, collection, DocumentReference } from "firebase/firestore";
 import { useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { MdAdd, MdExpandMore } from "react-icons/md";
 import { Event } from "../../types/event";
 import { Payment, paymentConverter } from "../../types/payment";
 import { User, userConverter } from "../../types/user";
@@ -57,7 +57,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
               type="number"
             />
             <Menu>
-              <MenuButton w="full" as={Button} rightIcon={<ChevronDownIcon />}>
+              <MenuButton w="full" as={Button} rightIcon={<MdExpandMore />}>
                 Paid by
               </MenuButton>
               <MenuList>
@@ -81,7 +81,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
         </VStack>
         <IconButton
           disabled={!newPaymentTitle || !newPaymentAmount || !newPaymentBy}
-          icon={<AddIcon />}
+          icon={<MdAdd />}
           onClick={addPayment}
           aria-label={"add"}
         />
