@@ -1,4 +1,3 @@
-import { CalendarIcon } from "@chakra-ui/icons";
 import {
   Box,
   Center,
@@ -29,6 +28,7 @@ import { auth, db } from "../../firebaseConfig";
 import { eventConverter } from "../../types/event";
 import { userConverter } from "../../types/user";
 import JoinEventModal from "../../components/organisms/join_event_modal";
+import { MdOutlineCalendarToday } from "react-icons/md";
 
 type EventDetailsProps = {
   id: string;
@@ -83,7 +83,7 @@ export default function EventDetails(props: EventDetailsProps) {
             <HStack w="full" justify="space-between">
               <Heading>{event.title}</Heading>
               <Spacer />
-              <CalendarIcon color="grey" />
+              <MdOutlineCalendarToday color="grey" />
               <EventDate date={new Date(event.date ?? "")} />
             </HStack>
             <Text alignSelf="start">{event.description}</Text>
