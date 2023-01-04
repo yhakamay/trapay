@@ -1,6 +1,6 @@
 import NextImage from "next/image";
 import { Container, VStack, Heading, Text, Center } from "@chakra-ui/react";
-import { SignInButton } from "../components/molecules/sign_in_button";
+import { SignInButton } from "../components/molecules/sign_in_buttons";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebaseConfig";
