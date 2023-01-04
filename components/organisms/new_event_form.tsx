@@ -7,6 +7,7 @@ import {
   Wrap,
   Button,
   Box,
+  Center,
 } from "@chakra-ui/react";
 import {
   collection,
@@ -74,11 +75,15 @@ export default function NewEventForm(props: NewEventFormProps) {
           onChange={(e) => setNewMemberName(e.target.value)}
           placeholder="Members"
         />
-        <InputRightElement mr="-1">
+        <InputRightElement mr="2">
           <IconButton
             onClick={onClickAddMember}
             disabled={newMemberName === ""}
-            icon={<MdPersonAddAlt1 />}
+            icon={
+              <Center>
+                <MdPersonAddAlt1 />
+              </Center>
+            }
             aria-label={"add"}
             variant="unstyled"
           />
