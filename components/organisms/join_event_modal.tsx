@@ -19,10 +19,13 @@ import {
 } from "@chakra-ui/react";
 import {
   collection,
+  CollectionReference,
   deleteDoc,
   doc,
   DocumentReference,
+  getDocs,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { User as FirebaseUser } from "firebase/auth";
 import { Event } from "../../types/event";
@@ -30,6 +33,7 @@ import { User } from "../../types/user";
 import { useState } from "react";
 import UserTag from "../atoms/user_tag";
 import { AddIcon, ArrowForwardIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { Payment, paymentConverter } from "../../types/payment";
 
 type JoinEventModalProps = {
   eventRef: DocumentReference<Event>;
@@ -41,8 +45,8 @@ type JoinEventModalProps = {
 
 export default function JoinEventModal(props: JoinEventModalProps) {
   const { eventRef, isOpen, onClose, firebaseUser, members } = props;
-  const srcUser = convertToUser(firebaseUser ?? null);
-  const [dstUser, setDstUser] = useState<User | null>(srcUser ?? null);
+  const newUser = convertToUser(firebaseUser ?? null);
+  const [oldUser, setOldUser] = useState<User | null>(newUser ?? null);
 
   if (!firebaseUser) {
     return null;
@@ -72,7 +76,7 @@ export default function JoinEventModal(props: JoinEventModalProps) {
             <Box h="4" />
             <HStack>
               <UserTag
-                user={srcUser!}
+                user={newUser!}
                 deletable={false}
                 onDelete={function (): void {
                   throw new Error("Function not implemented.");
@@ -81,7 +85,7 @@ export default function JoinEventModal(props: JoinEventModalProps) {
               <ArrowForwardIcon />
               <Menu isLazy>
                 <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
-                  {dstUser?.name}
+                  {oldUser?.name}
                 </MenuButton>
                 <MenuList>
                   <RadioGroup
@@ -89,9 +93,9 @@ export default function JoinEventModal(props: JoinEventModalProps) {
                       const selectedUser = members.find(
                         (member) => member.id === value
                       );
-                      setDstUser(selectedUser ?? srcUser);
+                      setOldUser(selectedUser ?? newUser);
                     }}
-                    value={dstUser?.id ?? srcUser?.id!}
+                    value={oldUser?.id ?? newUser?.id!}
                   >
                     <VStack align="start" pl="2" overflow="hidden">
                       {members.map((member) => {
@@ -114,7 +118,7 @@ export default function JoinEventModal(props: JoinEventModalProps) {
                         );
                       })}
                       <Divider />
-                      <Radio value={srcUser?.id!}>
+                      <Radio value={newUser?.id!}>
                         <HStack>
                           <AddIcon />
                           <Text>Create</Text>
@@ -130,7 +134,7 @@ export default function JoinEventModal(props: JoinEventModalProps) {
         <ModalFooter>
           <Button
             onClick={async () => {
-              await replaceMember(eventRef, srcUser!, dstUser!);
+              await replaceMember(eventRef, newUser!, oldUser!);
               onClose();
             }}
           >
@@ -147,6 +151,7 @@ export default function JoinEventModal(props: JoinEventModalProps) {
     }
 
     return {
+      id: firebaseUser.uid,
       name: firebaseUser.displayName ?? "",
       email: firebaseUser.email ?? "",
       photoURL: firebaseUser.photoURL ?? "",
@@ -155,19 +160,40 @@ export default function JoinEventModal(props: JoinEventModalProps) {
 
   async function replaceMember(
     eventRef: DocumentReference<Event>,
-    srcUser: User,
-    dstUser: User
+    newUser: User,
+    oldUser: User
   ) {
     const membersRef = collection(eventRef, "members");
 
-    if (srcUser.id === dstUser.id) {
+    if (newUser.id === oldUser.id) {
       // Just add user to members
-      await setDoc(doc(membersRef, srcUser.id!), srcUser, { merge: true });
+      await setDoc(doc(membersRef, newUser.id!), newUser, { merge: true });
     } else {
-      // Replace dstUser with srcUser
-      await setDoc(doc(membersRef, srcUser.id!), srcUser, { merge: true });
-      const dstUserRef = doc(membersRef, dstUser.id!);
-      await deleteDoc(dstUserRef);
+      await setDoc(doc(membersRef, newUser.id!), newUser, { merge: true });
+      const paymentsRef = collection(eventRef, "payments").withConverter(
+        paymentConverter
+      );
+      await updatePaidBy(paymentsRef, newUser, oldUser);
+      const oldUserRef = doc(membersRef, oldUser.id!);
+      await deleteDoc(oldUserRef);
+    }
+  }
+
+  async function updatePaidBy(
+    paymentsRef: CollectionReference<Payment>,
+    newUser: User,
+    oldUser: User
+  ) {
+    const paymentsSnapshot = await getDocs(paymentsRef);
+
+    for (const paymentDoc of paymentsSnapshot.docs) {
+      const payment = paymentDoc.data();
+
+      if (payment.paidBy?.id === oldUser.id) {
+        await updateDoc(paymentDoc.ref, {
+          paidBy: newUser,
+        });
+      }
     }
   }
 }
