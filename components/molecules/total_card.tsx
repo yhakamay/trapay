@@ -13,7 +13,7 @@ export default function TotalCard(props: TotalCardProps) {
   const paymentsRef = collection(eventRef, "payments").withConverter(
     paymentConverter
   );
-  const [payments, loadingPayments] = useCollectionData(paymentsRef);
+  const [payments] = useCollectionData(paymentsRef);
 
   return (
     <Card w={{ base: "sm", md: "lg" }}>
