@@ -31,7 +31,7 @@ import { Event, eventConverter } from "../types/event";
 import { User, userConverter } from "../types/user";
 
 export default function NewEvent() {
-  const [user, loadingUser, errorUser] = useAuthState(auth);
+  const [user, loadingUser] = useAuthState(auth);
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [date, setDate] = useState<string>("");
