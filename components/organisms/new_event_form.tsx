@@ -1,4 +1,3 @@
-import { AddIcon } from "@chakra-ui/icons";
 import {
   InputGroup,
   Input,
@@ -24,6 +23,7 @@ import { Event, eventConverter } from "../../types/event";
 import { User, userConverter } from "../../types/user";
 import Loading from "../atoms/loading";
 import UserTag from "../atoms/user_tag";
+import { MdPersonAddAlt1 } from "react-icons/md";
 
 type NewEventFormProps = {
   firebaseUser: FirebaseUser;
@@ -74,11 +74,11 @@ export default function NewEventForm(props: NewEventFormProps) {
           onChange={(e) => setNewMemberName(e.target.value)}
           placeholder="Members"
         />
-        <InputRightElement mr="2">
+        <InputRightElement mr="-1">
           <IconButton
             onClick={onClickAddMember}
             disabled={newMemberName === ""}
-            icon={<AddIcon />}
+            icon={<MdPersonAddAlt1 />}
             aria-label={"add"}
             variant="unstyled"
           />
