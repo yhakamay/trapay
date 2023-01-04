@@ -1,6 +1,6 @@
-import { CheckIcon, LinkIcon } from "@chakra-ui/icons";
 import { Button, HStack, Text } from "@chakra-ui/react";
 import { useState } from "react";
+import { MdCheck, MdLink } from "react-icons/md";
 
 type CopyToClipboardButtonProps = {
   eventId: string;
@@ -29,10 +29,10 @@ export default function CopyToClipboardButton(
       {copied ? (
         <HStack>
           <Text color="white">Copied!</Text>
-          <CheckIcon color="white" />
+          <MdCheck color="white" />
         </HStack>
       ) : (
-        <LinkIcon />
+        <MdLink />
       )}
     </Button>
   );
