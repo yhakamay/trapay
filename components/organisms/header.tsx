@@ -8,9 +8,11 @@ import {
   HStack,
   Menu,
   MenuButton,
+  MenuDivider,
   MenuItem,
   MenuList,
   Spacer,
+  Text,
 } from "@chakra-ui/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebaseConfig";
@@ -44,6 +46,11 @@ export default function Header() {
               />
             </MenuButton>
             <MenuList>
+              <Text ml="3">{user?.displayName ?? ""}</Text>
+              <Text ml="3" fontSize="xs" color="grey">
+                {user?.email ?? ""}
+              </Text>
+              <MenuDivider />
               <MenuItem>
                 <SignOutButton />
               </MenuItem>
