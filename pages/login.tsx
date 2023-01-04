@@ -1,6 +1,13 @@
 import NextImage from "next/image";
-import { Container, VStack, Heading, Text, Center } from "@chakra-ui/react";
-import { SignInButton } from "../components/molecules/sign_in_button";
+import {
+  Container,
+  VStack,
+  Heading,
+  Text,
+  Center,
+  Box,
+} from "@chakra-ui/react";
+import { SignInButton } from "../components/molecules/sign_in_buttons";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebaseConfig";
@@ -43,10 +50,12 @@ export default function Login(props: LoginProps) {
         <title>TraPay Login</title>
       </Head>
       <Container py={{ base: "12", md: "24" }}>
-        <VStack spacing="8">
+        <VStack>
           <Heading>TraPay</Heading>
           <Text>Split the bill with your friends easily!</Text>
+          <Box h="8" />
           <SignInButton />
+          <Box h="8" />
           <NextImage src="/hello.svg" alt="hello" width="300" height="300" />
         </VStack>
       </Container>
