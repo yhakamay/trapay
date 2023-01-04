@@ -70,7 +70,13 @@ export default function EventDetails(props: EventDetailsProps) {
       <Head>
         <title>{event.title}</title>
       </Head>
-      <JoinEventModal isOpen={isOpen} onClose={onClose} />
+      <JoinEventModal
+        isOpen={isOpen}
+        onClose={onClose}
+        eventRef={eventRef}
+        firebaseUser={user!}
+        members={members ?? []}
+      />
       <Center>
         <Box w={{ base: "sm", md: "lg" }}>
           <VStack spacing="4">
