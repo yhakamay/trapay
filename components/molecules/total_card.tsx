@@ -2,7 +2,7 @@ import { Card, VStack, Spacer, Heading, Text } from "@chakra-ui/react";
 import { collection, DocumentReference } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Event } from "../../types/event";
-import { Payment, paymentConverter } from "../../types/payment";
+import { paymentConverter } from "../../types/payment";
 
 type TotalCardProps = {
   eventRef: DocumentReference<Event>;

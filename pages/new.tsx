@@ -17,7 +17,6 @@ import {
   collection,
   CollectionReference,
   doc,
-  getDoc,
   setDoc,
 } from "firebase/firestore";
 import Head from "next/head";
