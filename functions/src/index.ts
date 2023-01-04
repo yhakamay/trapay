@@ -10,3 +10,19 @@ exports.createUser = functions.auth.user().onCreate((user) => {
     photoURL: user.photoURL,
   });
 });
+
+exports.copyEventToUser = functions.firestore
+  .document("events/{eventId}/members/{userId}")
+  .onCreate(async (snap, context) => {
+    const { eventId, userId } = context.params;
+    const event = snap.data();
+    const usersRef = admin.firestore().collection("users");
+
+    const userDoc = await usersRef.doc(userId).get();
+    if (!userDoc.exists) {
+      return null;
+    }
+
+    const usersEventsRef = usersRef.doc(userId).collection("events");
+    return usersEventsRef.doc(eventId).set(event);
+  });
