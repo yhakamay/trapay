@@ -1,5 +1,4 @@
 import NextLink from "next/link";
-import { AddIcon } from "@chakra-ui/icons";
 import {
   Avatar,
   Box,
@@ -18,6 +17,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebaseConfig";
 import SignOutButton from "../molecules/sign_out_button";
 import { useRouter } from "next/router";
+import { MdAdd } from "react-icons/md";
 
 export default function Header() {
   const [user] = useAuthState(auth);
@@ -33,7 +33,7 @@ export default function Header() {
             <Heading size="lg">TraPay</Heading>
           </NextLink>
           <Spacer />
-          <Button onClick={() => router.push("/new")} leftIcon={<AddIcon />}>
+          <Button onClick={() => router.push("/new")} leftIcon={<MdAdd />}>
             New
           </Button>
           <Menu>
