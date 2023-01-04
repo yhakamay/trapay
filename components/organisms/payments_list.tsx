@@ -1,4 +1,3 @@
-import { DeleteIcon } from "@chakra-ui/icons";
 import {
   VStack,
   StackDivider,
@@ -17,6 +16,7 @@ import {
   DocumentReference,
 } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { MdDelete } from "react-icons/md";
 import { Event } from "../../types/event";
 import { paymentConverter } from "../../types/payment";
 import Loading from "../atoms/loading";
@@ -55,7 +55,7 @@ export default function PaymentsList(props: PaymentsListProps) {
               aria-label={"delete"}
               variant="ghost"
               color="tomato"
-              icon={<DeleteIcon />}
+              icon={<MdDelete />}
             />
           </HStack>
         </Box>
