@@ -32,8 +32,8 @@ import { Event } from "../../types/event";
 import { User } from "../../types/user";
 import { useState } from "react";
 import UserTag from "../atoms/user_tag";
-import { AddIcon, ArrowForwardIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { Payment, paymentConverter } from "../../types/payment";
+import { MdAdd, MdArrowForward, MdExpandMore } from "react-icons/md";
 
 type JoinEventModalProps = {
   eventRef: DocumentReference<Event>;
@@ -82,9 +82,9 @@ export default function JoinEventModal(props: JoinEventModalProps) {
                   throw new Error("Function not implemented.");
                 }}
               />
-              <ArrowForwardIcon />
+              <MdArrowForward />
               <Menu isLazy>
-                <MenuButton as={Button} rightIcon={<ChevronDownIcon />}>
+                <MenuButton as={Button} rightIcon={<MdExpandMore />}>
                   {oldUser?.name}
                 </MenuButton>
                 <MenuList>
@@ -120,7 +120,7 @@ export default function JoinEventModal(props: JoinEventModalProps) {
                       <Divider />
                       <Radio value={newUser?.id!}>
                         <HStack>
-                          <AddIcon />
+                          <MdAdd />
                           <Text>Create</Text>
                         </HStack>
                       </Radio>
