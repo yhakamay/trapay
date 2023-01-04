@@ -5,26 +5,30 @@ import {
   Heading,
   HStack,
   Spacer,
-  Spinner,
   Text,
+  useDisclosure,
   VStack,
 } from "@chakra-ui/react";
-import { addDoc, collection, deleteDoc, doc } from "firebase/firestore";
+import { collection, doc } from "firebase/firestore";
+import { User as FirebaseUser } from "firebase/auth";
 import { GetServerSideProps } from "next";
 import Head from "next/head";
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useAuthState } from "react-firebase-hooks/auth";
 import {
   useCollectionData,
   useDocumentData,
 } from "react-firebase-hooks/firestore";
 import CopyToClipboardButton from "../../components/atoms/copy_to_clipboard_button";
+import EventDate from "../../components/atoms/event_date";
+import Loading from "../../components/atoms/loading";
 import TotalCard from "../../components/molecules/total_card";
 import NewPaymentForm from "../../components/organisms/new_payment_form";
 import PaymentsList from "../../components/organisms/payments_list";
-import { db } from "../../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
 import { eventConverter } from "../../types/event";
-import { Payment, paymentConverter } from "../../types/payment";
-import { User, userConverter } from "../../types/user";
+import { userConverter } from "../../types/user";
+import JoinEventModal from "../../components/organisms/join_event_modal";
 
 type EventDetailsProps = {
   id: string;
@@ -32,36 +36,23 @@ type EventDetailsProps = {
 
 export default function EventDetails(props: EventDetailsProps) {
   const { id } = props;
+  const router = useRouter();
+  const [user] = useAuthState(auth);
   const eventsRef = collection(db, "events");
   const eventRef = doc(eventsRef, id).withConverter(eventConverter);
   const [event, loading, error] = useDocumentData(eventRef);
   const membersRef = collection(eventRef, "members").withConverter(
     userConverter
   );
-  const [members, loadingMembers] = useCollectionData(membersRef);
-  const paymentsRef = collection(eventRef, "payments").withConverter(
-    paymentConverter
-  );
-  const [payments, loadingPayments] = useCollectionData(paymentsRef);
-  const [newPaymentTitle, setNewPaymentTitle] = useState("");
-  const [newPaymentAmount, setNewPaymentAmount] = useState<number>(0);
-  const [newPaymentBy, setNewPaymentBy] = useState<User>();
-  const formattedDate = new Date(event?.date ?? "").toLocaleDateString(
-    "en-US",
-    {
-      year: "numeric",
-      month: "long",
-      day: "numeric",
-    }
-  );
-  const [copied, setCopied] = useState(false);
+  const [members] = useCollectionData(membersRef);
+  const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
 
-  if (loading || loadingMembers || loadingPayments) {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
+  if (!router.isReady || loading) {
+    return <Loading />;
+  }
+
+  if (!user) {
+    router.push(`/login?e=${id}`);
   }
 
   if (error || !event) {
@@ -72,11 +63,20 @@ export default function EventDetails(props: EventDetailsProps) {
     );
   }
 
+  closeModalIfMember(user, isOpen, onClose);
+
   return (
     <>
       <Head>
         <title>{event.title}</title>
       </Head>
+      <JoinEventModal
+        isOpen={isOpen}
+        onClose={onClose}
+        eventRef={eventRef}
+        firebaseUser={user!}
+        members={members ?? []}
+      />
       <Center>
         <Box w={{ base: "sm", md: "lg" }}>
           <VStack spacing="4">
@@ -84,56 +84,33 @@ export default function EventDetails(props: EventDetailsProps) {
               <Heading>{event.title}</Heading>
               <Spacer />
               <CalendarIcon color="grey" />
-              <Text color="grey" fontSize="sm">
-                {formattedDate}
-              </Text>
+              <EventDate date={new Date(event.date ?? "")} />
             </HStack>
             <Text alignSelf="start">{event.description}</Text>
             <HStack w="full" justify="end">
-              <CopyToClipboardButton
-                eventId={event.id!}
-                copied={copied}
-                setCopied={setCopied}
-              />
+              <CopyToClipboardButton eventId={event.id!} />
             </HStack>
-            <TotalCard payments={payments!} />
-            <NewPaymentForm
-              members={members!}
-              setNewPaymentTitle={setNewPaymentTitle}
-              setNewPaymentAmount={setNewPaymentAmount}
-              setNewPaymentBy={setNewPaymentBy}
-              newPaymentTitle={newPaymentTitle}
-              newPaymentAmount={newPaymentAmount}
-              addPayment={addPayment}
-              newPaymentBy={newPaymentBy}
-            />
-            <PaymentsList payments={payments!} deletePayment={deletePayment} />
+            <TotalCard eventRef={eventRef} />
+            <NewPaymentForm eventRef={eventRef} />
+            <PaymentsList eventRef={eventRef} />
           </VStack>
         </Box>
       </Center>
     </>
   );
 
-  async function addPayment() {
-    if (!newPaymentTitle || !newPaymentAmount || !newPaymentBy) {
-      return;
-    }
+  function closeModalIfMember(
+    user: FirebaseUser | null | undefined,
+    isOpen: boolean,
+    onClose: () => void
+  ) {
+    members?.some((member) => {
+      const isMember = member.id === user?.uid;
 
-    const payment: Payment = {
-      title: newPaymentTitle,
-      amount: newPaymentAmount,
-      paidBy: newPaymentBy,
-    };
-
-    setNewPaymentTitle("");
-    setNewPaymentAmount(0);
-
-    await addDoc(paymentsRef, payment);
-  }
-
-  async function deletePayment(id: string) {
-    const paymentRef = doc(paymentsRef, id);
-    await deleteDoc(paymentRef);
+      if (isMember && isOpen) {
+        onClose();
+      }
+    });
   }
 }
 

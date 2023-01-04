@@ -10,15 +10,31 @@ import {
   Box,
   Text,
 } from "@chakra-ui/react";
-import { Payment } from "../../types/payment";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  DocumentReference,
+} from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { Event } from "../../types/event";
+import { paymentConverter } from "../../types/payment";
+import Loading from "../atoms/loading";
 
 type PaymentsListProps = {
-  payments: Payment[];
-  deletePayment: (id: string) => void;
+  eventRef: DocumentReference<Event>;
 };
 
 export default function PaymentsList(props: PaymentsListProps) {
-  const { payments, deletePayment } = props;
+  const { eventRef } = props;
+  const paymentsRef = collection(eventRef, "payments").withConverter(
+    paymentConverter
+  );
+  const [payments, loading] = useCollectionData(paymentsRef);
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <VStack divider={<StackDivider />} spacing="4">
@@ -46,4 +62,9 @@ export default function PaymentsList(props: PaymentsListProps) {
       ))}
     </VStack>
   );
+
+  async function deletePayment(id: string) {
+    const paymentRef = doc(paymentsRef, id);
+    await deleteDoc(paymentRef);
+  }
 }

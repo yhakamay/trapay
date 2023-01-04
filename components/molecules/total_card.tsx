@@ -1,12 +1,19 @@
 import { Card, VStack, Spacer, Heading, Text } from "@chakra-ui/react";
-import { Payment } from "../../types/payment";
+import { collection, DocumentReference } from "firebase/firestore";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { Event } from "../../types/event";
+import { paymentConverter } from "../../types/payment";
 
 type TotalCardProps = {
-  payments: Payment[];
+  eventRef: DocumentReference<Event>;
 };
 
 export default function TotalCard(props: TotalCardProps) {
-  const { payments } = props;
+  const { eventRef } = props;
+  const paymentsRef = collection(eventRef, "payments").withConverter(
+    paymentConverter
+  );
+  const [payments, loadingPayments] = useCollectionData(paymentsRef);
 
   return (
     <Card w={{ base: "sm", md: "lg" }}>

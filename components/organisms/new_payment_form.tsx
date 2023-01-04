@@ -12,30 +12,33 @@ import {
   IconButton,
   Box,
 } from "@chakra-ui/react";
-import { User } from "../../types/user";
+import { addDoc, collection, DocumentReference } from "firebase/firestore";
+import { useState } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
+import { Event } from "../../types/event";
+import { Payment, paymentConverter } from "../../types/payment";
+import { User, userConverter } from "../../types/user";
 
 type NewPaymentFormProps = {
-  members: User[];
-  setNewPaymentTitle: (title: string) => void;
-  setNewPaymentAmount: (amount: number) => void;
-  setNewPaymentBy: (user: User) => void;
-  newPaymentTitle: string;
-  newPaymentAmount: number | undefined;
-  newPaymentBy?: User;
-  addPayment: () => void;
+  eventRef: DocumentReference<Event>;
 };
 
 export default function NewPaymentForm(props: NewPaymentFormProps) {
-  const {
-    members,
-    setNewPaymentTitle,
-    setNewPaymentAmount,
-    setNewPaymentBy,
-    newPaymentTitle,
-    newPaymentAmount,
-    newPaymentBy,
-    addPayment,
-  } = props;
+  const { eventRef } = props;
+  const [newPaymentTitle, setNewPaymentTitle] = useState("");
+  const [newPaymentAmount, setNewPaymentAmount] = useState<number>(0);
+  const [newPaymentBy, setNewPaymentBy] = useState<User>();
+  const paymentsRef = collection(eventRef, "payments").withConverter(
+    paymentConverter
+  );
+  const membersRef = collection(eventRef, "members").withConverter(
+    userConverter
+  );
+  const [members, loading] = useCollectionData(membersRef);
+
+  if (loading) {
+    return null;
+  }
 
   return (
     <Box w={{ base: "sm", md: "lg" }}>
@@ -85,4 +88,21 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
       </HStack>
     </Box>
   );
+
+  async function addPayment() {
+    if (!newPaymentTitle || !newPaymentAmount || !newPaymentBy) {
+      return;
+    }
+
+    const payment: Payment = {
+      title: newPaymentTitle,
+      amount: newPaymentAmount,
+      paidBy: newPaymentBy,
+    };
+
+    setNewPaymentTitle("");
+    setNewPaymentAmount(0);
+
+    await addDoc(paymentsRef, payment);
+  }
 }

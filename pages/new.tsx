@@ -8,7 +8,6 @@ import {
   Input,
   InputGroup,
   InputRightElement,
-  Spinner,
   Textarea,
   VStack,
   Wrap,
@@ -18,7 +17,6 @@ import {
   collection,
   CollectionReference,
   doc,
-  getDoc,
   setDoc,
 } from "firebase/firestore";
 import Head from "next/head";
@@ -26,6 +24,7 @@ import NextImage from "next/image";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import Loading from "../components/atoms/loading";
 import UserTag from "../components/atoms/user_tag";
 import { auth, db } from "../firebaseConfig";
 import { Event, eventConverter } from "../types/event";
@@ -48,11 +47,7 @@ export default function NewEvent() {
   const router = useRouter();
 
   if (!router.isReady || loadingUser) {
-    return (
-      <Center>
-        <Spinner />
-      </Center>
-    );
+    return <Loading />;
   }
 
   if (!user) {
@@ -166,9 +161,6 @@ export default function NewEvent() {
       members.map((memberName) => addMember(membersRef, memberName))
     );
 
-    // Add this event to the user's events
-    await copyEventToUser(eventRef.id, event);
-
     setLoading(false);
 
     // Redirect to the event page
@@ -179,21 +171,10 @@ export default function NewEvent() {
     membersRef: CollectionReference<User>,
     member: User
   ): Promise<void> {
-    await addDoc<User>(membersRef, member);
-  }
-
-  async function copyEventToUser(eventId: string, event: Event): Promise<void> {
-    // Add this event to the user's events collection
-    const uid = auth.currentUser?.uid;
-    const usersRef = collection(db, "users").withConverter(userConverter);
-    const userRef = doc(usersRef, uid);
-    const userDoc = await getDoc(userRef);
-
-    if (userDoc.exists()) {
-      const eventsRef = collection(userRef, "events").withConverter(
-        eventConverter
-      );
-      await setDoc(doc(eventsRef, eventId), event);
+    if (member.id) {
+      setDoc<User>(doc(membersRef, member.id), member);
+    } else {
+      await addDoc<User>(membersRef, member);
     }
   }
 }
