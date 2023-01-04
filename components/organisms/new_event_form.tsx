@@ -23,7 +23,7 @@ import { Event, eventConverter } from "../../types/event";
 import { User, userConverter } from "../../types/user";
 import Loading from "../atoms/loading";
 import UserTag from "../atoms/user_tag";
-import { MdPersonAddAlt1 } from "react-icons/md";
+import { MdPersonAddAlt1, MdSaveAlt } from "react-icons/md";
 
 type NewEventFormProps = {
   firebaseUser: FirebaseUser;
@@ -95,7 +95,11 @@ export default function NewEventForm(props: NewEventFormProps) {
         ))}
       </Wrap>
       <Box h="8" />
-      <Button isLoading={loading} onClick={onClickSaveEvent}>
+      <Button
+        isLoading={loading}
+        onClick={onClickSaveEvent}
+        leftIcon={<MdSaveAlt />}
+      >
         Save
       </Button>
     </>
