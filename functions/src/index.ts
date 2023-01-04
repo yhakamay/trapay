@@ -13,16 +13,22 @@ exports.createUser = functions.auth.user().onCreate((user) => {
 
 exports.copyEventToUser = functions.firestore
   .document("events/{eventId}/members/{userId}")
-  .onCreate(async (snap, context) => {
+  .onCreate(async (_, context) => {
     const { eventId, userId } = context.params;
-    const event = snap.data();
+    const eventRef = admin.firestore().collection("events").doc(eventId);
     const usersRef = admin.firestore().collection("users");
+    const userRef = usersRef.doc(userId);
 
-    const userDoc = await usersRef.doc(userId).get();
+    const userDoc = await userRef.get();
     if (!userDoc.exists) {
       return null;
     }
 
     const usersEventsRef = usersRef.doc(userId).collection("events");
+    const eventDoc = await eventRef.get();
+    const event = eventDoc.data();
+    if (!event) {
+      return null;
+    }
     return usersEventsRef.doc(eventId).set(event);
   });
