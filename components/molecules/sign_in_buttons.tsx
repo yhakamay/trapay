@@ -8,7 +8,7 @@ import { useState } from "react";
 import { auth } from "../../firebaseConfig";
 import Image from "next/image";
 
-export function SignInButton() {
+export function SignInButtons() {
   const [loading, setLoading] = useState(false);
 
   return (
