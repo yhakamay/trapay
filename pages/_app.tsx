@@ -7,6 +7,7 @@ import {
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Router } from "next/router";
+import { Inter } from "@next/font/google";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Header from "../components/organisms/header";
@@ -14,6 +15,10 @@ import Header from "../components/organisms/header";
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
 Router.events.on("routeChangeError", () => NProgress.done());
+
+const inter = Inter({
+  subsets: ["latin"],
+});
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
@@ -28,7 +33,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <Component {...pageProps} />
+      <main className={inter.className}>
+        <Component {...pageProps} />
+      </main>
     </ChakraProvider>
   );
 }
