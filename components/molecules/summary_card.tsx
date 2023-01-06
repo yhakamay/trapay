@@ -4,11 +4,11 @@ import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Event } from "../../types/event";
 import { paymentConverter } from "../../types/payment";
 
-type TotalCardProps = {
+type SummaryCardProps = {
   eventRef: DocumentReference<Event>;
 };
 
-export default function TotalCard(props: TotalCardProps) {
+export default function SummaryCard(props: SummaryCardProps) {
   const { eventRef } = props;
   const paymentsRef = collection(eventRef, "payments").withConverter(
     paymentConverter
