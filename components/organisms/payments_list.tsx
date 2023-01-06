@@ -38,7 +38,7 @@ export default function PaymentsList(props: PaymentsListProps) {
   return (
     <VStack divider={<StackDivider />} spacing="4">
       {payments?.map((payment) => (
-        <Box key={payment.id} w={{ base: "sm", md: "lg" }}>
+        <Box key={payment.id} w={{ base: "sm", md: "lg" }} px="20px">
           <HStack spacing="4">
             <Avatar
               src={payment.paidBy.photoURL ?? undefined}
