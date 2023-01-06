@@ -16,7 +16,7 @@ export default function TotalCard(props: TotalCardProps) {
   const [payments] = useCollectionData(paymentsRef);
 
   return (
-    <Card w={{ base: "sm", md: "lg" }}>
+    <Card w={{ base: "sm", md: "lg" }} variant="outline">
       <VStack>
         <Spacer />
         <Text>Total</Text>

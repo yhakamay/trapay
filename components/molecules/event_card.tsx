@@ -28,7 +28,7 @@ export default function EventCard(props: EventCardProps) {
 
   return (
     <Link href={`/e/${id}`}>
-      <Card w="sm" h={h} overflow="hidden">
+      <Card w="sm" h={h} overflow="hidden" variant="outline">
         <CardHeader>
           <Container w="full" h="100" overflow="hidden" position="relative">
             <NextImage
