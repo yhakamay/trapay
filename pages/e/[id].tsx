@@ -21,7 +21,7 @@ import {
 import CopyToClipboardButton from "../../components/atoms/copy_to_clipboard_button";
 import EventDate from "../../components/atoms/event_date";
 import Loading from "../../components/atoms/loading";
-import TotalCard from "../../components/molecules/total_card";
+import SummaryCard from "../../components/molecules/summary_card";
 import NewPaymentForm from "../../components/organisms/new_payment_form";
 import PaymentsList from "../../components/organisms/payments_list";
 import { auth, db } from "../../firebaseConfig";
@@ -90,7 +90,7 @@ export default function EventDetails(props: EventDetailsProps) {
             <HStack w="full" justify="end">
               <CopyToClipboardButton eventId={event.id!} />
             </HStack>
-            <TotalCard eventRef={eventRef} />
+            <SummaryCard eventRef={eventRef} />
             <NewPaymentForm eventRef={eventRef} />
             <PaymentsList eventRef={eventRef} />
           </VStack>

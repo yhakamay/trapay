@@ -4,7 +4,6 @@ import {
   HStack,
   Avatar,
   Spacer,
-  Heading,
   IconButton,
   Box,
   Text,
@@ -49,7 +48,7 @@ export default function PaymentsList(props: PaymentsListProps) {
             <Spacer />
             <Text>{payment.title}</Text>
             <Spacer />
-            <Heading size="lg">{payment.amount}</Heading>
+            <Text fontWeight="bold">{payment.amount}</Text>
             <IconButton
               onClick={() => deletePayment(payment.id!)}
               aria-label={"delete"}
