@@ -7,7 +7,7 @@ import {
   Center,
   Box,
 } from "@chakra-ui/react";
-import { SignInButtons } from "../components/molecules/sign_in_buttons";
+import { SignInButton } from "../components/molecules/sign_in_buttons";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../firebaseConfig";
@@ -54,7 +54,7 @@ export default function Login(props: LoginProps) {
           <Heading>TraPay</Heading>
           <Text>Split the bill with your friends easily!</Text>
           <Box h="8" />
-          <SignInButtons />
+          <SignInButton />
           <Box h="8" />
           <NextImage src="/hello.svg" alt="hello" width="300" height="300" />
         </VStack>

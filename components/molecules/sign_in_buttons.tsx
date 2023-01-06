@@ -2,13 +2,13 @@ import { Button } from "@chakra-ui/react";
 import {
   GoogleAuthProvider,
   OAuthProvider,
-  signInWithRedirect,
+  signInWithPopup,
 } from "firebase/auth";
 import { useState } from "react";
 import { auth } from "../../firebaseConfig";
 import Image from "next/image";
 
-export function SignInButtons() {
+export function SignInButton() {
   const [loading, setLoading] = useState(false);
 
   return (
@@ -45,7 +45,7 @@ export function SignInButtons() {
 
     setLoading(true);
 
-    signInWithRedirect(auth, provider)
+    signInWithPopup(auth, provider)
       .then((result) => {
         GoogleAuthProvider.credentialFromResult(result);
       })
@@ -63,7 +63,7 @@ export function SignInButtons() {
 
     setLoading(true);
 
-    signInWithRedirect(auth, provider)
+    signInWithPopup(auth, provider)
       .then((result) => {
         OAuthProvider.credentialFromResult(result);
       })
