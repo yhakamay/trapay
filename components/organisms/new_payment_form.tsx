@@ -57,7 +57,12 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
               type="number"
             />
             <Menu>
-              <MenuButton w="full" as={Button} rightIcon={<MdExpandMore />}>
+              <MenuButton
+                w="full"
+                as={Button}
+                rightIcon={<MdExpandMore />}
+                variant="outline"
+              >
                 Paid by
               </MenuButton>
               <MenuList>
