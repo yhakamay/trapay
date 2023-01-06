@@ -1,4 +1,9 @@
-import { ChakraProvider } from "@chakra-ui/react";
+import {
+  ChakraProvider,
+  extendTheme,
+  withDefaultColorScheme,
+  theme as baseTheme,
+} from "@chakra-ui/react";
 import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Router } from "next/router";
@@ -12,7 +17,7 @@ Router.events.on("routeChangeError", () => NProgress.done());
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <Head>
         <title>TraPay</title>
         <meta
@@ -27,3 +32,12 @@ export default function App({ Component, pageProps }: AppProps) {
     </ChakraProvider>
   );
 }
+
+const theme = extendTheme(
+  {
+    colors: {
+      brand: baseTheme.colors.purple,
+    },
+  },
+  withDefaultColorScheme({ colorScheme: "brand" })
+);
