@@ -42,6 +42,7 @@ export default function EventMoreButton(props: EventMoreButtonProps) {
             }
           }}
           icon={<MdDelete />}
+          color="red"
         >
           Delete
         </MenuItem>
