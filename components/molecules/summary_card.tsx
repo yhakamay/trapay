@@ -11,6 +11,7 @@ import { collection, DocumentReference } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Event } from "../../types/event";
 import { Payment, paymentConverter } from "../../types/payment";
+import { Transaction } from "../../types/transaction";
 import { User, userConverter } from "../../types/user";
 import Loading from "../atoms/loading";
 
@@ -30,7 +31,7 @@ export default function SummaryCard(props: SummaryCardProps) {
   const [members, loadingMembers] = useCollectionData(membersRef);
   const total = getTotal(payments ?? []);
   const perPerson = getPerPerson(total, members ?? []);
-  const membersWithPaymentAmount = getMembersWithPaymentAmount(members ?? []);
+  const transactions = getTransactions(members ?? [], payments ?? []);
 
   if (loadingPayments || loadingMembers) return <Loading />;
 
@@ -44,11 +45,11 @@ export default function SummaryCard(props: SummaryCardProps) {
           <Text>{`${perPerson} / person`}</Text>
           <Box h="4" />
           <Stack divider={<StackDivider />} spacing="4">
-            {membersWithPaymentAmount.map((member) => (
-              <Box key={member.id}>
-                <Heading size="xs">{member.name}</Heading>
+            {transactions.map((transaction) => (
+              <Box key={transaction.id}>
+                <Heading size="xs">{`${transaction.from.name} → ${transaction.to.name}`}</Heading>
                 <Text pt="2" fontSize="sm">
-                  {member.payment}
+                  {transaction.amount}
                 </Text>
               </Box>
             ))}
@@ -66,23 +67,67 @@ export default function SummaryCard(props: SummaryCardProps) {
     return Math.ceil(total / (members?.length ?? 1));
   }
 
-  function getMembersWithPaymentAmount(
-    members: User[]
-  ): UserWithPaymentAmount[] {
-    return (
-      members?.map((member) => {
-        const paymentAmount = payments
-          ?.filter((payment) => payment.paidBy.id === member.id)
-          .reduce((acc, payment) => acc + payment.amount, 0);
-        return {
-          ...member,
-          payment: paymentAmount,
-        };
-      }) ?? []
+  // Calculate who should pay to whom
+  function getTransactions(
+    members: User[],
+    payments: Payment[]
+  ): Transaction[] {
+    // Sort members by their payment amount
+    const membersWithPaymentAmount = members.map((member) => {
+      const payment = payments.find(
+        (payment) => payment.paidBy.id === member.id
+      );
+      return {
+        ...member,
+        payment: payment?.amount ?? 0,
+      };
+    });
+    const sortedMembers = membersWithPaymentAmount.sort(
+      (a, b) => a.payment - b.payment
     );
-  }
-}
+    const transactions: Transaction[] = [];
+    const membersNeedToPay: UserWithPaymentAmount[] = [];
+    const membersNeedToReceive: UserWithPaymentAmount[] = [];
 
-type UserWithPaymentAmount = User & {
-  payment: number | undefined;
-};
+    // Find members who need to pay and receive
+    for (const member of sortedMembers) {
+      if (member.payment === perPerson) continue;
+
+      if (member.payment < perPerson) {
+        membersNeedToPay.push(member);
+      }
+
+      if (member.payment > perPerson) {
+        membersNeedToReceive.push(member);
+      }
+    }
+
+    for (const memberNeedToReceive of membersNeedToReceive) {
+      let amount = memberNeedToReceive.payment - perPerson;
+
+      for (const memberNeedToPay of membersNeedToPay) {
+        if (amount === 0) break;
+
+        if (memberNeedToPay.payment === perPerson) continue;
+
+        const amountToPay = Math.min(
+          amount,
+          perPerson - memberNeedToPay.payment
+        );
+        transactions.push({
+          id: `${memberNeedToPay.id}-${memberNeedToReceive.id}`,
+          from: memberNeedToPay,
+          to: memberNeedToReceive,
+          amount: amountToPay,
+        });
+        amount -= amountToPay;
+        memberNeedToPay.payment += amountToPay;
+        memberNeedToReceive.payment -= amountToPay;
+      }
+    }
+
+    return transactions;
+  }
+
+  type UserWithPaymentAmount = User & { payment: number };
+}
