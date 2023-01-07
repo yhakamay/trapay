@@ -29,6 +29,7 @@ import { eventConverter } from "../../types/event";
 import { userConverter } from "../../types/user";
 import JoinEventModal from "../../components/organisms/join_event_modal";
 import { MdOutlineCalendarToday } from "react-icons/md";
+import EventMoreButton from "../../components/molecules/event_more_button";
 
 type EventDetailsProps = {
   id: string;
@@ -89,6 +90,7 @@ export default function EventDetails(props: EventDetailsProps) {
             <Text alignSelf="start">{event.description}</Text>
             <HStack w="full" justify="end">
               <CopyToClipboardButton eventId={event.id!} />
+              <EventMoreButton eventRef={eventRef} />
             </HStack>
             <SummaryCard eventRef={eventRef} />
             <NewPaymentForm eventRef={eventRef} />
