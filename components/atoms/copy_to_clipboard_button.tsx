@@ -1,6 +1,5 @@
-import { Button, HStack, Text } from "@chakra-ui/react";
-import { useState } from "react";
-import { MdCheck, MdLink } from "react-icons/md";
+import { Button, useToast } from "@chakra-ui/react";
+import { MdLink } from "react-icons/md";
 
 type CopyToClipboardButtonProps = {
   eventId: string;
@@ -10,32 +9,27 @@ export default function CopyToClipboardButton(
   props: CopyToClipboardButtonProps
 ) {
   const { eventId } = props;
-  const [copied, setCopied] = useState(false);
+  const toast = useToast();
 
   return (
     <Button
-      onClick={async () => {
-        await copyToClipboard(eventId);
-        setCopied(true);
-        setTimeout(() => {
-          setCopied(false);
-        }, 2000);
-      }}
+      onClick={() => onClickCopyToClipboard(eventId)}
       aria-label="Link"
       size="sm"
       variant="outline"
-      bg={copied ? "green" : undefined}
     >
-      {copied ? (
-        <HStack>
-          <Text color="white">Copied!</Text>
-          <MdCheck color="white" />
-        </HStack>
-      ) : (
-        <MdLink />
-      )}
+      <MdLink />
     </Button>
   );
+
+  async function onClickCopyToClipboard(eventId: string) {
+    await copyToClipboard(eventId);
+    toast.closeAll();
+    toast({
+      title: "Copied to clipboard",
+      status: "success",
+    });
+  }
 
   async function copyToClipboard(eventId: string) {
     await navigator.clipboard.writeText(
