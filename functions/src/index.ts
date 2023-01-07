@@ -32,3 +32,12 @@ exports.copyEventToUser = functions.firestore
     }
     return usersEventsRef.doc(eventId).set(event);
   });
+
+exports.deleteEventFromUser = functions.firestore
+  .document("events/{eventId}")
+  .onDelete(async (_, context) => {
+    const { eventId } = context.params;
+    const usersRef = admin.firestore().collection("users");
+    const usersEventsRef = usersRef.doc().collection("events");
+    return usersEventsRef.doc(eventId).delete();
+  });
