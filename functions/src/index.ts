@@ -38,6 +38,20 @@ exports.deleteEventFromUser = functions.firestore
   .onDelete(async (_, context) => {
     const { eventId } = context.params;
     const usersRef = admin.firestore().collection("users");
-    const usersEventsRef = usersRef.doc().collection("events");
-    return usersEventsRef.doc(eventId).delete();
+    const eventRef = admin.firestore().collection("events").doc(eventId);
+    const membersRef = eventRef.collection("members");
+    const membersSnapshot = await membersRef.get();
+
+    membersSnapshot.forEach(async (memberDoc) => {
+      const userId = memberDoc.id;
+      const userRef = usersRef.doc(userId);
+      const userDoc = await userRef.get();
+
+      if (!userDoc.exists) {
+        return;
+      }
+
+      const usersEventsRef = userRef.collection("events");
+      usersEventsRef.doc(eventId).delete();
+    });
   });
