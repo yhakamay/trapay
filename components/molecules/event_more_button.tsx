@@ -4,6 +4,7 @@ import {
   IconButton,
   MenuList,
   MenuItem,
+  useToast,
 } from "@chakra-ui/react";
 import { deleteDoc, DocumentReference } from "firebase/firestore";
 import router from "next/router";
@@ -16,6 +17,8 @@ type EventMoreButtonProps = {
 
 export default function EventMoreButton(props: EventMoreButtonProps) {
   const { eventRef } = props;
+  const toast = useToast();
+  const toastId = eventRef.id;
 
   return (
     <Menu>
@@ -31,6 +34,12 @@ export default function EventMoreButton(props: EventMoreButtonProps) {
           onClick={async () => {
             await deleteEvent(eventRef);
             router.push("/");
+            if (!toast.isActive(toastId)) {
+              toast({
+                id: toastId,
+                title: "Deleting event. This may take a while.",
+              });
+            }
           }}
           icon={<MdDelete />}
         >
