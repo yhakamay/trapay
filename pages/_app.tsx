@@ -11,6 +11,7 @@ import { Inter } from "@next/font/google";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Header from "../components/organisms/header";
+import Footer from "../components/organisms/footer";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -36,6 +37,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <main className={inter.className}>
         <Component {...pageProps} />
       </main>
+      <Footer />
     </ChakraProvider>
   );
 }
