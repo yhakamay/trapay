@@ -26,7 +26,7 @@ export default function NewMemberModal(props: NewMemberModalProps) {
   const [newMemberName, setNewMemberName] = useState("");
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
         <ModalHeader>Add member</ModalHeader>
