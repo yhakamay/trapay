@@ -1,5 +1,7 @@
 import {
   Box,
+  Card,
+  CardBody,
   Center,
   Heading,
   HStack,
@@ -81,17 +83,21 @@ export default function EventDetails(props: EventDetailsProps) {
       <Center>
         <Box w={{ base: "sm", md: "lg" }}>
           <VStack spacing="4">
-            <HStack w="full" justify="space-between">
-              <Heading>{event.title}</Heading>
-              <Spacer />
-              <MdOutlineCalendarToday color="grey" />
-              <EventDate date={new Date(event.date ?? "")} />
-            </HStack>
-            <Text alignSelf="start">{event.description}</Text>
-            <HStack w="full" justify="end">
-              <CopyToClipboardButton eventId={event.id!} />
-              <EventMoreButton eventRef={eventRef} />
-            </HStack>
+            <Card w={{ base: "sm", md: "lg" }} variant="filled">
+              <CardBody>
+                <HStack w="full" justify="space-between">
+                  <Heading>{event.title}</Heading>
+                  <Spacer />
+                  <MdOutlineCalendarToday color="grey" />
+                  <EventDate date={new Date(event.date ?? "")} />
+                </HStack>
+                <Text alignSelf="start">{event.description}</Text>
+                <HStack w="full" justify="end">
+                  <CopyToClipboardButton eventId={event.id!} />
+                  <EventMoreButton eventRef={eventRef} />
+                </HStack>
+              </CardBody>
+            </Card>
             <SummaryCard eventRef={eventRef} />
             <NewPaymentForm eventRef={eventRef} />
             <PaymentsList eventRef={eventRef} />
