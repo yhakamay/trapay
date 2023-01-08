@@ -76,7 +76,10 @@ export default function PaymentMethods() {
                 <Text>No methods yet. Add one!</Text>
               </VStack>
             ) : (
-              PaymentMethodsList({ methods: methods! })
+              PaymentMethodsList({
+                methodsRef: methodsRef!,
+                methods: methods!,
+              })
             )}
           </Stack>
         </Box>
