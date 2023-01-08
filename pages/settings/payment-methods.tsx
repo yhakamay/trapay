@@ -1,4 +1,3 @@
-import NextImage from "next/image";
 import {
   Box,
   Card,
@@ -7,7 +6,6 @@ import {
   Heading,
   Stack,
   Text,
-  VStack,
 } from "@chakra-ui/react";
 import { collection, doc } from "firebase/firestore";
 import Head from "next/head";
@@ -20,6 +18,7 @@ import { paymentMethodConverter } from "../../types/payment_method";
 import { userConverter } from "../../types/user";
 import NewPaymentMethodForm from "../../components/organisms/new_payment_method_form";
 import { PaymentMethodsList } from "../../components/organisms/payment_methods_list";
+import NoItems from "../../components/atoms/NoItems";
 
 export default function PaymentMethods() {
   const router = useRouter();
@@ -65,16 +64,7 @@ export default function PaymentMethods() {
             <NewPaymentMethodForm methodsRef={methodsRef!} />
             <Box h="4" />
             {noMethods ? (
-              <VStack>
-                <NextImage
-                  src="/void.svg"
-                  alt="no payment methods"
-                  width="300"
-                  height="300"
-                />
-                <Box h="8" />
-                <Text>No methods yet. Add one!</Text>
-              </VStack>
+              <NoItems text={"No methods yet. Add one!"} />
             ) : (
               PaymentMethodsList({
                 methodsRef: methodsRef!,
