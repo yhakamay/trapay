@@ -11,6 +11,7 @@ import {
   StackDivider,
   Text,
   VStack,
+  Link,
 } from "@chakra-ui/react";
 import { collection, doc } from "firebase/firestore";
 import { GetServerSideProps } from "next";
@@ -112,9 +113,13 @@ export default function Pay(props: PayProps) {
                         <Text pt="2" fontSize="sm">
                           {paymentMethod.description}
                         </Text>
-                        <Text pt="2" fontSize="sm">
+                        <Link
+                          href={paymentMethod.url ?? ""}
+                          isExternal
+                          fontSize="sm"
+                        >
                           {paymentMethod.url}
-                        </Text>
+                        </Link>
                       </Box>
                     ))}
                   </Stack>
