@@ -113,10 +113,12 @@ export default function Pay(props: PayProps) {
                         <Text pt="2" fontSize="sm">
                           {paymentMethod.description}
                         </Text>
-                        <Link href={paymentMethod.url ?? ""} isExternal>
-                          <Text fontSize="sm" textOverflow="ellipsis">
-                            {paymentMethod.url}
-                          </Text>
+                        <Link
+                          href={paymentMethod.url ?? ""}
+                          isExternal
+                          fontSize="sm"
+                        >
+                          {paymentMethod.url}
                         </Link>
                       </Box>
                     ))}
