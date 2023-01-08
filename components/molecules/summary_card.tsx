@@ -39,7 +39,11 @@ export default function SummaryCard(props: SummaryCardProps) {
           <Heading size="sm">Per person</Heading>
           <Text>{`${perPerson} / person`}</Text>
           <Box h="4" />
-          <TransactionsList user={user} transactions={transactions} />
+          <TransactionsList
+            eventId={eventRef.id}
+            user={user}
+            transactions={transactions}
+          />
         </Stack>
       </CardBody>
     </Card>
