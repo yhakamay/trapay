@@ -1,12 +1,4 @@
-import {
-  Card,
-  Heading,
-  Stack,
-  CardBody,
-  Box,
-  Text,
-  StackDivider,
-} from "@chakra-ui/react";
+import { Card, Heading, Stack, CardBody, Box, Text } from "@chakra-ui/react";
 import { User as FirebaseUser } from "firebase/auth";
 import { collection, DocumentReference } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
@@ -15,6 +7,7 @@ import { Payment, paymentConverter } from "../../types/payment";
 import { Transaction } from "../../types/transaction";
 import { User, userConverter } from "../../types/user";
 import Loading from "../atoms/loading";
+import TransactionsList from "./transactions_list";
 
 type SummaryCardProps = {
   user: FirebaseUser;
@@ -46,28 +39,7 @@ export default function SummaryCard(props: SummaryCardProps) {
           <Heading size="sm">Per person</Heading>
           <Text>{`${perPerson} / person`}</Text>
           <Box h="4" />
-          <Stack divider={<StackDivider />} spacing="4">
-            {transactions.map((transaction) => {
-              const isPayee = transaction.to.id === user.uid;
-              const isPayer = transaction.from.id === user.uid;
-
-              return (
-                <Box key={transaction.id}>
-                  <Heading size="xs">{`${transaction.from.name} → ${transaction.to.name}`}</Heading>
-                  <Text
-                    pt="2"
-                    fontSize="sm"
-                    color={
-                      isPayee ? "green.500" : isPayer ? "red.500" : undefined
-                    }
-                    fontWeight={isPayee || isPayer ? "bold" : undefined}
-                  >
-                    {transaction.amount}
-                  </Text>
-                </Box>
-              );
-            })}
-          </Stack>
+          <TransactionsList user={user} transactions={transactions} />
         </Stack>
       </CardBody>
     </Card>
