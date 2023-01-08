@@ -14,7 +14,11 @@ export function PaymentMethodsList(props: PaymentMethodsListProps) {
         <CardBody>
           <Heading size="sm">{method.name}</Heading>
           <Text>{method.description}</Text>
-          <Link href={method.url ?? ""} isExternal />
+          {method.url && (
+            <Link href={method.url} isExternal>
+              {method.url}
+            </Link>
+          )}
         </CardBody>
       </Card>
     );
