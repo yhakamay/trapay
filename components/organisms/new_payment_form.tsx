@@ -12,10 +12,11 @@ import {
   Box,
   Card,
   CardBody,
-  Heading,
   Stack,
   MenuDivider,
   useDisclosure,
+  CardHeader,
+  Heading,
 } from "@chakra-ui/react";
 import { addDoc, collection, DocumentReference } from "firebase/firestore";
 import { useState } from "react";
@@ -53,9 +54,11 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
       <NewMemberModal isOpen={isOpen} onClose={onClose} eventRef={eventRef} />
       <Box w={{ base: "sm", md: "lg" }}>
         <Card variant="outline">
+          <CardHeader>
+            <Heading size="sm">New payment</Heading>
+          </CardHeader>
           <CardBody>
             <Stack spacing="4">
-              <Heading size="sm">New payment</Heading>
               <HStack spacing="4">
                 <VStack w="full">
                   <Input
