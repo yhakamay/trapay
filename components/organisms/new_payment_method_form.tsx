@@ -60,7 +60,12 @@ export default function NewPaymentMethodForm(props: NewPaymentMethodFormProps) {
           </VStack>
           <IconButton
             onClick={() => {
-              onClickAddMethod(methodName);
+              onClickAddMethod({
+                name: methodName,
+                url: methodUrl,
+                description: methodDescription,
+                default: false,
+              });
             }}
             disabled={!methodName}
             icon={<MdAdd />}
@@ -71,19 +76,16 @@ export default function NewPaymentMethodForm(props: NewPaymentMethodFormProps) {
     </Card>
   );
 
-  function onClickAddMethod(newMethod: string) {
-    if (!newMethod) {
+  function onClickAddMethod(newMethod: PaymentMethod) {
+    if (!newMethod.name) {
       return;
     }
 
-    addMethod(methodsRef!, {
-      name: newMethod,
-      default: false,
-      url: "",
-      description: "",
-    });
+    addMethod(methodsRef!, newMethod);
 
     setMethodName("");
+    setMethodUrl("");
+    setMethodDescription("");
   }
 
   async function addMethod(
