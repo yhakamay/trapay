@@ -52,6 +52,12 @@ export default function Header() {
               </Text>
               <MenuDivider />
               <MenuItem>
+                <NextLink href="/settings/payment-methods">
+                  Payment methods
+                </NextLink>
+              </MenuItem>
+              <MenuDivider />
+              <MenuItem>
                 <SignOutButton />
               </MenuItem>
             </MenuList>

@@ -1,12 +1,5 @@
-import {
-  Card,
-  Heading,
-  Stack,
-  CardBody,
-  Box,
-  Text,
-  StackDivider,
-} from "@chakra-ui/react";
+import { Card, Heading, Stack, CardBody, Box, Text } from "@chakra-ui/react";
+import { User as FirebaseUser } from "firebase/auth";
 import { collection, DocumentReference } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Event } from "../../types/event";
@@ -14,13 +7,15 @@ import { Payment, paymentConverter } from "../../types/payment";
 import { Transaction } from "../../types/transaction";
 import { User, userConverter } from "../../types/user";
 import Loading from "../atoms/loading";
+import TransactionsList from "./transactions_list";
 
 type SummaryCardProps = {
+  user: FirebaseUser;
   eventRef: DocumentReference<Event>;
 };
 
 export default function SummaryCard(props: SummaryCardProps) {
-  const { eventRef } = props;
+  const { user, eventRef } = props;
   const paymentsRef = collection(eventRef, "payments").withConverter(
     paymentConverter
   );
@@ -44,16 +39,11 @@ export default function SummaryCard(props: SummaryCardProps) {
           <Heading size="sm">Per person</Heading>
           <Text>{`${perPerson} / person`}</Text>
           <Box h="4" />
-          <Stack divider={<StackDivider />} spacing="4">
-            {transactions.map((transaction) => (
-              <Box key={transaction.id}>
-                <Heading size="xs">{`${transaction.from.name} → ${transaction.to.name}`}</Heading>
-                <Text pt="2" fontSize="sm">
-                  {transaction.amount}
-                </Text>
-              </Box>
-            ))}
-          </Stack>
+          <TransactionsList
+            eventId={eventRef.id}
+            user={user}
+            transactions={transactions}
+          />
         </Stack>
       </CardBody>
     </Card>
