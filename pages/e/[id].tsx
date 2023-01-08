@@ -98,7 +98,7 @@ export default function EventDetails(props: EventDetailsProps) {
                 </HStack>
               </CardBody>
             </Card>
-            <SummaryCard eventRef={eventRef} />
+            <SummaryCard eventRef={eventRef} user={user!} />
             <NewPaymentForm eventRef={eventRef} />
             <PaymentsList eventRef={eventRef} />
           </VStack>

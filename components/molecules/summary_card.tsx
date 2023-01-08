@@ -7,6 +7,7 @@ import {
   Text,
   StackDivider,
 } from "@chakra-ui/react";
+import { User as FirebaseUser } from "firebase/auth";
 import { collection, DocumentReference } from "firebase/firestore";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { Event } from "../../types/event";
@@ -16,11 +17,12 @@ import { User, userConverter } from "../../types/user";
 import Loading from "../atoms/loading";
 
 type SummaryCardProps = {
+  user: FirebaseUser;
   eventRef: DocumentReference<Event>;
 };
 
 export default function SummaryCard(props: SummaryCardProps) {
-  const { eventRef } = props;
+  const { user, eventRef } = props;
   const paymentsRef = collection(eventRef, "payments").withConverter(
     paymentConverter
   );
@@ -45,14 +47,26 @@ export default function SummaryCard(props: SummaryCardProps) {
           <Text>{`${perPerson} / person`}</Text>
           <Box h="4" />
           <Stack divider={<StackDivider />} spacing="4">
-            {transactions.map((transaction) => (
-              <Box key={transaction.id}>
-                <Heading size="xs">{`${transaction.from.name} → ${transaction.to.name}`}</Heading>
-                <Text pt="2" fontSize="sm">
-                  {transaction.amount}
-                </Text>
-              </Box>
-            ))}
+            {transactions.map((transaction) => {
+              const isPayee = transaction.to.id === user.uid;
+              const isPayer = transaction.from.id === user.uid;
+
+              return (
+                <Box key={transaction.id}>
+                  <Heading size="xs">{`${transaction.from.name} → ${transaction.to.name}`}</Heading>
+                  <Text
+                    pt="2"
+                    fontSize="sm"
+                    color={
+                      isPayee ? "green.500" : isPayer ? "red.500" : undefined
+                    }
+                    fontWeight={isPayee || isPayer ? "bold" : undefined}
+                  >
+                    {transaction.amount}
+                  </Text>
+                </Box>
+              );
+            })}
           </Stack>
         </Stack>
       </CardBody>
