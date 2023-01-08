@@ -13,8 +13,8 @@ export default function TransactionsList(props: TransactionsListProps) {
   return (
     <Stack divider={<StackDivider />} spacing="4">
       {transactions.map((transaction) => {
-        const isPayee = transaction.to.id === user.uid;
-        const isPayer = transaction.from.id === user.uid;
+        const isPayee = transaction.to.id === user?.uid ?? false;
+        const isPayer = transaction.from.id === user?.uid ?? false;
 
         return (
           <Box key={transaction.id}>
