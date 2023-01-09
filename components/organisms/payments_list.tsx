@@ -8,36 +8,21 @@ import {
   Box,
   Text,
 } from "@chakra-ui/react";
-import {
-  collection,
-  deleteDoc,
-  doc,
-  DocumentReference,
-} from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { CollectionReference, deleteDoc, doc } from "firebase/firestore";
 import { MdDelete } from "react-icons/md";
-import { Event } from "../../types/event";
-import { paymentConverter } from "../../types/payment";
-import Loading from "../atoms/loading";
+import { Payment } from "../../types/payment";
 
 type PaymentsListProps = {
-  eventRef: DocumentReference<Event>;
+  paymentsRef: CollectionReference<Payment>;
+  payments: Payment[];
 };
 
 export default function PaymentsList(props: PaymentsListProps) {
-  const { eventRef } = props;
-  const paymentsRef = collection(eventRef, "payments").withConverter(
-    paymentConverter
-  );
-  const [payments, loading] = useCollectionData(paymentsRef);
+  const { paymentsRef, payments } = props;
   const intl = new Intl.NumberFormat("ja-JP", {
     style: "currency",
     currency: "JPY",
   });
-
-  if (loading) {
-    return <Loading />;
-  }
 
   return (
     <VStack divider={<StackDivider />} spacing="4">

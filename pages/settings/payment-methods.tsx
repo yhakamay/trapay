@@ -18,7 +18,7 @@ import { paymentMethodConverter } from "../../types/payment_method";
 import { userConverter } from "../../types/user";
 import NewPaymentMethodForm from "../../components/organisms/new_payment_method_form";
 import { PaymentMethodsList } from "../../components/organisms/payment_methods_list";
-import NoItems from "../../components/atoms/NoItems";
+import NoItems from "../../components/atoms/no_items";
 
 export default function PaymentMethods() {
   const router = useRouter();

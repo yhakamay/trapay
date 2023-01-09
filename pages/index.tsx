@@ -8,7 +8,7 @@ import { eventConverter } from "../types/event";
 import { useRouter } from "next/router";
 import { userConverter } from "../types/user";
 import Loading from "../components/atoms/loading";
-import NoItems from "../components/atoms/NoItems";
+import NoItems from "../components/atoms/no_items";
 
 export default function Home() {
   const router = useRouter();
