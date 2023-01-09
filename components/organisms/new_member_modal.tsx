@@ -59,12 +59,13 @@ export default function NewMemberModal(props: NewMemberModalProps) {
       email: null,
       photoURL: null,
     };
+
     const membersRef = collection(eventRef, "members").withConverter(
       userConverter
     );
-
     addDoc(membersRef, newMember);
 
+    setNewMemberName("");
     onClose();
   }
 }
