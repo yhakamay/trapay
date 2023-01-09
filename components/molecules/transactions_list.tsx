@@ -22,6 +22,10 @@ type TransactionsListProps = {
 export default function TransactionsList(props: TransactionsListProps) {
   const { eventId, user, transactions } = props;
   const router = useRouter();
+  const intl = new Intl.NumberFormat("ja-JP", {
+    style: "currency",
+    currency: "JPY",
+  });
 
   return (
     <Stack divider={<StackDivider />} spacing="4">
@@ -34,7 +38,8 @@ export default function TransactionsList(props: TransactionsListProps) {
 
         const isPayee = transaction.to.id === user?.uid ?? false;
         const isPayer = transaction.from.id === user?.uid ?? false;
-        const formattedAmount = Math.ceil(amount);
+        const ceiledAmount = Math.ceil(amount);
+        const formattedAmount = intl.format(ceiledAmount);
         const amountColor = isPayee
           ? "green.500"
           : isPayer
