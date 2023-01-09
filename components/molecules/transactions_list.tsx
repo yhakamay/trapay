@@ -8,6 +8,7 @@ import {
   Button,
   HStack,
   VStack,
+  Badge,
 } from "@chakra-ui/react";
 import { Transaction } from "../../types/transaction";
 import { useRouter } from "next/router";
@@ -41,9 +42,13 @@ export default function TransactionsList(props: TransactionsListProps) {
             <HStack justify="space-between">
               <VStack align="start">
                 <Heading size="sm">{`${from.name} → ${to.name}`}</Heading>
-                <Text color={amountColor} fontWeight={amountWeight}>
-                  {amount}
-                </Text>
+                <HStack>
+                  <Text color={amountColor} fontWeight={amountWeight}>
+                    {amount}
+                  </Text>
+                  {isPayee && <Badge colorScheme="green">receive</Badge>}
+                  {isPayer && <Badge colorScheme="red">pay</Badge>}
+                </HStack>
               </VStack>
               {isPayer && (
                 <Button
