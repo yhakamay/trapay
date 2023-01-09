@@ -26,10 +26,15 @@ export default function TransactionsList(props: TransactionsListProps) {
   return (
     <Stack divider={<StackDivider />} spacing="4">
       {transactions.map((transaction) => {
-        const { id, from, to } = transaction;
+        const { id, from, to, amount } = transaction;
+
+        if (amount === 0) {
+          return null;
+        }
+
         const isPayee = transaction.to.id === user?.uid ?? false;
         const isPayer = transaction.from.id === user?.uid ?? false;
-        const amount = Math.ceil(transaction.amount);
+        const formattedAmount = Math.ceil(amount);
         const amountColor = isPayee
           ? "green.500"
           : isPayer
@@ -44,7 +49,7 @@ export default function TransactionsList(props: TransactionsListProps) {
                 <Heading size="sm">{`${from.name} → ${to.name}`}</Heading>
                 <HStack>
                   <Text color={amountColor} fontWeight={amountWeight}>
-                    {amount}
+                    {formattedAmount}
                   </Text>
                   {isPayee && <Badge colorScheme="green">receive</Badge>}
                   {isPayer && <Badge colorScheme="red">pay</Badge>}
