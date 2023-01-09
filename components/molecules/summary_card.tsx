@@ -64,44 +64,45 @@ export default function SummaryCard(props: SummaryCardProps) {
   ): Transaction[] {
     // Sort members by their payment amount
     const membersWithPaymentAmount = members.map((member) => {
-      const payment = payments.find(
-        (payment) => payment.paidBy.id === member.id
-      );
+      // Calculate total payment amount for the member
+      const paymentAmount = payments
+        .filter((payment) => payment.paidBy.id === member.id)
+        .reduce((acc, payment) => acc + payment.amount, 0);
+
       return {
         ...member,
-        payment: payment?.amount ?? 0,
+        payment: paymentAmount,
       };
     });
-    const sortedMembers = membersWithPaymentAmount.sort(
-      (a, b) => a.payment - b.payment
-    );
-    const transactions: Transaction[] = [];
+
+    // Classify members into 3 categories: those who need to pay, those who need to receive, and those who have paid the average amount
     const membersNeedToPay: UserWithPaymentAmount[] = [];
     const membersNeedToReceive: UserWithPaymentAmount[] = [];
-
-    // Find members who need to pay and receive
-    for (const member of sortedMembers) {
-      if (member.payment === perPerson) continue;
-
+    const totalPayment = payments.reduce(
+      (acc, payment) => acc + payment.amount,
+      0
+    );
+    const perPerson = totalPayment / members.length;
+    for (const member of membersWithPaymentAmount) {
       if (member.payment < perPerson) {
         membersNeedToPay.push(member);
-      }
-
-      if (member.payment > perPerson) {
+      } else if (member.payment > perPerson) {
         membersNeedToReceive.push(member);
       }
     }
 
+    // Generate transactions
+    const transactions: Transaction[] = [];
     for (const memberNeedToReceive of membersNeedToReceive) {
-      let amount = memberNeedToReceive.payment - perPerson;
+      let amountToReceive = memberNeedToReceive.payment - perPerson;
 
       for (const memberNeedToPay of membersNeedToPay) {
-        if (amount === 0) break;
-
-        if (memberNeedToPay.payment === perPerson) continue;
+        if (amountToReceive === 0) {
+          break;
+        }
 
         const amountToPay = Math.min(
-          amount,
+          amountToReceive,
           perPerson - memberNeedToPay.payment
         );
         transactions.push({
@@ -110,7 +111,7 @@ export default function SummaryCard(props: SummaryCardProps) {
           to: memberNeedToReceive,
           amount: amountToPay,
         });
-        amount -= amountToPay;
+        amountToReceive -= amountToPay;
         memberNeedToPay.payment += amountToPay;
         memberNeedToReceive.payment -= amountToPay;
       }
