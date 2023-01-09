@@ -27,6 +27,11 @@ export default function TransactionsList(props: TransactionsListProps) {
     <Stack divider={<StackDivider />} spacing="4">
       {transactions.map((transaction) => {
         const { id, from, to, amount } = transaction;
+
+        if (amount === 0) {
+          return null;
+        }
+
         const isPayee = transaction.to.id === user?.uid ?? false;
         const isPayer = transaction.from.id === user?.uid ?? false;
         const formattedAmount = Math.ceil(amount);
