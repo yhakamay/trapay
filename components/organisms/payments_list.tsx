@@ -30,6 +30,10 @@ export default function PaymentsList(props: PaymentsListProps) {
     paymentConverter
   );
   const [payments, loading] = useCollectionData(paymentsRef);
+  const intl = new Intl.NumberFormat("ja-JP", {
+    style: "currency",
+    currency: "JPY",
+  });
 
   if (loading) {
     return <Loading />;
@@ -37,28 +41,33 @@ export default function PaymentsList(props: PaymentsListProps) {
 
   return (
     <VStack divider={<StackDivider />} spacing="4">
-      {payments?.map((payment) => (
-        <Box key={payment.id} w={{ base: "sm", md: "lg" }} px="4">
-          <HStack spacing="4">
-            <Avatar
-              src={payment.paidBy.photoURL ?? undefined}
-              name={payment.paidBy.name}
-              boxSize="10"
-            ></Avatar>
-            <Spacer />
-            <Text>{payment.title}</Text>
-            <Spacer />
-            <Text fontWeight="bold">{payment.amount}</Text>
-            <IconButton
-              onClick={() => deletePayment(payment.id!)}
-              aria-label={"delete"}
-              variant="ghost"
-              color="tomato"
-              icon={<MdDelete />}
-            />
-          </HStack>
-        </Box>
-      ))}
+      {payments?.map((payment) => {
+        const { id, title, amount, paidBy } = payment;
+        const formattedAmount = intl.format(amount);
+
+        return (
+          <Box key={id} w={{ base: "sm", md: "lg" }} px="4">
+            <HStack spacing="4">
+              <Avatar
+                src={paidBy.photoURL ?? undefined}
+                name={paidBy.name}
+                boxSize="10"
+              ></Avatar>
+              <Spacer />
+              <Text>{title}</Text>
+              <Spacer />
+              <Text fontWeight="bold">{formattedAmount}</Text>
+              <IconButton
+                onClick={() => deletePayment(id!)}
+                aria-label={"delete"}
+                variant="ghost"
+                color="tomato"
+                icon={<MdDelete />}
+              />
+            </HStack>
+          </Box>
+        );
+      })}
     </VStack>
   );
 

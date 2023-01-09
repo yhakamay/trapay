@@ -24,8 +24,14 @@ export default function SummaryCard(props: SummaryCardProps) {
     userConverter
   );
   const [members, loadingMembers] = useCollectionData(membersRef);
+  const intl = new Intl.NumberFormat("ja-JP", {
+    style: "currency",
+    currency: "JPY",
+  });
   const total = getTotal(payments ?? []);
+  const formattedTotal = intl.format(total);
   const perPerson = getPerPerson(total, members ?? []);
+  const formattedPerPerson = intl.format(perPerson);
   const transactions = getTransactions(members ?? [], payments ?? []);
 
   if (loadingPayments || loadingMembers) return <Loading />;
@@ -35,9 +41,9 @@ export default function SummaryCard(props: SummaryCardProps) {
       <CardBody>
         <Stack>
           <Heading size="sm">Total</Heading>
-          <Text>{total}</Text>
+          <Text>{formattedTotal}</Text>
           <Heading size="sm">Per person</Heading>
-          <Text>{`${perPerson} / person`}</Text>
+          <Text>{`${formattedPerPerson} / person`}</Text>
           <Box h="4" />
           <TransactionsList
             eventId={eventRef.id}
@@ -83,6 +89,7 @@ export default function SummaryCard(props: SummaryCardProps) {
       0
     );
     const perPerson = totalPayment / members.length;
+
     for (const member of membersWithPaymentAmount) {
       if (member.payment < perPerson) {
         membersNeedToPay.push(member);
