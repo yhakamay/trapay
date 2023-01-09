@@ -1,29 +1,19 @@
 import { Card, Heading, Stack, CardBody, Box, Text } from "@chakra-ui/react";
 import { User as FirebaseUser } from "firebase/auth";
-import { collection, DocumentReference } from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { Event } from "../../types/event";
-import { Payment, paymentConverter } from "../../types/payment";
+import { Payment } from "../../types/payment";
 import { Transaction } from "../../types/transaction";
-import { User, userConverter } from "../../types/user";
-import Loading from "../atoms/loading";
+import { User } from "../../types/user";
 import TransactionsList from "./transactions_list";
 
 type SummaryCardProps = {
+  eventId: string;
   user: FirebaseUser;
-  eventRef: DocumentReference<Event>;
+  payments: Payment[];
+  members: User[];
 };
 
 export default function SummaryCard(props: SummaryCardProps) {
-  const { user, eventRef } = props;
-  const paymentsRef = collection(eventRef, "payments").withConverter(
-    paymentConverter
-  );
-  const [payments, loadingPayments] = useCollectionData(paymentsRef);
-  const membersRef = collection(eventRef, "members").withConverter(
-    userConverter
-  );
-  const [members, loadingMembers] = useCollectionData(membersRef);
+  const { eventId, user, payments, members } = props;
   const intl = new Intl.NumberFormat("ja-JP", {
     style: "currency",
     currency: "JPY",
@@ -33,8 +23,6 @@ export default function SummaryCard(props: SummaryCardProps) {
   const perPerson = getPerPerson(total, members ?? []);
   const formattedPerPerson = intl.format(perPerson);
   const transactions = getTransactions(members ?? [], payments ?? []);
-
-  if (loadingPayments || loadingMembers) return <Loading />;
 
   return (
     <Card w={{ base: "sm", md: "lg" }} variant="outline">
@@ -46,7 +34,7 @@ export default function SummaryCard(props: SummaryCardProps) {
           <Text>{`${formattedPerPerson} / person`}</Text>
           <Box h="4" />
           <TransactionsList
-            eventId={eventRef.id}
+            eventId={eventId}
             user={user}
             transactions={transactions}
           />

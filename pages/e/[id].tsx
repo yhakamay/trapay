@@ -43,14 +43,18 @@ export default function EventDetails(props: EventDetailsProps) {
   const [user] = useAuthState(auth);
   const eventsRef = collection(db, "events");
   const eventRef = doc(eventsRef, id).withConverter(eventConverter);
-  const [event, loading, error] = useDocumentData(eventRef);
+  const [event, loadingEvent, error] = useDocumentData(eventRef);
   const membersRef = collection(eventRef, "members").withConverter(
     userConverter
   );
-  const [members] = useCollectionData(membersRef);
+  const [members, loadingMembers] = useCollectionData(membersRef);
+  const paymentsRef = collection(eventRef, "payments").withConverter(
+    paymentConverter
+  );
+  const [payments, loadingPayments] = useCollectionData(paymentsRef);
   const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
 
-  if (!router.isReady || loading) {
+  if (!router.isReady || loadingEvent || loadingMembers || loadingPayments) {
     return <Loading />;
   }
 
@@ -98,9 +102,14 @@ export default function EventDetails(props: EventDetailsProps) {
                 </HStack>
               </CardBody>
             </Card>
-            <SummaryCard eventRef={eventRef} user={user!} />
+            <SummaryCard
+              eventId={id}
+              user={user!}
+              payments={payments!}
+              members={members!}
+            />
             <NewPaymentForm eventRef={eventRef} />
-            <PaymentsList eventRef={eventRef} />
+            <PaymentsList paymentsRef={paymentsRef} payments={payments!} />
           </VStack>
         </Box>
       </Center>
