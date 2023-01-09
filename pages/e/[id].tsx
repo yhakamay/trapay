@@ -32,6 +32,8 @@ import { userConverter } from "../../types/user";
 import JoinEventModal from "../../components/organisms/join_event_modal";
 import { MdOutlineCalendarToday } from "react-icons/md";
 import EventMoreButton from "../../components/molecules/event_more_button";
+import EditMembersModal from "../../components/organisms/edit_members_modal";
+import { paymentConverter } from "../../types/payment";
 
 type EventDetailsProps = {
   id: string;
@@ -53,6 +55,11 @@ export default function EventDetails(props: EventDetailsProps) {
   );
   const [payments, loadingPayments] = useCollectionData(paymentsRef);
   const { isOpen, onClose } = useDisclosure({ defaultIsOpen: true });
+  const {
+    isOpen: isOpenEditMembers,
+    onOpen: onOpenEditMembers,
+    onClose: onCloseEditMembers,
+  } = useDisclosure();
 
   if (!router.isReady || loadingEvent || loadingMembers || loadingPayments) {
     return <Loading />;
@@ -82,7 +89,14 @@ export default function EventDetails(props: EventDetailsProps) {
         onClose={onClose}
         eventRef={eventRef}
         firebaseUser={user!}
-        members={members ?? []}
+        members={members!}
+      />
+      <EditMembersModal
+        membersRef={membersRef}
+        isOpen={isOpenEditMembers}
+        onClose={onCloseEditMembers}
+        members={members!}
+        payments={payments!}
       />
       <Center>
         <Box w={{ base: "sm", md: "lg" }}>
@@ -98,7 +112,10 @@ export default function EventDetails(props: EventDetailsProps) {
                 <Text alignSelf="start">{event.description}</Text>
                 <HStack w="full" justify="end">
                   <CopyToClipboardButton eventId={event.id!} />
-                  <EventMoreButton eventRef={eventRef} />
+                  <EventMoreButton
+                    eventRef={eventRef}
+                    onOpenEditMembers={onOpenEditMembers}
+                  />
                 </HStack>
               </CardBody>
             </Card>
