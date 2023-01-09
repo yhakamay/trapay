@@ -25,29 +25,30 @@ export default function TransactionsList(props: TransactionsListProps) {
   return (
     <Stack divider={<StackDivider />} spacing="4">
       {transactions.map((transaction) => {
+        const { id, from, to } = transaction;
         const isPayee = transaction.to.id === user?.uid ?? false;
         const isPayer = transaction.from.id === user?.uid ?? false;
+        const amount = Math.ceil(transaction.amount);
+        const amountColor = isPayee
+          ? "green.500"
+          : isPayer
+          ? "red.500"
+          : undefined;
+        const amountWeight = isPayee || isPayer ? "bold" : undefined;
 
         return (
-          <Box key={transaction.id}>
+          <Box key={id}>
             <HStack justify="space-between">
               <VStack align="start">
-                <Heading size="xs">{`${transaction.from.name} → ${transaction.to.name}`}</Heading>
-                <Text
-                  pt="2"
-                  fontSize="sm"
-                  color={
-                    isPayee ? "green.500" : isPayer ? "red.500" : undefined
-                  }
-                  fontWeight={isPayee || isPayer ? "bold" : undefined}
-                >
-                  {transaction.amount}
+                <Heading size="sm">{`${from.name} → ${to.name}`}</Heading>
+                <Text color={amountColor} fontWeight={amountWeight}>
+                  {amount}
                 </Text>
               </VStack>
               {isPayer && (
                 <Button
                   onClick={() => {
-                    router.push(`/p/${eventId}?to=${transaction.to.id}`);
+                    onClickPay(to.id!);
                   }}
                 >
                   Pay
@@ -59,4 +60,8 @@ export default function TransactionsList(props: TransactionsListProps) {
       })}
     </Stack>
   );
+
+  function onClickPay(toId: string) {
+    router.push(`/p/${eventId}?to=${toId}`);
+  }
 }
