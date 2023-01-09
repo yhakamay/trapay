@@ -25,7 +25,7 @@ import {
 import { MdArrowBack } from "react-icons/md";
 
 import Loading from "../../components/atoms/loading";
-import NoItems from "../../components/atoms/NoItems";
+import NoItems from "../../components/atoms/no_items";
 import { auth, db } from "../../firebaseConfig";
 import { paymentMethodConverter } from "../../types/payment_method";
 import { userConverter } from "../../types/user";
