@@ -62,6 +62,7 @@ export default function TransactionsList(props: TransactionsListProps) {
               </VStack>
               {isPayer && (
                 <Button
+                  size="sm"
                   onClick={() => {
                     onClickPay(to.id!);
                   }}

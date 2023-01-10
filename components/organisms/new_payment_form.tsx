@@ -62,12 +62,14 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
               <HStack spacing="4">
                 <VStack w="full">
                   <Input
+                    size="sm"
                     onChange={(e) => setNewPaymentTitle(e.target.value)}
                     value={newPaymentTitle}
                     placeholder="Title"
                   />
                   <HStack spacing="4" w="full">
                     <Input
+                      size="sm"
                       onChange={(e) =>
                         setNewPaymentAmount(Number(e.target.value))
                       }
@@ -79,6 +81,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
                       <MenuButton
                         w="full"
                         as={Button}
+                        size="sm"
                         rightIcon={<MdExpandMore />}
                         variant="outline"
                       >
@@ -113,6 +116,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
                   </HStack>
                 </VStack>
                 <IconButton
+                  size="sm"
                   disabled={
                     !newPaymentTitle || !newPaymentAmount || !newPaymentBy
                   }

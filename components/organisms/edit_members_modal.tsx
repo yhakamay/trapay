@@ -49,7 +49,9 @@ export default function EditMembersModal(props: EditMembersModalProps) {
           </Wrap>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={onClose}>Done</Button>
+          <Button size="sm" onClick={onClose}>
+            Done
+          </Button>
         </ModalFooter>
       </ModalContent>
     </Modal>
