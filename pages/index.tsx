@@ -1,4 +1,4 @@
-import { Box, Center, Text, Wrap, WrapItem } from "@chakra-ui/react";
+import { Center, Text, Wrap, WrapItem } from "@chakra-ui/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import EventCard from "../components/molecules/event_card";
@@ -37,27 +37,23 @@ export default function Home() {
     );
   }
 
+  if (noEvents) {
+    return <NoItems text="No events yet. Add one!" />;
+  }
+
   return (
-    <>
-      <Box px={{ base: "4", md: "8" }}>
-        {noEvents ? (
-          <NoItems text="No events yet. Add one!" />
-        ) : (
-          <Wrap justify="center">
-            {events?.map((event) => (
-              <WrapItem key={event.id}>
-                <EventCard
-                  id={event.id?.toString() ?? ""}
-                  title={event.title}
-                  date={event.date ?? ""}
-                  description={event.description ?? ""}
-                  h="xs"
-                />
-              </WrapItem>
-            ))}
-          </Wrap>
-        )}
-      </Box>
-    </>
+    <Wrap justify="center">
+      {events?.map((event) => (
+        <WrapItem key={event.id}>
+          <EventCard
+            id={event.id?.toString() ?? ""}
+            title={event.title}
+            date={event.date ?? ""}
+            description={event.description ?? ""}
+            h="xs"
+          />
+        </WrapItem>
+      ))}
+    </Wrap>
   );
 }
