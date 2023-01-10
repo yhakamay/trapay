@@ -84,7 +84,7 @@ export default function JoinEventModal(props: JoinEventModalProps) {
               />
               <MdArrowForward />
               <Menu isLazy>
-                <MenuButton as={Button} rightIcon={<MdExpandMore />}>
+                <MenuButton as={Button} rightIcon={<MdExpandMore />} size="sm">
                   {oldUser?.name}
                 </MenuButton>
                 <MenuList>

@@ -41,7 +41,11 @@ export default function NewMemberModal(props: NewMemberModalProps) {
           </InputGroup>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={onClickAddMember} disabled={newMemberName === ""}>
+          <Button
+            size="sm"
+            onClick={onClickAddMember}
+            disabled={newMemberName === ""}
+          >
             Add
           </Button>
         </ModalFooter>

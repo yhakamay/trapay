@@ -33,7 +33,11 @@ export default function Header() {
             <Heading size="lg">TraPay</Heading>
           </NextLink>
           <Spacer />
-          <Button onClick={() => router.push("/new")} leftIcon={<MdAdd />}>
+          <Button
+            size="sm"
+            onClick={() => router.push("/new")}
+            leftIcon={<MdAdd />}
+          >
             New
           </Button>
           <Menu>

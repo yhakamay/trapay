@@ -33,6 +33,7 @@ export default function NewPaymentMethodForm(props: NewPaymentMethodFormProps) {
         <HStack spacing="4">
           <VStack w="full">
             <Input
+              size="sm"
               value={methodName}
               placeholder="Name"
               maxLength={20}
@@ -41,6 +42,7 @@ export default function NewPaymentMethodForm(props: NewPaymentMethodFormProps) {
               }}
             />
             <Input
+              size="sm"
               value={methodUrl}
               placeholder="URL (optional)"
               maxLength={100}
@@ -49,6 +51,7 @@ export default function NewPaymentMethodForm(props: NewPaymentMethodFormProps) {
               }}
             />
             <Textarea
+              size="sm"
               value={methodDescription}
               placeholder="Description (optional)"
               maxLength={100}
@@ -59,6 +62,7 @@ export default function NewPaymentMethodForm(props: NewPaymentMethodFormProps) {
             />
           </VStack>
           <IconButton
+            size="sm"
             onClick={() => {
               onClickAddMethod({
                 name: methodName,

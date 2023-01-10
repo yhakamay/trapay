@@ -49,12 +49,14 @@ export default function NewEventForm(props: NewEventFormProps) {
     <>
       <InputGroup>
         <Input
+          size="sm"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           placeholder="Title"
         />
       </InputGroup>
       <Textarea
+        size="sm"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         placeholder="Description (optional)"
@@ -65,17 +67,18 @@ export default function NewEventForm(props: NewEventFormProps) {
           value={date}
           onChange={(e) => setDate(e.target.value)}
           placeholder="Select Date and Time"
-          size="md"
+          size="sm"
           type="date"
         />
       </InputGroup>
       <InputGroup>
         <Input
+          size="sm"
           value={newMemberName}
           onChange={(e) => setNewMemberName(e.target.value)}
           placeholder="Members"
         />
-        <InputRightElement mr="2">
+        <InputRightElement mt="-1">
           <IconButton
             onClick={onClickAddMember}
             disabled={newMemberName === ""}
@@ -101,6 +104,7 @@ export default function NewEventForm(props: NewEventFormProps) {
       </Wrap>
       <Box h="8" />
       <Button
+        size="sm"
         isLoading={loading}
         onClick={onClickSaveEvent}
         leftIcon={<MdSaveAlt />}
