@@ -17,13 +17,13 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebaseConfig";
 import SignOutButton from "../molecules/sign_out_button";
 import { useRouter } from "next/router";
-import { MdAdd } from "react-icons/md";
 import { useLocale } from "../../locale";
+import { MdAdd, MdExpandMore } from "react-icons/md";
 
 export default function Header() {
   const [user] = useAuthState(auth);
   const router = useRouter();
-  const { t } = useLocale();
+  const { t, flag } = useLocale();
 
   if (!user) return <></>;
 
@@ -35,6 +35,24 @@ export default function Header() {
             <Heading size="lg">TraPay</Heading>
           </NextLink>
           <Spacer />
+          <Menu>
+            <MenuButton
+              as={Button}
+              rightIcon={<MdExpandMore />}
+              size="sm"
+              variant="ghost"
+            >
+              {flag}
+            </MenuButton>
+            <MenuList>
+              <NextLink href={"/"} locale="en">
+                <MenuItem>🇺🇸</MenuItem>
+              </NextLink>
+              <NextLink href={"/"} locale="ja">
+                <MenuItem>🇯🇵</MenuItem>
+              </NextLink>
+            </MenuList>
+          </Menu>
           <Button
             size="sm"
             onClick={() => router.push("/new")}
