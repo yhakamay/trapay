@@ -34,6 +34,7 @@ import { MdOutlineCalendarToday } from "react-icons/md";
 import EventMoreButton from "../../components/molecules/event_more_button";
 import EditMembersModal from "../../components/organisms/edit_members_modal";
 import { paymentConverter } from "../../types/payment";
+import { SomethingWentWrong } from "../../components/atoms/something_went_wrong";
 
 type EventDetailsProps = {
   id: string;
@@ -70,11 +71,7 @@ export default function EventDetails(props: EventDetailsProps) {
   }
 
   if (error || !event) {
-    return (
-      <Center>
-        <Text>Something went wrong.</Text>
-      </Center>
-    );
+    return <SomethingWentWrong />;
   }
 
   closeModalIfMember(user, isOpen, onClose);

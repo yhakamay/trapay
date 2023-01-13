@@ -1,12 +1,5 @@
 import NextImage from "next/image";
-import {
-  Container,
-  VStack,
-  Heading,
-  Text,
-  Center,
-  Box,
-} from "@chakra-ui/react";
+import { Container, VStack, Heading, Text, Box } from "@chakra-ui/react";
 import { SignInButton } from "../components/molecules/sign_in_buttons";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -14,6 +7,8 @@ import { auth } from "../firebaseConfig";
 import Head from "next/head";
 import Loading from "../components/atoms/loading";
 import { GetServerSideProps } from "next";
+import { useLocale } from "../locale";
+import { SomethingWentWrong } from "../components/atoms/something_went_wrong";
 
 type LoginProps = {
   id?: string;
@@ -23,17 +18,14 @@ export default function Login(props: LoginProps) {
   const { id } = props;
   const router = useRouter();
   const [user, loading, error] = useAuthState(auth);
+  const { t } = useLocale();
 
   if (!router.isReady || loading) {
     return <Loading />;
   }
 
   if (error) {
-    return (
-      <Center>
-        <Text>Something went wrong</Text>
-      </Center>
-    );
+    return <SomethingWentWrong />;
   }
 
   if (user) {
@@ -47,12 +39,12 @@ export default function Login(props: LoginProps) {
   return (
     <>
       <Head>
-        <title>TraPay Login</title>
+        <title>{t.signIn}</title>
       </Head>
       <Container py={{ base: "12", md: "24" }}>
         <VStack>
           <Heading>TraPay</Heading>
-          <Text>Split the bill with your friends easily!</Text>
+          <Text>{t.appDescription}</Text>
           <Box h="8" />
           <SignInButton />
           <Box h="8" />

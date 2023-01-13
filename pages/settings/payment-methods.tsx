@@ -19,6 +19,7 @@ import { userConverter } from "../../types/user";
 import NewPaymentMethodForm from "../../components/organisms/new_payment_method_form";
 import { PaymentMethodsList } from "../../components/organisms/payment_methods_list";
 import NoItems from "../../components/atoms/no_items";
+import { useLocale } from "../../locale";
 
 export default function PaymentMethods() {
   const router = useRouter();
@@ -34,6 +35,7 @@ export default function PaymentMethods() {
     : null;
   const [methods, loadingMethods] = useCollectionData(methodsRef);
   const noMethods = methods?.length === 0;
+  const { t } = useLocale();
 
   if (!router.isReady || loadingUser || loadingMethods) {
     return <Loading />;
@@ -46,19 +48,16 @@ export default function PaymentMethods() {
   return (
     <>
       <Head>
-        <title>Payment methods</title>
+        <title>{t.paymentMethods}</title>
       </Head>
       <Center>
         <Box w={{ base: "sm", md: "lg" }}>
           <Stack>
             <Card variant="filled">
               <CardBody>
-                <Heading size="lg">Payment methods</Heading>
+                <Heading size="lg">{t.paymentMethods}</Heading>
                 <Box h="2" />
-                <Text>
-                  Choose your prrefered payment method. Your settings will be
-                  visible to your friends wheny they try paying to you.
-                </Text>
+                <Text>{t.paymentMethodsDescription}</Text>
               </CardBody>
             </Card>
             <Box h="4" />
