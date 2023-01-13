@@ -34,9 +34,9 @@ type NewPaymentFormProps = {
 
 export default function NewPaymentForm(props: NewPaymentFormProps) {
   const { eventRef } = props;
-  const [newPaymentTitle, setNewPaymentTitle] = useState("");
-  const [newPaymentAmount, setNewPaymentAmount] = useState<number>(0);
-  const [newPaymentBy, setNewPaymentBy] = useState<User>();
+  const [newPaymentTitle, setNewPaymentTitle] = useState<string | null>(null);
+  const [newPaymentAmount, setNewPaymentAmount] = useState<number | null>(null);
+  const [newPaymentBy, setNewPaymentBy] = useState<User | null>(null);
   const paymentsRef = collection(eventRef, "payments").withConverter(
     paymentConverter
   );
@@ -66,7 +66,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
                   <Input
                     size="sm"
                     onChange={(e) => setNewPaymentTitle(e.target.value)}
-                    value={newPaymentTitle}
+                    value={newPaymentTitle ?? ""}
                     placeholder={t.title}
                   />
                   <HStack spacing="4" w="full">
@@ -75,7 +75,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
                       onChange={(e) =>
                         setNewPaymentAmount(Number(e.target.value))
                       }
-                      value={newPaymentAmount || undefined}
+                      value={newPaymentAmount ?? ""}
                       placeholder={t.amount}
                       type="number"
                     />
@@ -87,7 +87,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
                         rightIcon={<MdExpandMore />}
                         variant="outline"
                       >
-                        {t.paidBy}
+                        {newPaymentBy?.name ?? t.paidBy}
                       </MenuButton>
                       <MenuList>
                         {members?.map((member) => (
@@ -146,7 +146,8 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
     };
 
     setNewPaymentTitle("");
-    setNewPaymentAmount(0);
+    setNewPaymentBy(null);
+    setNewPaymentAmount(null);
 
     await addDoc(paymentsRef, payment);
   }
