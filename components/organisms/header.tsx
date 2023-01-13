@@ -75,11 +75,9 @@ export default function Header() {
                 {user?.email ?? ""}
               </Text>
               <MenuDivider />
-              <MenuItem>
-                <NextLink href="/settings/payment-methods">
-                  {t.paymentMethods}
-                </NextLink>
-              </MenuItem>
+              <NextLink href="/settings/payment-methods">
+                <MenuItem>{t.paymentMethods}</MenuItem>
+              </NextLink>
               <MenuDivider />
               <MenuItem>
                 <SignOutButton />
