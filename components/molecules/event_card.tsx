@@ -6,8 +6,10 @@ import {
   Container,
   Heading,
   Text,
+  VStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useLocale } from "../../locale";
 
 type EventCardProps = {
   id: string;
@@ -20,7 +22,8 @@ type EventCardProps = {
 
 export default function EventCard(props: EventCardProps) {
   const { id, title, date, description, imageUrl = "/friends.svg", h } = props;
-  const formattedDate = new Date(date).toLocaleDateString("en-US", {
+  const { locale } = useLocale();
+  const formattedDate = new Date(date).toLocaleDateString(locale, {
     year: "numeric",
     month: "long",
     day: "numeric",
@@ -40,9 +43,11 @@ export default function EventCard(props: EventCardProps) {
           </Container>
         </CardHeader>
         <CardBody>
-          <Heading size="lg">{title}</Heading>
-          <Text>{formattedDate}</Text>
-          <Text>{description}</Text>
+          <VStack spacing="2" align="start">
+            <Heading size="lg">{title}</Heading>
+            <Text>{formattedDate}</Text>
+            <Text>{description}</Text>
+          </VStack>
         </CardBody>
       </Card>
     </Link>

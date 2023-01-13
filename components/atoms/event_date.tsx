@@ -1,4 +1,5 @@
 import { Text } from "@chakra-ui/react";
+import { useLocale } from "../../locale";
 
 type EventDateProps = {
   date: Date;
@@ -6,7 +7,8 @@ type EventDateProps = {
 
 export default function EventDate(props: EventDateProps) {
   const { date } = props;
-  const formattedDate = new Date(date).toLocaleDateString("en-US", {
+  const { locale } = useLocale();
+  const formattedDate = new Date(date).toLocaleDateString(locale, {
     year: "numeric",
     month: "long",
     day: "numeric",
