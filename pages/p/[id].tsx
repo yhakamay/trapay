@@ -95,7 +95,8 @@ export default function Pay(props: PayProps) {
           <VStack spacing="4">
             <Card w={{ base: "sm", md: "lg" }} variant="filled">
               <CardBody>
-                <Heading>Payment methods</Heading>
+                <Heading size="lg">Payment methods</Heading>
+                <Box h="2" />
                 <Text>
                   Pay them using one of the following payment methods.
                 </Text>
