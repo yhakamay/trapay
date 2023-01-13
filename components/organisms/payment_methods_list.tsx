@@ -42,9 +42,7 @@ export function PaymentMethodsList(props: PaymentMethodsListProps) {
               color="red"
               icon={<MdDelete />}
               aria-label={"delete method"}
-            >
-              <Text>Delete</Text>
-            </IconButton>
+            />
           </HStack>
         </CardBody>
       </Card>
