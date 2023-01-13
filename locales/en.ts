@@ -33,6 +33,9 @@ const en = {
   deletingEvent: "Deleting event... This may take a few minutes",
   noEvents: "No events",
   somethingWentWrong: "Something went wrong",
+  friendNotJoined:
+    "Friend not joined. Please ask your friend to join the app first.",
+  payToYourFriend: "Pay to your friend by using the following method(s)",
 };
 
 export default en;

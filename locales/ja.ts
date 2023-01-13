@@ -33,6 +33,9 @@ const ja = {
   deletingEvent: "イベント削除中... この処理には数分かかる場合があります",
   noEvents: "イベントがありません",
   somethingWentWrong: "何か問題が起きました",
+  friendNotJoined:
+    "このイベントにまだ参加していません。参加するように依頼してください",
+  payToYourFriend: "以下の方法で友達にお金を送ってください",
 };
 
 export default ja;

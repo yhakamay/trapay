@@ -74,7 +74,7 @@ export default function Pay(props: PayProps) {
           <VStack spacing="4">
             <Alert w={{ base: "sm", md: "lg" }} status="error">
               <AlertIcon />
-              Your friend yet to join the event. Please ask them to join.
+              {t.friendNotJoined}
             </Alert>
           </VStack>
         </Center>
@@ -94,11 +94,9 @@ export default function Pay(props: PayProps) {
           <VStack spacing="4">
             <Card w={{ base: "sm", md: "lg" }} variant="filled">
               <CardBody>
-                <Heading size="lg">Payment methods</Heading>
+                <Heading size="lg">{t.paymentMethods}</Heading>
                 <Box h="2" />
-                <Text>
-                  Pay them using one of the following payment methods.
-                </Text>
+                <Text>{t.payToYourFriend}</Text>
               </CardBody>
             </Card>
             {noMethods ? (
