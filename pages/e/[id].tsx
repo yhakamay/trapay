@@ -104,7 +104,7 @@ export default function EventDetails(props: EventDetailsProps) {
             <Card w={{ base: "sm", md: "lg" }} variant="filled">
               <CardBody>
                 <HStack w="full" justify="space-between">
-                  <Heading>{event.title}</Heading>
+                  <Heading size="lg">{event.title}</Heading>
                   <Spacer />
                   <MdOutlineCalendarToday color="grey" />
                   <EventDate date={new Date(event.date ?? "")} />

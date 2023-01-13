@@ -40,7 +40,7 @@ export default function EventCard(props: EventCardProps) {
           </Container>
         </CardHeader>
         <CardBody>
-          <Heading>{title}</Heading>
+          <Heading size="lg">{title}</Heading>
           <Text>{formattedDate}</Text>
           <Text>{description}</Text>
         </CardBody>

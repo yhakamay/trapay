@@ -27,7 +27,7 @@ export default function NewEvent() {
       <Center>
         <Box w={{ base: "sm", md: "lg" }}>
           <VStack spacing="4">
-            <Heading>Add new event</Heading>
+            <Heading size="lg">Add new event</Heading>
             <NextImage
               src="/new.svg"
               alt={"new event"}

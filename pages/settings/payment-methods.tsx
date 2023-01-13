@@ -53,7 +53,8 @@ export default function PaymentMethods() {
           <Stack>
             <Card variant="filled">
               <CardBody>
-                <Heading>Payment methods</Heading>
+                <Heading size="lg">Payment methods</Heading>
+                <Box h="2" />
                 <Text>
                   Choose your prrefered payment method. Your settings will be
                   visible to your friends wheny they try paying to you.
