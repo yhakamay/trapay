@@ -7,9 +7,11 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Loading from "../components/atoms/loading";
 import NewEventForm from "../components/organisms/new_event_form";
 import { auth } from "../firebaseConfig";
+import { useLocale } from "../locale";
 
 export default function NewEvent() {
   const [user, loadingUser] = useAuthState(auth);
+  const { t } = useLocale();
 
   if (loadingUser) {
     return <Loading />;
@@ -22,12 +24,12 @@ export default function NewEvent() {
   return (
     <>
       <Head>
-        <title>New Event</title>
+        <title>{t.addNewEvent}</title>
       </Head>
       <Center>
         <Box w={{ base: "sm", md: "lg" }}>
           <VStack spacing="4">
-            <Heading size="lg">Add new event</Heading>
+            <Heading size="lg">{t.addNewEvent}</Heading>
             <NextImage
               src="/new.svg"
               alt={"new event"}

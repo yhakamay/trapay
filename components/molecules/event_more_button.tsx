@@ -9,6 +9,7 @@ import {
 import { deleteDoc, DocumentReference } from "firebase/firestore";
 import router from "next/router";
 import { MdMoreHoriz, MdDelete, MdPeople } from "react-icons/md";
+import { useLocale } from "../../locale";
 import { Event } from "../../types/event";
 
 type EventMoreButtonProps = {
@@ -19,7 +20,7 @@ type EventMoreButtonProps = {
 export default function EventMoreButton(props: EventMoreButtonProps) {
   const { eventRef, onOpenEditMembers } = props;
   const toast = useToast();
-  const toastId = eventRef.id;
+  const { t } = useLocale();
 
   return (
     <Menu>
@@ -32,10 +33,10 @@ export default function EventMoreButton(props: EventMoreButtonProps) {
       />
       <MenuList>
         <MenuItem onClick={onClickEditMembers} icon={<MdPeople />}>
-          Edit members
+          {t.editMembers}
         </MenuItem>
         <MenuItem onClick={onClickDeleteEvent} icon={<MdDelete />} color="red">
-          Delete
+          {t.deleteEvent}
         </MenuItem>
       </MenuList>
     </Menu>
@@ -48,13 +49,10 @@ export default function EventMoreButton(props: EventMoreButtonProps) {
   async function onClickDeleteEvent() {
     await deleteEvent(eventRef);
     toast({
-      id: toastId,
-      title: "Deleted",
-      description: "Event deleted",
+      title: t.delete,
+      description: t.deletingEvent,
       status: "success",
-      duration: 3000,
       isClosable: true,
-      position: "top",
     });
     router.push("/");
   }

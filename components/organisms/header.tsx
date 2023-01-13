@@ -18,10 +18,12 @@ import { auth } from "../../firebaseConfig";
 import SignOutButton from "../molecules/sign_out_button";
 import { useRouter } from "next/router";
 import { MdAdd } from "react-icons/md";
+import { useLocale } from "../../locale";
 
 export default function Header() {
   const [user] = useAuthState(auth);
   const router = useRouter();
+  const { t } = useLocale();
 
   if (!user) return <></>;
 
@@ -38,7 +40,7 @@ export default function Header() {
             onClick={() => router.push("/new")}
             leftIcon={<MdAdd />}
           >
-            New
+            {t.newEvent}
           </Button>
           <Menu>
             <MenuButton>
@@ -57,7 +59,7 @@ export default function Header() {
               <MenuDivider />
               <MenuItem>
                 <NextLink href="/settings/payment-methods">
-                  Payment methods
+                  {t.paymentMethods}
                 </NextLink>
               </MenuItem>
               <MenuDivider />

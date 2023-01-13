@@ -11,6 +11,7 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import { CollectionReference, deleteDoc, doc } from "firebase/firestore";
+import { useLocale } from "../../locale";
 import { Payment } from "../../types/payment";
 import { User, userConverter } from "../../types/user";
 import UserTag from "../atoms/user_tag";
@@ -25,12 +26,13 @@ type EditMembersModalProps = {
 
 export default function EditMembersModal(props: EditMembersModalProps) {
   const { membersRef, payments, isOpen, onClose, members } = props;
+  const { t } = useLocale();
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} isCentered>
       <ModalOverlay />
       <ModalContent>
-        <ModalHeader>Members</ModalHeader>
+        <ModalHeader>{t.members}</ModalHeader>
         <ModalCloseButton />
         <ModalBody>
           <Wrap justify="center">
@@ -50,7 +52,7 @@ export default function EditMembersModal(props: EditMembersModalProps) {
         </ModalBody>
         <ModalFooter>
           <Button size="sm" onClick={onClose}>
-            Done
+            {t.done}
           </Button>
         </ModalFooter>
       </ModalContent>

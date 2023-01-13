@@ -1,5 +1,6 @@
 import { Button, useToast } from "@chakra-ui/react";
 import { MdLink } from "react-icons/md";
+import { useLocale } from "../../locale";
 
 type CopyToClipboardButtonProps = {
   eventId: string;
@@ -10,6 +11,7 @@ export default function CopyToClipboardButton(
 ) {
   const { eventId } = props;
   const toast = useToast();
+  const { t } = useLocale();
 
   return (
     <Button
@@ -26,7 +28,7 @@ export default function CopyToClipboardButton(
     await copyToClipboard(eventId);
     toast.closeAll();
     toast({
-      title: "Copied to clipboard",
+      title: t.copiedToClipboard,
       status: "success",
     });
   }

@@ -26,7 +26,9 @@ import { MdArrowBack } from "react-icons/md";
 
 import Loading from "../../components/atoms/loading";
 import NoItems from "../../components/atoms/no_items";
+import { SomethingWentWrong } from "../../components/atoms/something_went_wrong";
 import { auth, db } from "../../firebaseConfig";
+import { useLocale } from "../../locale";
 import { paymentMethodConverter } from "../../types/payment_method";
 import { userConverter } from "../../types/user";
 
@@ -46,6 +48,7 @@ export default function Pay(props: PayProps) {
   );
   const [paymentMethods, loadingMethods, errorMethods] =
     useCollectionData(paymentMethodsRef);
+  const { t } = useLocale();
 
   if (!router.isReady || loadingMember || loadingMethods) {
     return <Loading />;
@@ -56,11 +59,7 @@ export default function Pay(props: PayProps) {
   }
 
   if (errorMethods || errorMember) {
-    return (
-      <Center>
-        <Text>Something went wrong.</Text>
-      </Center>
-    );
+    return <SomethingWentWrong />;
   }
 
   const isNotAssigned = !toMember;

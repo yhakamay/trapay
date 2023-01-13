@@ -22,6 +22,7 @@ import { addDoc, collection, DocumentReference } from "firebase/firestore";
 import { useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { MdAdd, MdExpandMore } from "react-icons/md";
+import { useLocale } from "../../locale";
 import { Event } from "../../types/event";
 import { Payment, paymentConverter } from "../../types/payment";
 import { User, userConverter } from "../../types/user";
@@ -44,6 +45,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
   );
   const [members, loading] = useCollectionData(membersRef);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { t } = useLocale();
 
   if (loading) {
     return null;
@@ -55,7 +57,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
       <Box w={{ base: "sm", md: "lg" }}>
         <Card variant="outline">
           <CardHeader>
-            <Heading size="sm">New payment</Heading>
+            <Heading size="sm">{t.newPayment}</Heading>
           </CardHeader>
           <CardBody>
             <Stack spacing="4">
@@ -65,7 +67,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
                     size="sm"
                     onChange={(e) => setNewPaymentTitle(e.target.value)}
                     value={newPaymentTitle}
-                    placeholder="Title"
+                    placeholder={t.title}
                   />
                   <HStack spacing="4" w="full">
                     <Input
@@ -74,7 +76,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
                         setNewPaymentAmount(Number(e.target.value))
                       }
                       value={newPaymentAmount || undefined}
-                      placeholder="Amount"
+                      placeholder={t.amount}
                       type="number"
                     />
                     <Menu>
@@ -85,7 +87,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
                         rightIcon={<MdExpandMore />}
                         variant="outline"
                       >
-                        Paid by
+                        {t.paidBy}
                       </MenuButton>
                       <MenuList>
                         {members?.map((member) => (

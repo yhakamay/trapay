@@ -1,5 +1,6 @@
 import { Card, Heading, Stack, CardBody, Box, Text } from "@chakra-ui/react";
 import { User as FirebaseUser } from "firebase/auth";
+import { useLocale } from "../../locale";
 import { Payment } from "../../types/payment";
 import { Transaction } from "../../types/transaction";
 import { User } from "../../types/user";
@@ -23,15 +24,16 @@ export default function SummaryCard(props: SummaryCardProps) {
   const perPerson = getPerPerson(total, members ?? []);
   const formattedPerPerson = intl.format(perPerson);
   const transactions = getTransactions(members ?? [], payments ?? []);
+  const { t } = useLocale();
 
   return (
     <Card w={{ base: "sm", md: "lg" }} variant="outline">
       <CardBody>
         <Stack>
-          <Heading size="sm">Total</Heading>
+          <Heading size="sm">{t.total}</Heading>
           <Text>{formattedTotal}</Text>
-          <Heading size="sm">Per person</Heading>
-          <Text>{`${formattedPerPerson} / person`}</Text>
+          <Heading size="sm">{t.perPerson}</Heading>
+          <Text>{`${formattedPerPerson} / ${t.person}`}</Text>
           <Box h="4" />
           <TransactionsList
             eventId={eventId}

@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Transaction } from "../../types/transaction";
 import { useRouter } from "next/router";
+import { useLocale } from "../../locale";
 
 type TransactionsListProps = {
   eventId: string;
@@ -26,6 +27,7 @@ export default function TransactionsList(props: TransactionsListProps) {
     style: "currency",
     currency: "JPY",
   });
+  const { t } = useLocale();
 
   return (
     <Stack divider={<StackDivider />} spacing="4">
@@ -67,7 +69,7 @@ export default function TransactionsList(props: TransactionsListProps) {
                     onClickPay(to.id!);
                   }}
                 >
-                  Pay
+                  {t.pay}
                 </Button>
               )}
             </HStack>

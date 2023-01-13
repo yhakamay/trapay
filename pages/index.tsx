@@ -1,4 +1,4 @@
-import { Center, Text, Wrap, WrapItem } from "@chakra-ui/react";
+import { Wrap, WrapItem } from "@chakra-ui/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import EventCard from "../components/molecules/event_card";
@@ -9,6 +9,8 @@ import { useRouter } from "next/router";
 import { userConverter } from "../types/user";
 import Loading from "../components/atoms/loading";
 import NoItems from "../components/atoms/no_items";
+import { useLocale } from "../locale";
+import { SomethingWentWrong } from "../components/atoms/something_went_wrong";
 
 export default function Home() {
   const router = useRouter();
@@ -20,6 +22,7 @@ export default function Home() {
     : null;
   const [events, loadingEvents, errorEvents] = useCollectionData(eventsRef);
   const noEvents = events?.length === 0;
+  const { t } = useLocale();
 
   if (!router.isReady || loadingUser || loadingEvents) {
     return <Loading />;
@@ -30,15 +33,11 @@ export default function Home() {
   }
 
   if (errorUser || errorEvents) {
-    return (
-      <Center>
-        <Text>Something went wrong</Text>
-      </Center>
-    );
+    return <SomethingWentWrong />;
   }
 
   if (noEvents) {
-    return <NoItems text="No events yet. Add one!" />;
+    return <NoItems text={t.noEvents} />;
   }
 
   return (
