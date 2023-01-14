@@ -9,7 +9,9 @@ import {
   MenuButton,
   MenuDivider,
   MenuItem,
+  MenuItemOption,
   MenuList,
+  MenuOptionGroup,
   Spacer,
   Text,
 } from "@chakra-ui/react";
@@ -23,7 +25,8 @@ import { MdAdd, MdExpandMore } from "react-icons/md";
 export default function Header() {
   const [user] = useAuthState(auth);
   const router = useRouter();
-  const { t, flag } = useLocale();
+  const { pathname, asPath, query } = router;
+  const { t, flag, locale } = useLocale();
 
   return (
     <Box as="section" pb={{ base: "12", md: "24" }}>
@@ -43,12 +46,28 @@ export default function Header() {
               {flag}
             </MenuButton>
             <MenuList>
-              <NextLink href={"/"} locale="en">
-                <MenuItem>🇺🇸</MenuItem>
-              </NextLink>
-              <NextLink href={"/"} locale="ja">
-                <MenuItem>🇯🇵</MenuItem>
-              </NextLink>
+              <MenuOptionGroup
+                defaultValue={locale}
+                title={t.language}
+                type="radio"
+              >
+                <MenuItemOption
+                  onClick={() => {
+                    changeLocale("en");
+                  }}
+                  value="en"
+                >
+                  {t.english}
+                </MenuItemOption>
+                <MenuItemOption
+                  onClick={() => {
+                    changeLocale("ja");
+                  }}
+                  value="ja"
+                >
+                  {t.japanese}
+                </MenuItemOption>
+              </MenuOptionGroup>
             </MenuList>
           </Menu>
           {user && (
@@ -90,4 +109,8 @@ export default function Header() {
       </Box>
     </Box>
   );
+
+  function changeLocale(locale: string) {
+    router.push({ pathname, query }, asPath, { locale: locale });
+  }
 }
