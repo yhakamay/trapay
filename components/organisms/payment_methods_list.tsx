@@ -30,7 +30,9 @@ export function PaymentMethodsList(props: PaymentMethodsListProps) {
               <Text>{method.description}</Text>
               {method.url && (
                 <Link href={method.url} isExternal>
-                  {method.url}
+                  {removeScheme(method.url).length > 30
+                    ? removeScheme(method.url).slice(0, 30) + "..."
+                    : removeScheme(method.url)}
                 </Link>
               )}
             </VStack>
@@ -50,6 +52,10 @@ export function PaymentMethodsList(props: PaymentMethodsListProps) {
       </Card>
     );
   });
+
+  function removeScheme(url: string) {
+    return url.replace(/.*?:\/\//g, "");
+  }
 
   async function onClickDeleteMethod(
     methodsRef: CollectionReference<PaymentMethod>,
