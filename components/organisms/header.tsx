@@ -19,13 +19,12 @@ import SignOutButton from "../molecules/sign_out_button";
 import { useRouter } from "next/router";
 import { useLocale } from "../../locale";
 import { MdAdd, MdExpandMore } from "react-icons/md";
+import Loading from "../atoms/loading";
 
 export default function Header() {
   const [user] = useAuthState(auth);
   const router = useRouter();
   const { t, flag } = useLocale();
-
-  if (!user) return <></>;
 
   return (
     <Box as="section" pb={{ base: "12", md: "24" }}>
@@ -60,30 +59,34 @@ export default function Header() {
           >
             {t.newEvent}
           </Button>
-          <Menu>
-            <MenuButton>
-              <Avatar
-                size="sm"
-                cursor="pointer"
-                name={user?.displayName ?? ""}
-                src={user?.photoURL ?? undefined}
-              />
-            </MenuButton>
-            <MenuList>
-              <Text ml="3">{user?.displayName ?? ""}</Text>
-              <Text ml="3" fontSize="xs" color="grey">
-                {user?.email ?? ""}
-              </Text>
-              <MenuDivider />
-              <NextLink href="/settings/payment-methods">
-                <MenuItem>{t.paymentMethods}</MenuItem>
-              </NextLink>
-              <MenuDivider />
-              <MenuItem>
-                <SignOutButton />
-              </MenuItem>
-            </MenuList>
-          </Menu>
+          {user ? (
+            <Menu>
+              <MenuButton>
+                <Avatar
+                  size="sm"
+                  cursor="pointer"
+                  name={user?.displayName ?? ""}
+                  src={user?.photoURL ?? undefined}
+                />
+              </MenuButton>
+              <MenuList>
+                <Text ml="3">{user?.displayName ?? ""}</Text>
+                <Text ml="3" fontSize="xs" color="grey">
+                  {user?.email ?? ""}
+                </Text>
+                <MenuDivider />
+                <NextLink href="/settings/payment-methods">
+                  <MenuItem>{t.paymentMethods}</MenuItem>
+                </NextLink>
+                <MenuDivider />
+                <MenuItem>
+                  <SignOutButton />
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          ) : (
+            <Loading />
+          )}
         </HStack>
       </Box>
     </Box>
