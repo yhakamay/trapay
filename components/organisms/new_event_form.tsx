@@ -25,6 +25,7 @@ import { User, userConverter } from "../../types/user";
 import Loading from "../atoms/loading";
 import UserTag from "../atoms/user_tag";
 import { MdPersonAddAlt1, MdSaveAlt } from "react-icons/md";
+import { useLocale } from "../../locale";
 
 type NewEventFormProps = {
   firebaseUser: FirebaseUser;
@@ -40,6 +41,7 @@ export default function NewEventForm(props: NewEventFormProps) {
   const user = convertToUser(firebaseUser);
   const [members, setMembers] = useState<User[]>([user]);
   const [loading, setLoading] = useState<boolean>(false);
+  const { t } = useLocale();
 
   if (!router.isReady) {
     return <Loading />;
@@ -49,33 +51,35 @@ export default function NewEventForm(props: NewEventFormProps) {
     <>
       <InputGroup>
         <Input
+          size="sm"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Title"
+          placeholder={t.title}
         />
       </InputGroup>
       <Textarea
+        size="sm"
         value={description}
         onChange={(e) => setDescription(e.target.value)}
-        placeholder="Description (optional)"
+        placeholder={`${t.description} (${t.optional})`}
         resize="none"
       />
       <InputGroup>
         <Input
           value={date}
           onChange={(e) => setDate(e.target.value)}
-          placeholder="Select Date and Time"
-          size="md"
+          size="sm"
           type="date"
         />
       </InputGroup>
       <InputGroup>
         <Input
+          size="sm"
           value={newMemberName}
           onChange={(e) => setNewMemberName(e.target.value)}
-          placeholder="Members"
+          placeholder={t.member}
         />
-        <InputRightElement mr="2">
+        <InputRightElement mt="-1">
           <IconButton
             onClick={onClickAddMember}
             disabled={newMemberName === ""}
@@ -101,11 +105,12 @@ export default function NewEventForm(props: NewEventFormProps) {
       </Wrap>
       <Box h="8" />
       <Button
+        size="sm"
         isLoading={loading}
         onClick={onClickSaveEvent}
         leftIcon={<MdSaveAlt />}
       >
-        Save
+        {t.save}
       </Button>
     </>
   );

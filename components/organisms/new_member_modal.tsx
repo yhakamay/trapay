@@ -41,7 +41,11 @@ export default function NewMemberModal(props: NewMemberModalProps) {
           </InputGroup>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={onClickAddMember} disabled={newMemberName === ""}>
+          <Button
+            size="sm"
+            onClick={onClickAddMember}
+            disabled={newMemberName === ""}
+          >
             Add
           </Button>
         </ModalFooter>
@@ -59,12 +63,13 @@ export default function NewMemberModal(props: NewMemberModalProps) {
       email: null,
       photoURL: null,
     };
+
     const membersRef = collection(eventRef, "members").withConverter(
       userConverter
     );
-
     addDoc(membersRef, newMember);
 
+    setNewMemberName("");
     onClose();
   }
 }

@@ -12,6 +12,7 @@ import {
 import { CollectionReference, addDoc } from "firebase/firestore";
 import { useState } from "react";
 import { MdAdd } from "react-icons/md";
+import { useLocale } from "../../locale";
 import { PaymentMethod } from "../../types/payment_method";
 
 type NewPaymentMethodFormProps = {
@@ -23,34 +24,38 @@ export default function NewPaymentMethodForm(props: NewPaymentMethodFormProps) {
   const [methodName, setMethodName] = useState("");
   const [methodDescription, setMethodDescription] = useState("");
   const [methodUrl, setMethodUrl] = useState("");
+  const { t } = useLocale();
 
   return (
     <Card variant="outline">
       <CardHeader>
-        <Heading size="sm">Add payment method</Heading>
+        <Heading size="sm">{t.addPaymentMethod}</Heading>
       </CardHeader>
       <CardBody>
         <HStack spacing="4">
           <VStack w="full">
             <Input
+              size="sm"
               value={methodName}
-              placeholder="Name"
+              placeholder={t.title}
               maxLength={20}
               onChange={(e) => {
                 setMethodName(e.target.value);
               }}
             />
             <Input
+              size="sm"
               value={methodUrl}
-              placeholder="URL (optional)"
+              placeholder={t.url}
               maxLength={100}
               onChange={(e) => {
                 setMethodUrl(e.target.value);
               }}
             />
             <Textarea
+              size="sm"
               value={methodDescription}
-              placeholder="Description (optional)"
+              placeholder={`${t.description} (${t.optional})`}
               maxLength={100}
               resize="none"
               onChange={(e) => {
@@ -59,6 +64,7 @@ export default function NewPaymentMethodForm(props: NewPaymentMethodFormProps) {
             />
           </VStack>
           <IconButton
+            size="sm"
             onClick={() => {
               onClickAddMethod({
                 name: methodName,

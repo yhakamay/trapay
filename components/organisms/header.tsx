@@ -17,13 +17,14 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebaseConfig";
 import SignOutButton from "../molecules/sign_out_button";
 import { useRouter } from "next/router";
-import { MdAdd } from "react-icons/md";
+import { useLocale } from "../../locale";
+import { MdAdd, MdExpandMore } from "react-icons/md";
+import Loading from "../atoms/loading";
 
 export default function Header() {
   const [user] = useAuthState(auth);
   const router = useRouter();
-
-  if (!user) return <></>;
+  const { t, flag } = useLocale();
 
   return (
     <Box as="section" pb={{ base: "12", md: "24" }}>
@@ -33,35 +34,59 @@ export default function Header() {
             <Heading size="lg">TraPay</Heading>
           </NextLink>
           <Spacer />
-          <Button onClick={() => router.push("/new")} leftIcon={<MdAdd />}>
-            New
-          </Button>
           <Menu>
-            <MenuButton>
-              <Avatar
-                size="sm"
-                cursor="pointer"
-                name={user?.displayName ?? ""}
-                src={user?.photoURL ?? undefined}
-              />
+            <MenuButton
+              as={Button}
+              rightIcon={<MdExpandMore />}
+              size="sm"
+              variant="ghost"
+            >
+              {flag}
             </MenuButton>
             <MenuList>
-              <Text ml="3">{user?.displayName ?? ""}</Text>
-              <Text ml="3" fontSize="xs" color="grey">
-                {user?.email ?? ""}
-              </Text>
-              <MenuDivider />
-              <MenuItem>
-                <NextLink href="/settings/payment-methods">
-                  Payment methods
-                </NextLink>
-              </MenuItem>
-              <MenuDivider />
-              <MenuItem>
-                <SignOutButton />
-              </MenuItem>
+              <NextLink href={"/"} locale="en">
+                <MenuItem>🇺🇸</MenuItem>
+              </NextLink>
+              <NextLink href={"/"} locale="ja">
+                <MenuItem>🇯🇵</MenuItem>
+              </NextLink>
             </MenuList>
           </Menu>
+          <Button
+            size="sm"
+            onClick={() => router.push("/new")}
+            leftIcon={<MdAdd />}
+          >
+            {t.newEvent}
+          </Button>
+          {user ? (
+            <Menu>
+              <MenuButton>
+                <Avatar
+                  size="sm"
+                  cursor="pointer"
+                  name={user?.displayName ?? ""}
+                  src={user?.photoURL ?? undefined}
+                />
+              </MenuButton>
+              <MenuList>
+                <Text ml="3">{user?.displayName ?? ""}</Text>
+                <Text ml="3" fontSize="xs" color="grey">
+                  {user?.email ?? ""}
+                </Text>
+                <MenuDivider />
+                <NextLink href="/settings/payment-methods">
+                  <MenuItem>{t.paymentMethods}</MenuItem>
+                </NextLink>
+                <MenuDivider />
+                <MenuItem>
+                  <SignOutButton />
+                </MenuItem>
+              </MenuList>
+            </Menu>
+          ) : (
+            <Loading />
+          )}
         </HStack>
       </Box>
     </Box>

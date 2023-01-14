@@ -22,6 +22,7 @@ import { addDoc, collection, DocumentReference } from "firebase/firestore";
 import { useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { MdAdd, MdExpandMore } from "react-icons/md";
+import { useLocale } from "../../locale";
 import { Event } from "../../types/event";
 import { Payment, paymentConverter } from "../../types/payment";
 import { User, userConverter } from "../../types/user";
@@ -33,9 +34,9 @@ type NewPaymentFormProps = {
 
 export default function NewPaymentForm(props: NewPaymentFormProps) {
   const { eventRef } = props;
-  const [newPaymentTitle, setNewPaymentTitle] = useState("");
-  const [newPaymentAmount, setNewPaymentAmount] = useState<number>(0);
-  const [newPaymentBy, setNewPaymentBy] = useState<User>();
+  const [newPaymentTitle, setNewPaymentTitle] = useState<string | null>(null);
+  const [newPaymentAmount, setNewPaymentAmount] = useState<number | null>(null);
+  const [newPaymentBy, setNewPaymentBy] = useState<User | null>(null);
   const paymentsRef = collection(eventRef, "payments").withConverter(
     paymentConverter
   );
@@ -44,6 +45,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
   );
   const [members, loading] = useCollectionData(membersRef);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { t } = useLocale();
 
   if (loading) {
     return null;
@@ -55,34 +57,37 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
       <Box w={{ base: "sm", md: "lg" }}>
         <Card variant="outline">
           <CardHeader>
-            <Heading size="sm">New payment</Heading>
+            <Heading size="sm">{t.newPayment}</Heading>
           </CardHeader>
           <CardBody>
             <Stack spacing="4">
               <HStack spacing="4">
                 <VStack w="full">
                   <Input
+                    size="sm"
                     onChange={(e) => setNewPaymentTitle(e.target.value)}
-                    value={newPaymentTitle}
-                    placeholder="Title"
+                    value={newPaymentTitle ?? ""}
+                    placeholder={t.title}
                   />
                   <HStack spacing="4" w="full">
                     <Input
+                      size="sm"
                       onChange={(e) =>
                         setNewPaymentAmount(Number(e.target.value))
                       }
-                      value={newPaymentAmount || undefined}
-                      placeholder="Amount"
+                      value={newPaymentAmount ?? ""}
+                      placeholder={t.amount}
                       type="number"
                     />
                     <Menu>
                       <MenuButton
                         w="full"
                         as={Button}
+                        size="sm"
                         rightIcon={<MdExpandMore />}
                         variant="outline"
                       >
-                        Paid by
+                        {newPaymentBy?.name ?? t.paidBy}
                       </MenuButton>
                       <MenuList>
                         {members?.map((member) => (
@@ -113,6 +118,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
                   </HStack>
                 </VStack>
                 <IconButton
+                  size="sm"
                   disabled={
                     !newPaymentTitle || !newPaymentAmount || !newPaymentBy
                   }
@@ -140,7 +146,8 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
     };
 
     setNewPaymentTitle("");
-    setNewPaymentAmount(0);
+    setNewPaymentBy(null);
+    setNewPaymentAmount(null);
 
     await addDoc(paymentsRef, payment);
   }

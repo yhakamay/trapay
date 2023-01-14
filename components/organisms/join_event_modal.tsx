@@ -6,16 +6,15 @@ import {
   ModalBody,
   ModalFooter,
   Button,
-  Text,
   VStack,
-  HStack,
+  Wrap,
+  WrapItem,
   Box,
-  Menu,
-  MenuButton,
-  MenuList,
-  Radio,
-  RadioGroup,
+  Tag,
+  TagLeftIcon,
+  HStack,
   Divider,
+  Text,
 } from "@chakra-ui/react";
 import {
   collection,
@@ -33,7 +32,7 @@ import { User } from "../../types/user";
 import { useState } from "react";
 import UserTag from "../atoms/user_tag";
 import { Payment, paymentConverter } from "../../types/payment";
-import { MdAdd, MdArrowForward, MdExpandMore } from "react-icons/md";
+import { MdPersonAdd } from "react-icons/md";
 
 type JoinEventModalProps = {
   eventRef: DocumentReference<Event>;
@@ -46,7 +45,7 @@ type JoinEventModalProps = {
 export default function JoinEventModal(props: JoinEventModalProps) {
   const { eventRef, isOpen, onClose, firebaseUser, members } = props;
   const newUser = convertToUser(firebaseUser ?? null);
-  const [oldUser, setOldUser] = useState<User | null>(newUser ?? null);
+  const [oldUser, setOldUser] = useState<User | null>(null);
 
   if (!firebaseUser) {
     return null;
@@ -65,74 +64,61 @@ export default function JoinEventModal(props: JoinEventModalProps) {
         backdropFilter="blur(10px) hue-rotate(90deg)"
       />
       <ModalContent>
-        <ModalHeader>Join this event?</ModalHeader>
+        <ModalHeader>Select yourself</ModalHeader>
         <ModalBody>
           <VStack>
-            <Text alignSelf="start">
-              {
-                "You're invited! Assign yourself first. If you don't find your name, select \"Create\". You cannot select a name that's already assigned to someone. "
-              }
-            </Text>
-            <Box h="4" />
-            <HStack>
-              <UserTag
-                user={newUser!}
-                deletable={false}
-                onDelete={function (): void {
-                  throw new Error("Function not implemented.");
-                }}
-              />
-              <MdArrowForward />
-              <Menu isLazy>
-                <MenuButton as={Button} rightIcon={<MdExpandMore />}>
-                  {oldUser?.name}
-                </MenuButton>
-                <MenuList>
-                  <RadioGroup
-                    onChange={(value: string): void => {
-                      const selectedUser = members.find(
-                        (member) => member.id === value
-                      );
-                      setOldUser(selectedUser ?? newUser);
-                    }}
-                    value={oldUser?.id ?? newUser?.id!}
-                  >
-                    <VStack align="start" pl="2" overflow="hidden">
-                      {members.map((member) => {
-                        const alreadyAssigned = member.email !== null;
+            <Wrap justify="center">
+              {members.map((member) => {
+                const alreadyAssigned = member.email !== null;
 
-                        return (
-                          <Radio
-                            key={member.id}
-                            value={member.id!}
-                            isDisabled={alreadyAssigned}
-                          >
-                            <UserTag
-                              user={member}
-                              deletable={false}
-                              onDelete={function (): void {
-                                throw new Error("Function not implemented.");
-                              }}
-                            />
-                          </Radio>
-                        );
-                      })}
-                      <Divider />
-                      <Radio value={newUser?.id!}>
-                        <HStack>
-                          <MdAdd />
-                          <Text>Create</Text>
-                        </HStack>
-                      </Radio>
-                    </VStack>
-                  </RadioGroup>
-                </MenuList>
-              </Menu>
-            </HStack>
+                return (
+                  <>
+                    <WrapItem>
+                      <UserTag
+                        key={member.id}
+                        user={member}
+                        deletable={false}
+                        onClick={() => {
+                          if (!alreadyAssigned) {
+                            setOldUser(member);
+                          }
+                        }}
+                        selected={oldUser?.id === member.id}
+                        disabled={alreadyAssigned}
+                      />
+                    </WrapItem>
+                  </>
+                );
+              })}
+            </Wrap>
+            <Box bg="bg-surface" w="full">
+              <HStack>
+                <Divider />
+                <Text fontSize="xs" whiteSpace="nowrap">
+                  or
+                </Text>
+                <Divider />
+              </HStack>
+            </Box>
+            <Tag
+              size="md"
+              colorScheme="green"
+              borderRadius="full"
+              variant={oldUser?.id === newUser?.id ? "solid" : "outline"}
+              cursor="pointer"
+              onClick={() => {
+                setOldUser(newUser);
+              }}
+            >
+              <TagLeftIcon as={MdPersonAdd} />
+              Not found? Add yourself!
+            </Tag>
+            <Box h="1" />
           </VStack>
         </ModalBody>
         <ModalFooter>
           <Button
+            disabled={oldUser === null}
             onClick={async () => {
               await replaceMember(eventRef, newUser!, oldUser!);
               onClose();

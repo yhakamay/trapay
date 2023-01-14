@@ -1,46 +1,42 @@
 import { Card, Heading, Stack, CardBody, Box, Text } from "@chakra-ui/react";
 import { User as FirebaseUser } from "firebase/auth";
-import { collection, DocumentReference } from "firebase/firestore";
-import { useCollectionData } from "react-firebase-hooks/firestore";
-import { Event } from "../../types/event";
-import { Payment, paymentConverter } from "../../types/payment";
+import { useLocale } from "../../locale";
+import { Payment } from "../../types/payment";
 import { Transaction } from "../../types/transaction";
-import { User, userConverter } from "../../types/user";
-import Loading from "../atoms/loading";
+import { User } from "../../types/user";
 import TransactionsList from "./transactions_list";
 
 type SummaryCardProps = {
+  eventId: string;
   user: FirebaseUser;
-  eventRef: DocumentReference<Event>;
+  payments: Payment[];
+  members: User[];
 };
 
 export default function SummaryCard(props: SummaryCardProps) {
-  const { user, eventRef } = props;
-  const paymentsRef = collection(eventRef, "payments").withConverter(
-    paymentConverter
-  );
-  const [payments, loadingPayments] = useCollectionData(paymentsRef);
-  const membersRef = collection(eventRef, "members").withConverter(
-    userConverter
-  );
-  const [members, loadingMembers] = useCollectionData(membersRef);
+  const { eventId, user, payments, members } = props;
+  const intl = new Intl.NumberFormat("ja-JP", {
+    style: "currency",
+    currency: "JPY",
+  });
   const total = getTotal(payments ?? []);
+  const formattedTotal = intl.format(total);
   const perPerson = getPerPerson(total, members ?? []);
+  const formattedPerPerson = intl.format(perPerson);
   const transactions = getTransactions(members ?? [], payments ?? []);
-
-  if (loadingPayments || loadingMembers) return <Loading />;
+  const { t } = useLocale();
 
   return (
     <Card w={{ base: "sm", md: "lg" }} variant="outline">
       <CardBody>
         <Stack>
-          <Heading size="sm">Total</Heading>
-          <Text>{total}</Text>
-          <Heading size="sm">Per person</Heading>
-          <Text>{`${perPerson} / person`}</Text>
+          <Heading size="sm">{t.total}</Heading>
+          <Text>{formattedTotal}</Text>
+          <Heading size="sm">{t.perPerson}</Heading>
+          <Text>{`${formattedPerPerson} / ${t.person}`}</Text>
           <Box h="4" />
           <TransactionsList
-            eventId={eventRef.id}
+            eventId={eventId}
             user={user}
             transactions={transactions}
           />
@@ -64,44 +60,46 @@ export default function SummaryCard(props: SummaryCardProps) {
   ): Transaction[] {
     // Sort members by their payment amount
     const membersWithPaymentAmount = members.map((member) => {
-      const payment = payments.find(
-        (payment) => payment.paidBy.id === member.id
-      );
+      // Calculate total payment amount for the member
+      const paymentAmount = payments
+        .filter((payment) => payment.paidBy.id === member.id)
+        .reduce((acc, payment) => acc + payment.amount, 0);
+
       return {
         ...member,
-        payment: payment?.amount ?? 0,
+        payment: paymentAmount,
       };
     });
-    const sortedMembers = membersWithPaymentAmount.sort(
-      (a, b) => a.payment - b.payment
-    );
-    const transactions: Transaction[] = [];
+
+    // Classify members into 3 categories: those who need to pay, those who need to receive, and those who have paid the average amount
     const membersNeedToPay: UserWithPaymentAmount[] = [];
     const membersNeedToReceive: UserWithPaymentAmount[] = [];
+    const totalPayment = payments.reduce(
+      (acc, payment) => acc + payment.amount,
+      0
+    );
+    const perPerson = totalPayment / members.length;
 
-    // Find members who need to pay and receive
-    for (const member of sortedMembers) {
-      if (member.payment === perPerson) continue;
-
+    for (const member of membersWithPaymentAmount) {
       if (member.payment < perPerson) {
         membersNeedToPay.push(member);
-      }
-
-      if (member.payment > perPerson) {
+      } else if (member.payment > perPerson) {
         membersNeedToReceive.push(member);
       }
     }
 
+    // Generate transactions
+    const transactions: Transaction[] = [];
     for (const memberNeedToReceive of membersNeedToReceive) {
-      let amount = memberNeedToReceive.payment - perPerson;
+      let amountToReceive = memberNeedToReceive.payment - perPerson;
 
       for (const memberNeedToPay of membersNeedToPay) {
-        if (amount === 0) break;
-
-        if (memberNeedToPay.payment === perPerson) continue;
+        if (amountToReceive === 0) {
+          break;
+        }
 
         const amountToPay = Math.min(
-          amount,
+          amountToReceive,
           perPerson - memberNeedToPay.payment
         );
         transactions.push({
@@ -110,7 +108,7 @@ export default function SummaryCard(props: SummaryCardProps) {
           to: memberNeedToReceive,
           amount: amountToPay,
         });
-        amount -= amountToPay;
+        amountToReceive -= amountToPay;
         memberNeedToPay.payment += amountToPay;
         memberNeedToReceive.payment -= amountToPay;
       }
