@@ -36,6 +36,9 @@ const ja = {
   friendNotJoined:
     "このイベントにまだ参加していません。参加するように依頼してください",
   payToYourFriend: "以下の方法で友達にお金を送ってください",
+  language: "言語",
+  english: "英語",
+  japanese: "日本語",
 };
 
 export default ja;
