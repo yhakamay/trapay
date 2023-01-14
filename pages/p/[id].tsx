@@ -111,13 +111,16 @@ export default function Pay(props: PayProps) {
                         <Text pt="2" fontSize="sm">
                           {paymentMethod.description}
                         </Text>
-                        <Link
-                          href={paymentMethod.url ?? ""}
-                          isExternal
-                          fontSize="sm"
-                        >
-                          {paymentMethod.url}
-                        </Link>
+                        {paymentMethod.url && (
+                          <Link href={paymentMethod.url} isExternal>
+                            <Text fontSize="sm" textOverflow="ellipsis">
+                              {removeScheme(paymentMethod.url).length > 30
+                                ? removeScheme(paymentMethod.url).slice(0, 30) +
+                                  "..."
+                                : removeScheme(paymentMethod.url)}
+                            </Text>
+                          </Link>
+                        )}
                       </Box>
                     ))}
                   </Stack>
@@ -132,6 +135,10 @@ export default function Pay(props: PayProps) {
       </Center>
     </>
   );
+}
+
+function removeScheme(url: string) {
+  return url.replace(/.*?:\/\//g, "");
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
