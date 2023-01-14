@@ -19,7 +19,6 @@ import SignOutButton from "../molecules/sign_out_button";
 import { useRouter } from "next/router";
 import { useLocale } from "../../locale";
 import { MdAdd, MdExpandMore } from "react-icons/md";
-import Loading from "../atoms/loading";
 
 export default function Header() {
   const [user] = useAuthState(auth);
@@ -52,40 +51,40 @@ export default function Header() {
               </NextLink>
             </MenuList>
           </Menu>
-          <Button
-            size="sm"
-            onClick={() => router.push("/new")}
-            leftIcon={<MdAdd />}
-          >
-            {t.newEvent}
-          </Button>
-          {user ? (
-            <Menu>
-              <MenuButton>
-                <Avatar
-                  size="sm"
-                  cursor="pointer"
-                  name={user?.displayName ?? ""}
-                  src={user?.photoURL ?? undefined}
-                />
-              </MenuButton>
-              <MenuList>
-                <Text ml="3">{user?.displayName ?? ""}</Text>
-                <Text ml="3" fontSize="xs" color="grey">
-                  {user?.email ?? ""}
-                </Text>
-                <MenuDivider />
-                <NextLink href="/settings/payment-methods">
-                  <MenuItem>{t.paymentMethods}</MenuItem>
-                </NextLink>
-                <MenuDivider />
-                <MenuItem>
-                  <SignOutButton />
-                </MenuItem>
-              </MenuList>
-            </Menu>
-          ) : (
-            <Loading />
+          {user && (
+            <>
+              <Button
+                size="sm"
+                onClick={() => router.push("/new")}
+                leftIcon={<MdAdd />}
+              >
+                {t.newEvent}
+              </Button>
+              <Menu>
+                <MenuButton>
+                  <Avatar
+                    size="sm"
+                    cursor="pointer"
+                    name={user?.displayName ?? ""}
+                    src={user?.photoURL ?? undefined}
+                  />
+                </MenuButton>
+                <MenuList>
+                  <Text ml="3">{user?.displayName ?? ""}</Text>
+                  <Text ml="3" fontSize="xs" color="grey">
+                    {user?.email ?? ""}
+                  </Text>
+                  <MenuDivider />
+                  <NextLink href="/settings/payment-methods">
+                    <MenuItem>{t.paymentMethods}</MenuItem>
+                  </NextLink>
+                  <MenuDivider />
+                  <MenuItem>
+                    <SignOutButton />
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </>
           )}
         </HStack>
       </Box>
