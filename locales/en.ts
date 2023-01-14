@@ -36,6 +36,8 @@ const en = {
   friendNotJoined:
     "Friend not joined. Please ask your friend to join the app first.",
   payToYourFriend: "Pay to your friend by using the following method(s)",
+  english: "English",
+  japanese: "Japanese",
 };
 
 export default en;
