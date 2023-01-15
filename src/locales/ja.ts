@@ -39,6 +39,8 @@ const ja = {
   language: "言語",
   english: "英語",
   japanese: "日本語",
+  addReceiveMethod:
+    "あなたの友だちがスムーズに支払えるように、こちらから受け取り方法を設定しましょう",
 };
 
 export default ja;

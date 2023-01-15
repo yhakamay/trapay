@@ -39,6 +39,8 @@ const en = {
   language: "Language",
   english: "English",
   japanese: "Japanese",
+  addReceiveMethod:
+    "Add receive method to make it easy for your friends to pay you",
 };
 
 export default en;
