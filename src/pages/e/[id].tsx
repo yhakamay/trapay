@@ -140,7 +140,7 @@ export default function EventDetails(props: EventDetailsProps) {
               payments={payments!}
               members={members!}
             />
-            {myPaymentMethods?.length !== 0 && (
+            {myPaymentMethods?.length === 0 && (
               <Alert status="warning">
                 <AlertIcon />
                 <Box>
