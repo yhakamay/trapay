@@ -3,6 +3,7 @@ import type { AppProps } from "next/app";
 import Head from "next/head";
 import { Router } from "next/router";
 import { Inter } from "@next/font/google";
+import { Analytics } from "@vercel/analytics/react";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Header from "../components/organisms/header";
@@ -33,6 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
       <Header />
       <main className={inter.className}>
         <Component {...pageProps} />
+        <Analytics />
       </main>
       <Footer />
     </ChakraProvider>
