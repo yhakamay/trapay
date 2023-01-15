@@ -7,8 +7,8 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Header from "../components/organisms/header";
 import Footer from "../components/organisms/footer";
-import { theme } from "../theme";
-import { useLocale } from "../locale";
+import { theme } from "../../theme";
+import { useLocale } from "../../locale";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());

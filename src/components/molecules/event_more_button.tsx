@@ -9,7 +9,7 @@ import {
 import { deleteDoc, DocumentReference } from "firebase/firestore";
 import router from "next/router";
 import { MdMoreHoriz, MdDelete, MdPeople } from "react-icons/md";
-import { useLocale } from "../../locale";
+import { useLocale } from "../../../locale";
 import { Event } from "../../types/event";
 
 type EventMoreButtonProps = {

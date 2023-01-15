@@ -12,7 +12,7 @@ import {
 } from "@chakra-ui/react";
 import { Transaction } from "../../types/transaction";
 import { useRouter } from "next/router";
-import { useLocale } from "../../locale";
+import { useLocale } from "../../../locale";
 
 type TransactionsListProps = {
   eventId: string;

@@ -1,6 +1,6 @@
 import { Button, useToast } from "@chakra-ui/react";
 import { MdLink } from "react-icons/md";
-import { useLocale } from "../../locale";
+import { useLocale } from "../../../locale";
 
 type CopyToClipboardButtonProps = {
   eventId: string;

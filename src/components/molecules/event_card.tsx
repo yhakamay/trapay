@@ -9,7 +9,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useLocale } from "../../locale";
+import { useLocale } from "../../../locale";
 
 type EventCardProps = {
   id: string;
