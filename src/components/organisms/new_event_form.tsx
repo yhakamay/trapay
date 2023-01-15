@@ -36,7 +36,9 @@ export default function NewEventForm(props: NewEventFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [date, setDate] = useState<string>("");
+  const [date, setDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
   const [newMemberName, setNewMemberName] = useState<string>("");
   const user = convertToUser(firebaseUser);
   const [members, setMembers] = useState<User[]>([user]);
@@ -105,6 +107,7 @@ export default function NewEventForm(props: NewEventFormProps) {
       </Wrap>
       <Box h="8" />
       <Button
+        disabled={loading || !isValidEvent(title, date)}
         size="sm"
         isLoading={loading}
         onClick={onClickSaveEvent}
@@ -125,6 +128,10 @@ export default function NewEventForm(props: NewEventFormProps) {
   }
 
   function onClickAddMember() {
+    if (newMemberName === "") {
+      return;
+    }
+
     const newMember: User = {
       id: null,
       name: newMemberName,
@@ -142,6 +149,10 @@ export default function NewEventForm(props: NewEventFormProps) {
   }
 
   async function saveEvent(): Promise<void> {
+    if (!isValidEvent(title, date)) {
+      return;
+    }
+
     const event: Event = {
       title,
       description,
@@ -164,6 +175,10 @@ export default function NewEventForm(props: NewEventFormProps) {
 
     // Redirect to the event page
     router.push(`/e/${eventRef.id}`);
+  }
+
+  function isValidEvent(title: string, date: string): boolean {
+    return title !== "" && date !== "";
   }
 
   async function addMember(
