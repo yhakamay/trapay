@@ -6,7 +6,7 @@ import router from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import Loading from "../components/atoms/loading";
 import NewEventForm from "../components/organisms/new_event_form";
-import { auth } from "../../firebaseConfig";
+import { auth } from "../../firebase.config";
 import { useLocale } from "../../locale";
 
 export default function NewEvent() {

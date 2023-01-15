@@ -13,7 +13,7 @@ import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import Loading from "../../components/atoms/loading";
-import { auth, db } from "../../../firebaseConfig";
+import { auth, db } from "../../../firebase.config";
 import { paymentMethodConverter } from "../../types/payment_method";
 import { userConverter } from "../../types/user";
 import NewPaymentMethodForm from "../../components/organisms/new_payment_method_form";
