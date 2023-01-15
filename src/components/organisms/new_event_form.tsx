@@ -36,7 +36,9 @@ export default function NewEventForm(props: NewEventFormProps) {
   const router = useRouter();
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
-  const [date, setDate] = useState<string>("");
+  const [date, setDate] = useState<string>(
+    new Date().toISOString().split("T")[0]
+  );
   const [newMemberName, setNewMemberName] = useState<string>("");
   const user = convertToUser(firebaseUser);
   const [members, setMembers] = useState<User[]>([user]);
