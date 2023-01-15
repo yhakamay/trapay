@@ -15,11 +15,11 @@ import { MdAdd } from "react-icons/md";
 import { useLocale } from "../../../locale";
 import { PaymentMethod } from "../../types/payment_method";
 
-type NewPaymentMethodFormProps = {
+type NewReceiveMethodFormProps = {
   methodsRef: CollectionReference<PaymentMethod>;
 };
 
-export default function NewPaymentMethodForm(props: NewPaymentMethodFormProps) {
+export default function NewReceiveMethodForm(props: NewReceiveMethodFormProps) {
   const { methodsRef } = props;
   const [methodName, setMethodName] = useState("");
   const [methodDescription, setMethodDescription] = useState("");
@@ -29,7 +29,7 @@ export default function NewPaymentMethodForm(props: NewPaymentMethodFormProps) {
   return (
     <Card variant="outline">
       <CardHeader>
-        <Heading size="sm">{t.addPaymentMethod}</Heading>
+        <Heading size="sm">{t.addReceiveMethod}</Heading>
       </CardHeader>
       <CardBody>
         <HStack spacing="4">
@@ -46,7 +46,7 @@ export default function NewPaymentMethodForm(props: NewPaymentMethodFormProps) {
             <Input
               size="sm"
               value={methodUrl}
-              placeholder={t.url}
+              placeholder={`${t.url} (${t.optional})`}
               maxLength={100}
               onChange={(e) => {
                 setMethodUrl(e.target.value);

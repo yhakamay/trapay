@@ -94,8 +94,8 @@ export default function Header() {
                     {user?.email ?? ""}
                   </Text>
                   <MenuDivider />
-                  <NextLink href="/settings/payment-methods">
-                    <MenuItem>{t.paymentMethods}</MenuItem>
+                  <NextLink href="/settings/receive-methods">
+                    <MenuItem>{t.receiveMethods}</MenuItem>
                   </NextLink>
                   <MenuDivider />
                   <MenuItem>

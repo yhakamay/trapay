@@ -1,4 +1,9 @@
+import NextLink from "next/link";
 import {
+  Alert,
+  AlertDescription,
+  AlertIcon,
+  AlertTitle,
   Box,
   Card,
   CardBody,
@@ -35,6 +40,8 @@ import EventMoreButton from "../../components/molecules/event_more_button";
 import EditMembersModal from "../../components/organisms/edit_members_modal";
 import { paymentConverter } from "../../types/payment";
 import { SomethingWentWrong } from "../../components/atoms/something_went_wrong";
+import { paymentMethodConverter } from "../../types/payment_method";
+import { useLocale } from "../../../locale";
 
 type EventDetailsProps = {
   id: string;
@@ -61,6 +68,17 @@ export default function EventDetails(props: EventDetailsProps) {
     onOpen: onOpenEditMembers,
     onClose: onCloseEditMembers,
   } = useDisclosure();
+  const usersRef = collection(db, "users").withConverter(userConverter);
+  const userRef = user
+    ? doc(usersRef, user?.uid).withConverter(userConverter)
+    : null;
+  const myPaymentMethodsRef = userRef
+    ? collection(userRef, "payment-methods").withConverter(
+        paymentMethodConverter
+      )
+    : null;
+  const [myPaymentMethods] = useCollectionData(myPaymentMethodsRef);
+  const { t } = useLocale();
 
   if (!router.isReady || loadingEvent || loadingMembers || loadingPayments) {
     return <Loading />;
@@ -122,6 +140,19 @@ export default function EventDetails(props: EventDetailsProps) {
               payments={payments!}
               members={members!}
             />
+            {myPaymentMethods?.length !== 0 && (
+              <Alert status="warning">
+                <AlertIcon />
+                <Box>
+                  <AlertTitle>{t.pleaseAddReceiveMethod}</AlertTitle>
+                  <AlertDescription>
+                    <NextLink href="/settings/receive-methods">
+                      {`trapay.app/settings/receive-methods`}
+                    </NextLink>
+                  </AlertDescription>
+                </Box>
+              </Alert>
+            )}
             <NewPaymentForm eventRef={eventRef} />
             <PaymentsList paymentsRef={paymentsRef} payments={payments!} />
           </VStack>
