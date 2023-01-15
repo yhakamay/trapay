@@ -16,7 +16,7 @@ import Loading from "../../components/atoms/loading";
 import { auth, db } from "../../../firebase.config";
 import { paymentMethodConverter } from "../../types/payment_method";
 import { userConverter } from "../../types/user";
-import NewPaymentMethodForm from "../../components/organisms/new_payment_method_form";
+import NewReceiveMethodForm from "../../components/organisms/new_receive_method_form";
 import { PaymentMethodsList } from "../../components/organisms/payment_methods_list";
 import NoItems from "../../components/atoms/no_items";
 import { useLocale } from "../../../locale";
@@ -48,20 +48,20 @@ export default function PaymentMethods() {
   return (
     <>
       <Head>
-        <title>{t.paymentMethods}</title>
+        <title>{t.receiveMethods}</title>
       </Head>
       <Center>
         <Box w={{ base: "sm", md: "lg" }}>
           <Stack>
             <Card variant="filled">
               <CardBody>
-                <Heading size="lg">{t.paymentMethods}</Heading>
+                <Heading size="lg">{t.receiveMethods}</Heading>
                 <Box h="2" />
-                <Text>{t.paymentMethodsDescription}</Text>
+                <Text>{t.receiveMethodsDescription}</Text>
               </CardBody>
             </Card>
             <Box h="4" />
-            <NewPaymentMethodForm methodsRef={methodsRef!} />
+            <NewReceiveMethodForm methodsRef={methodsRef!} />
             <Box h="4" />
             {noMethods ? (
               <NoItems text={"No methods yet. Add one!"} />

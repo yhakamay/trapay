@@ -140,14 +140,14 @@ export default function EventDetails(props: EventDetailsProps) {
               payments={payments!}
               members={members!}
             />
-            {myPaymentMethods?.length === 0 && (
+            {myPaymentMethods?.length !== 0 && (
               <Alert status="warning">
                 <AlertIcon />
                 <Box>
-                  <AlertTitle>{t.addReceiveMethod}</AlertTitle>
+                  <AlertTitle>{t.pleaseAddReceiveMethod}</AlertTitle>
                   <AlertDescription>
-                    <NextLink href="/settings/payment-methods">
-                      {`trapay.app/settings/payment-methods`}
+                    <NextLink href="/settings/receive-methods">
+                      {`trapay.app/settings/receive-methods`}
                     </NextLink>
                   </AlertDescription>
                 </Box>

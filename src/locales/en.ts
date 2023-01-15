@@ -1,7 +1,9 @@
 const en = {
   appDescription: "Split the bill with your friends easily!",
   newEvent: "New",
-  paymentMethods: "Payment methods",
+  receiveMethods: "Receive methods",
+  receiveMethodsDescription:
+    "Set up receive methods you want to receive money with. Your friends can send you money using these payment methods.",
   signIn: "Sign in",
   signOut: "Sign out",
   signingOut: "Signing out...",
@@ -21,10 +23,8 @@ const en = {
   paidBy: "Paid by",
   member: "Member",
   save: "Save",
-  paymentMethodsDescription:
-    "Set up payment methods you want to receive money with. Your friends can send you money using these payment methods.",
   url: "URL",
-  addPaymentMethod: "Add payment method",
+  addReceiveMethod: "Add receive method",
   copiedToClipboard: "Copied to clipboard",
   members: "Members",
   done: "Done",
@@ -39,7 +39,7 @@ const en = {
   language: "Language",
   english: "English",
   japanese: "Japanese",
-  addReceiveMethod:
+  pleaseAddReceiveMethod:
     "Add receive method to make it easy for your friends to pay you",
 };
 
