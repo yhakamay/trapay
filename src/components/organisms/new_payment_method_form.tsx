@@ -12,7 +12,7 @@ import {
 import { CollectionReference, addDoc } from "firebase/firestore";
 import { useState } from "react";
 import { MdAdd } from "react-icons/md";
-import { useLocale } from "../../locale";
+import { useLocale } from "../../../locale";
 import { PaymentMethod } from "../../types/payment_method";
 
 type NewPaymentMethodFormProps = {

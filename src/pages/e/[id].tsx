@@ -26,7 +26,7 @@ import Loading from "../../components/atoms/loading";
 import SummaryCard from "../../components/molecules/summary_card";
 import NewPaymentForm from "../../components/organisms/new_payment_form";
 import PaymentsList from "../../components/organisms/payments_list";
-import { auth, db } from "../../firebaseConfig";
+import { auth, db } from "../../../firebaseConfig";
 import { eventConverter } from "../../types/event";
 import { userConverter } from "../../types/user";
 import JoinEventModal from "../../components/organisms/join_event_modal";

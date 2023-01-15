@@ -2,14 +2,14 @@ import { Wrap, WrapItem } from "@chakra-ui/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import EventCard from "../components/molecules/event_card";
-import { auth, db } from "../firebaseConfig";
+import { auth, db } from "../../firebaseConfig";
 import { collection, doc } from "firebase/firestore";
 import { eventConverter } from "../types/event";
 import { useRouter } from "next/router";
 import { userConverter } from "../types/user";
 import Loading from "../components/atoms/loading";
 import NoItems from "../components/atoms/no_items";
-import { useLocale } from "../locale";
+import { useLocale } from "../../locale";
 import { SomethingWentWrong } from "../components/atoms/something_went_wrong";
 
 export default function Home() {

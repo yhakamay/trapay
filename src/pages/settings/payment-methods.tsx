@@ -13,13 +13,13 @@ import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import Loading from "../../components/atoms/loading";
-import { auth, db } from "../../firebaseConfig";
+import { auth, db } from "../../../firebaseConfig";
 import { paymentMethodConverter } from "../../types/payment_method";
 import { userConverter } from "../../types/user";
 import NewPaymentMethodForm from "../../components/organisms/new_payment_method_form";
 import { PaymentMethodsList } from "../../components/organisms/payment_methods_list";
 import NoItems from "../../components/atoms/no_items";
-import { useLocale } from "../../locale";
+import { useLocale } from "../../../locale";
 
 export default function PaymentMethods() {
   const router = useRouter();

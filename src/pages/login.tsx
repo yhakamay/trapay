@@ -3,11 +3,11 @@ import { Container, VStack, Heading, Text, Box } from "@chakra-ui/react";
 import { SignInButton } from "../components/molecules/sign_in_buttons";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../firebaseConfig";
+import { auth } from "../../firebaseConfig";
 import Head from "next/head";
 import Loading from "../components/atoms/loading";
 import { GetServerSideProps } from "next";
-import { useLocale } from "../locale";
+import { useLocale } from "../../locale";
 import { SomethingWentWrong } from "../components/atoms/something_went_wrong";
 
 type LoginProps = {

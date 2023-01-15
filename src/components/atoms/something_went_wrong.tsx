@@ -1,6 +1,6 @@
 import NextImage from "next/image";
 import { VStack, Text } from "@chakra-ui/react";
-import { useLocale } from "../../locale";
+import { useLocale } from "../../../locale";
 
 export const SomethingWentWrong = () => {
   const { t } = useLocale();

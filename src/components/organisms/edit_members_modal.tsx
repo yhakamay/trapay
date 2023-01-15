@@ -11,7 +11,7 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import { CollectionReference, deleteDoc, doc } from "firebase/firestore";
-import { useLocale } from "../../locale";
+import { useLocale } from "../../../locale";
 import { Payment } from "../../types/payment";
 import { User, userConverter } from "../../types/user";
 import UserTag from "../atoms/user_tag";

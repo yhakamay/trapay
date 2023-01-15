@@ -1,5 +1,5 @@
 import { Text } from "@chakra-ui/react";
-import { useLocale } from "../../locale";
+import { useLocale } from "../../../locale";
 
 type EventDateProps = {
   date: Date;
