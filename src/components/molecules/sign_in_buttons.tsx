@@ -5,7 +5,7 @@ import {
   signInWithPopup,
 } from "firebase/auth";
 import { useState } from "react";
-import { auth } from "../../../firebaseConfig";
+import { auth } from "../../../firebase.config";
 import Image from "next/image";
 
 export function SignInButton() {
