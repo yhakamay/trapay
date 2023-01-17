@@ -134,12 +134,6 @@ export default function EventDetails(props: EventDetailsProps) {
                 </HStack>
               </CardBody>
             </Card>
-            <SummaryCard
-              eventId={id}
-              user={user!}
-              payments={payments!}
-              members={members!}
-            />
             {myPaymentMethods?.length === 0 && (
               <Alert status="warning">
                 <AlertIcon />
@@ -153,6 +147,12 @@ export default function EventDetails(props: EventDetailsProps) {
                 </Box>
               </Alert>
             )}
+            <SummaryCard
+              eventId={id}
+              user={user!}
+              payments={payments!}
+              members={members!}
+            />
             <NewPaymentForm eventRef={eventRef} />
             <PaymentsList paymentsRef={paymentsRef} payments={payments!} />
           </VStack>
