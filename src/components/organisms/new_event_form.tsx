@@ -95,7 +95,7 @@ export default function NewEventForm(props: NewEventFormProps) {
           />
         </InputRightElement>
       </InputGroup>
-      <Wrap>
+      <Wrap justify="center">
         {members.map((member, i) => (
           <UserTag
             key={i}
