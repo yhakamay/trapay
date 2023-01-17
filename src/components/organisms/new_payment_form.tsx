@@ -118,7 +118,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
                   </HStack>
                 </VStack>
                 <IconButton
-                  size="sm"
+                  size="lg"
                   disabled={
                     !newPaymentTitle || !newPaymentAmount || !newPaymentBy
                   }
