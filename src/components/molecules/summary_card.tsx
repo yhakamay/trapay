@@ -34,12 +34,16 @@ export default function SummaryCard(props: SummaryCardProps) {
           <Text>{formattedTotal}</Text>
           <Heading size="sm">{t.perPerson}</Heading>
           <Text>{`${formattedPerPerson} / ${t.person}`}</Text>
-          <Box h="4" />
-          <TransactionsList
-            eventId={eventId}
-            user={user}
-            transactions={transactions}
-          />
+          {transactions.length > 0 && (
+            <>
+              <Box h="4" />
+              <TransactionsList
+                eventId={eventId}
+                user={user}
+                transactions={transactions}
+              />
+            </>
+          )}
         </Stack>
       </CardBody>
     </Card>
