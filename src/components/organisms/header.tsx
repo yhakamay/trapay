@@ -89,12 +89,10 @@ export default function Header() {
                   />
                 </MenuButton>
                 <MenuList>
-                  <NextLink href="/settings/profile">
-                    <Text ml="3">{user?.displayName ?? ""}</Text>
-                    <Text ml="3" fontSize="xs" color="grey">
-                      {user?.email ?? ""}
-                    </Text>
-                  </NextLink>
+                  <Text ml="3">{user?.displayName ?? ""}</Text>
+                  <Text ml="3" fontSize="xs" color="grey">
+                    {user?.email ?? ""}
+                  </Text>
                   <MenuDivider />
                   <NextLink href="/settings/receive-methods">
                     <MenuItem>{t.receiveMethods}</MenuItem>
