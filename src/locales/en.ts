@@ -41,10 +41,6 @@ const en = {
   japanese: "Japanese",
   pleaseAddReceiveMethod:
     "Add receive method to make it easy for your friends to pay you",
-  profile: "Profile",
-  profileDescription: "Edit your profile",
-  updatingAvatarIsNotSupported: "Updating avatar is not supported yet. Sorry!",
-  updatedDisplayNameTo: "Updated display name to:",
 };
 
 export default en;
