@@ -19,7 +19,7 @@ import {
 import { User as FirebaseUser } from "firebase/auth";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import { db } from "../../../firebase.config";
+import { db } from "../../firebase/firebase";
 import { Event, eventConverter } from "../../types/event";
 import { User, userConverter } from "../../types/user";
 import Loading from "../atoms/loading";

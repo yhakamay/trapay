@@ -10,6 +10,7 @@ import Header from "../components/organisms/header";
 import Footer from "../components/organisms/footer";
 import { theme } from "../../theme";
 import { useLocale } from "../../locale";
+import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 Router.events.on("routeChangeStart", () => NProgress.start());
 Router.events.on("routeChangeComplete", () => NProgress.done());
@@ -20,7 +21,7 @@ const inter = Inter({
 });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   return (
     <ChakraProvider theme={theme}>
@@ -32,10 +33,15 @@ export default function App({ Component, pageProps }: AppProps) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Header />
-      <main className={inter.className}>
-        <Component {...pageProps} />
-        <Analytics />
-      </main>
+      <GoogleReCaptchaProvider
+        reCaptchaKey={process.env.NEXT_PUBLIC_RECAPTCHA_CLIENT_KEY!}
+        language={locale}
+      >
+        <main className={inter.className}>
+          <Component {...pageProps} />
+          <Analytics />
+        </main>
+      </GoogleReCaptchaProvider>
       <Footer />
     </ChakraProvider>
   );
