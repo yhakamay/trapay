@@ -58,8 +58,8 @@ export default function TransactionsList(props: TransactionsListProps) {
                   <Text color={amountColor} fontWeight={amountWeight}>
                     {formattedAmount}
                   </Text>
-                  {isPayee && <Badge colorScheme="green">receive</Badge>}
-                  {isPayer && <Badge colorScheme="red">pay</Badge>}
+                  {isPayee && <Badge colorScheme="green">{t.receive}</Badge>}
+                  {isPayer && <Badge colorScheme="red">{t.pay}</Badge>}
                 </HStack>
               </VStack>
               {isPayer && (

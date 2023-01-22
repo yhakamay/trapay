@@ -12,6 +12,7 @@ const ja = {
   total: "合計",
   perPerson: "一人あたり",
   pay: "支払う",
+  receive: "受け取る",
   addNewEvent: "新規イベント",
   addMember: "メンバー追加",
   addPayment: "支払い追加",
