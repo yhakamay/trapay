@@ -12,6 +12,7 @@ const en = {
   total: "Total",
   perPerson: "Per person",
   pay: "Pay",
+  receive: "Receive",
   addNewEvent: "Add new event",
   addMember: "Add member",
   addPayment: "Add payment",
