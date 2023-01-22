@@ -41,7 +41,7 @@ import EditMembersModal from "../../components/organisms/edit_members_modal";
 import { paymentConverter } from "../../types/payment";
 import { SomethingWentWrong } from "../../components/atoms/something_went_wrong";
 import { paymentMethodConverter } from "../../types/payment_method";
-import { useLocale } from "../../../locale";
+import { useLocale } from "../../locale";
 
 type EventDetailsProps = {
   id: string;

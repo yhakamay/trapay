@@ -7,7 +7,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import Loading from "../components/atoms/loading";
 import NewEventForm from "../components/organisms/new_event_form";
 import { auth } from "../firebase/firebase";
-import { useLocale } from "../../locale";
+import { useLocale } from "../locale";
 
 export default function NewEvent() {
   const [user, loadingUser] = useAuthState(auth);

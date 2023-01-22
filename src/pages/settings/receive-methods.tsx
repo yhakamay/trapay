@@ -19,7 +19,7 @@ import { userConverter } from "../../types/user";
 import NewReceiveMethodForm from "../../components/organisms/new_receive_method_form";
 import { PaymentMethodsList } from "../../components/organisms/payment_methods_list";
 import NoItems from "../../components/atoms/no_items";
-import { useLocale } from "../../../locale";
+import { useLocale } from "../../locale";
 
 export default function PaymentMethods() {
   const router = useRouter();

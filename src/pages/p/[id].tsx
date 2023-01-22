@@ -28,7 +28,7 @@ import Loading from "../../components/atoms/loading";
 import NoItems from "../../components/atoms/no_items";
 import { SomethingWentWrong } from "../../components/atoms/something_went_wrong";
 import { auth, db } from "../../firebase/firebase";
-import { useLocale } from "../../../locale";
+import { useLocale } from "../../locale";
 import { paymentMethodConverter } from "../../types/payment_method";
 import { userConverter } from "../../types/user";
 

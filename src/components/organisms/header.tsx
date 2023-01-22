@@ -19,7 +19,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "../../firebase/firebase";
 import SignOutButton from "../molecules/sign_out_button";
 import { useRouter } from "next/router";
-import { useLocale } from "../../../locale";
+import { useLocale } from "../../locale";
 import { MdAdd, MdExpandMore } from "react-icons/md";
 
 export default function Header() {

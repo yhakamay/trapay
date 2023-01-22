@@ -21,7 +21,7 @@ import { addDoc, collection, DocumentReference } from "firebase/firestore";
 import { useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { MdAdd, MdExpandMore } from "react-icons/md";
-import { useLocale } from "../../../locale";
+import { useLocale } from "../../locale";
 import { Event } from "../../types/event";
 import { Payment, paymentConverter } from "../../types/payment";
 import { User, userConverter } from "../../types/user";

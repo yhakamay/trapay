@@ -1,6 +1,6 @@
 import { Card, Heading, Stack, CardBody, Box, Text } from "@chakra-ui/react";
 import { User as FirebaseUser } from "firebase/auth";
-import { useLocale } from "../../../locale";
+import { useLocale } from "../../locale";
 import { Payment } from "../../types/payment";
 import { Transaction } from "../../types/transaction";
 import { User } from "../../types/user";
