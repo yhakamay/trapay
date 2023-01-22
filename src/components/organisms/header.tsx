@@ -89,7 +89,9 @@ export default function Header() {
                   />
                 </MenuButton>
                 <MenuList>
-                  <Text ml="3">{user?.displayName ?? ""}</Text>
+                  <NextLink href="/settings/profile">
+                    <Text ml="3">{user?.displayName ?? ""}</Text>
+                  </NextLink>
                   <Text ml="3" fontSize="xs" color="grey">
                     {user?.email ?? ""}
                   </Text>
