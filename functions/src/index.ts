@@ -55,3 +55,34 @@ exports.deleteEventFromUser = functions.firestore
       usersEventsRef.doc(eventId).delete();
     });
   });
+
+// Updates the user's profile in every events when users/{userId} is updated
+exports.updateUser = functions.firestore
+  .document("users/{userId}")
+  .onUpdate(async (_, context) => {
+    const { userId } = context.params;
+    const usersRef = admin.firestore().collection("users");
+    const userRef = usersRef.doc(userId);
+    const userDoc = await userRef.get();
+    const user = userDoc.data();
+
+    if (!user) {
+      return null;
+    }
+
+    const eventsRef = admin.firestore().collection("events");
+    const eventsSnapshot = await eventsRef.get();
+
+    return eventsSnapshot.forEach(async (eventDoc) => {
+      const eventId = eventDoc.id;
+      const eventRef = eventsRef.doc(eventId);
+      const membersRef = eventRef.collection("members");
+      const memberDoc = await membersRef.doc(userId).get();
+
+      if (!memberDoc.exists) {
+        return;
+      }
+
+      membersRef.doc(userId).update(user);
+    });
+  });
