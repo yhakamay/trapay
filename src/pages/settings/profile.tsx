@@ -53,19 +53,16 @@ export default function Profile() {
       <Center>
         <Box w={{ base: "sm", md: "lg" }}>
           <VStack spacing="4">
-            <Card variant="filled">
+            <Card variant="filled" w="full">
               <CardBody>
-                <Heading size="lg">{t.receiveMethods}</Heading>
+                <Heading size="lg">{t.profile}</Heading>
                 <Box h="2" />
-                <Text>{t.receiveMethodsDescription}</Text>
+                <Text>{t.profileDescription}</Text>
               </CardBody>
             </Card>
             <Alert status="info">
               <AlertIcon />
-              <Text>
-                Currently, you cannot update your profile picture. Hang tight
-                for upcoming version.
-              </Text>
+              <Text>{t.updatingAvatarIsNotSupported}</Text>
             </Alert>
             <Avatar
               src={user?.photoURL ?? ""}
@@ -112,7 +109,7 @@ export default function Profile() {
     });
 
     toast({
-      title: `Updated your name to ${newDisplayName}`,
+      title: `${t.updatedDisplayNameTo} ${newDisplayName}`,
       status: "success",
     });
 
