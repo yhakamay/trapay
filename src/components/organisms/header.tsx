@@ -16,7 +16,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../../firebase.config";
+import { auth } from "../../firebase/firebase";
 import SignOutButton from "../molecules/sign_out_button";
 import { useRouter } from "next/router";
 import { useLocale } from "../../../locale";

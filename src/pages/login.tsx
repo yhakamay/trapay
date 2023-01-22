@@ -3,7 +3,7 @@ import { Container, VStack, Heading, Text, Box } from "@chakra-ui/react";
 import { SignInButton } from "../components/molecules/sign_in_buttons";
 import { useRouter } from "next/router";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth } from "../../firebase.config";
+import { auth } from "../firebase/firebase";
 import Head from "next/head";
 import Loading from "../components/atoms/loading";
 import { GetServerSideProps } from "next";
