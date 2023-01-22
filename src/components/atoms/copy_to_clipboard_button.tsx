@@ -11,7 +11,7 @@ export default function CopyToClipboardButton(
 ) {
   const { eventId } = props;
   const toast = useToast();
-  const { t } = useLocale();
+  const { t, locale } = useLocale();
 
   return (
     <Button
@@ -34,8 +34,9 @@ export default function CopyToClipboardButton(
   }
 
   async function copyToClipboard(eventId: string) {
-    await navigator.clipboard.writeText(
-      `${window.location.origin}/e/${eventId}`
-    );
+    const subDir = locale === "en" ? "" : `/${locale}`;
+    const res = `${window.location.origin}${subDir}/e/${eventId}`;
+
+    await navigator.clipboard.writeText(res);
   }
 }
