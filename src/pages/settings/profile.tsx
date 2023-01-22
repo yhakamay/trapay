@@ -28,6 +28,7 @@ import Loading from "../../components/atoms/loading";
 export default function Profile() {
   const { t } = useLocale();
   const router = useRouter();
+  const [updating, setUpdating] = useState(false);
   const [user, loadingUser] = useAuthState(auth);
   const [newDisplayName, setNewDisplayName] = useState(user?.displayName);
   const toast = useToast();
@@ -82,6 +83,7 @@ export default function Profile() {
                 isDisabled={
                   newDisplayName === user?.displayName || !newDisplayName
                 }
+                isLoading={updating}
                 onClick={() => onChangeDisplayName(newDisplayName!)}
                 aria-label="Update display name"
                 variant="outline"
@@ -99,6 +101,8 @@ export default function Profile() {
       return;
     }
 
+    setUpdating(true);
+
     await updateProfile(user, { displayName: newDisplayName });
 
     const usersRef = collection(db, "users");
@@ -113,5 +117,7 @@ export default function Profile() {
     });
 
     setNewDisplayName(user.displayName);
+
+    setUpdating(false);
   }
 }
