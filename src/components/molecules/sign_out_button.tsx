@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { auth } from "../../firebase/firebase";
 import { MdLogout } from "react-icons/md";
-import { useLocale } from "../../../locale";
+import { useLocale } from "../../locale";
 
 export default function SignOutButton() {
   const [loading, setLoading] = useState(false);

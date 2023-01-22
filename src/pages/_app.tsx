@@ -8,8 +8,8 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import Header from "../components/organisms/header";
 import Footer from "../components/organisms/footer";
-import { theme } from "../../theme";
-import { useLocale } from "../../locale";
+import { theme } from "../theme";
+import { useLocale } from "../locale";
 import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
 
 Router.events.on("routeChangeStart", () => NProgress.start());

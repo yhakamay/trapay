@@ -7,7 +7,7 @@ import { auth } from "../firebase/firebase";
 import Head from "next/head";
 import Loading from "../components/atoms/loading";
 import { GetServerSideProps } from "next";
-import { useLocale } from "../../locale";
+import { useLocale } from "../locale";
 import { SomethingWentWrong } from "../components/atoms/something_went_wrong";
 
 type LoginProps = {

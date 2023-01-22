@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 import { userConverter } from "../types/user";
 import Loading from "../components/atoms/loading";
 import NoItems from "../components/atoms/no_items";
-import { useLocale } from "../../locale";
+import { useLocale } from "../locale";
 import { SomethingWentWrong } from "../components/atoms/something_went_wrong";
 
 export default function Home() {

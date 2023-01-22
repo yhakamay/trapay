@@ -25,7 +25,7 @@ import { User, userConverter } from "../../types/user";
 import Loading from "../atoms/loading";
 import UserTag from "../atoms/user_tag";
 import { MdPersonAddAlt1, MdSaveAlt } from "react-icons/md";
-import { useLocale } from "../../../locale";
+import { useLocale } from "../../locale";
 
 type NewEventFormProps = {
   firebaseUser: FirebaseUser;
