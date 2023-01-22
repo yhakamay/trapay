@@ -108,7 +108,7 @@ export default function NewPaymentForm(props: NewPaymentFormProps) {
                             onOpen();
                           }}
                         >
-                          Add member
+                          {t.addMember}
                         </MenuItem>
                       </MenuList>
                     </Menu>
