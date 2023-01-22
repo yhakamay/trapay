@@ -21,8 +21,8 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { MdCheck } from "react-icons/md";
-import { auth, db } from "../../../firebase.config";
-import { useLocale } from "../../../locale";
+import { auth, db } from "../../firebase/firebase";
+import { useLocale } from "../../locale";
 import Loading from "../../components/atoms/loading";
 
 export default function Profile() {
