@@ -1,0 +1,15 @@
+env:
+  - any: ["*"]
+    all: ["!README.md"]
+
+firebase:
+  - src/firebase/*
+
+locale:
+  - any: ["src/locales/*", "src/locale.ts"]
+
+doc:
+  - README.md
+
+dependencies:
+  - any: ["package*.json"]
