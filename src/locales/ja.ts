@@ -41,6 +41,11 @@ const ja = {
   japanese: "日本語",
   pleaseAddReceiveMethod:
     "あなたの友だちがスムーズに支払えるように、受け取り方法を設定しましょう",
+  profile: "プロフィール",
+  profileDescription: "あなたのプロフィールを編集しましょう",
+  updatingAvatarIsNotSupported:
+    "プロフィール画像の更新は現在サポートされていません。今後の更新をお待ちください",
+  updatedDisplayNameTo: "表示名を変更しました:",
 };
 
 export default ja;
