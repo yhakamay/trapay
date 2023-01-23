@@ -2,10 +2,13 @@ env:
   - any: ["*"]
     all: ["!README.md"]
 
+front-end:
+  - any: ["src/components/*.tsx", "src/pages/**/*.tsx"]
+
 firebase:
   - src/firebase/*
 
-locale:
+i18n:
   - any: ["src/locales/*", "src/locale.ts"]
 
 doc:
