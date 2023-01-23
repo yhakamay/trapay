@@ -125,7 +125,7 @@ export default function EventDetails(props: EventDetailsProps) {
                   <EventDate date={new Date(event.date ?? "")} />
                 </HStack>
                 <Text alignSelf="start">{event.description}</Text>
-                <HStack w="full" justify="end">
+                <HStack w="full" justify="end" mt='2'>
                   <CopyToClipboardButton eventId={event.id!} />
                   <EventMoreButton
                     eventRef={eventRef}

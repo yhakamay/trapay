@@ -33,7 +33,7 @@ export default function Header() {
       <Box as="nav" px={{ base: "4", md: "8" }} py="4">
         <HStack>
           <NextLink href="/">
-            <Heading size="lg">TraPay</Heading>
+            <Heading size="md">TraPay</Heading>
           </NextLink>
           <Spacer />
           <Menu>
