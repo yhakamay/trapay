@@ -3,7 +3,7 @@ env:
     all: ["!README.md"]
 
 front-end:
-  - **/*.tsx
+  - any: ["src/components/*.tsx", "src/pages/**/*.tsx"]
 
 firebase:
   - src/firebase/*
