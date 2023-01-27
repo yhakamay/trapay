@@ -42,17 +42,21 @@ export default function Home() {
 
   return (
     <Wrap justify="center">
-      {events?.map((event) => (
-        <WrapItem key={event.id}>
-          <EventCard
-            id={event.id?.toString() ?? ""}
-            title={event.title}
-            date={event.date ?? ""}
-            description={event.description ?? ""}
-            h="xs"
-          />
-        </WrapItem>
-      ))}
+      {events
+        ?.sort(
+          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime()
+        )
+        .map((event) => (
+          <WrapItem key={event.id}>
+            <EventCard
+              id={event.id?.toString() ?? ""}
+              title={event.title}
+              date={event.date ?? ""}
+              description={event.description ?? ""}
+              h="xs"
+            />
+          </WrapItem>
+        ))}
     </Wrap>
   );
 }
