@@ -24,7 +24,7 @@ export function PaymentMethodsList(props: PaymentMethodsListProps) {
     const { name, description, url, id } = method;
 
     return (
-      <Card key={method.name} w={{ base: "sm", md: "lg" }} variant="outline">
+      <Card key={id} w={{ base: "sm", md: "lg" }} variant="outline">
         <CardBody>
           <HStack justify="space-between">
             <VStack alignItems="start">
