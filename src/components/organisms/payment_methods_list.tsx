@@ -31,9 +31,14 @@ export function PaymentMethodsList(props: PaymentMethodsListProps) {
               <Heading size="sm">{name}</Heading>
               {url && (
                 <Link href={url} isExternal>
-                  {removeScheme(url).length > 30
-                    ? removeScheme(url).slice(0, 30) + "..."
-                    : removeScheme(url)}
+                  <Text
+                    fontSize="xs"
+                    decoration="underline"
+                    noOfLines={1}
+                    textOverflow="ellipsis"
+                  >
+                    {removeScheme(url)}
+                  </Text>
                 </Link>
               )}
               {description && (
