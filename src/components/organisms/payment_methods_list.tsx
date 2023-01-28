@@ -29,13 +29,17 @@ export function PaymentMethodsList(props: PaymentMethodsListProps) {
           <HStack justify="space-between">
             <VStack alignItems="start">
               <Heading size="sm">{name}</Heading>
-              <Text>{description}</Text>
               {url && (
                 <Link href={url} isExternal>
                   {removeScheme(url).length > 30
                     ? removeScheme(url).slice(0, 30) + "..."
                     : removeScheme(url)}
                 </Link>
+              )}
+              {description && (
+                <Text fontSize="xs" color="grey">
+                  {description}
+                </Text>
               )}
             </VStack>
             <IconButton
