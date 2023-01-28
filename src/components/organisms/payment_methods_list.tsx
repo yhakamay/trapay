@@ -21,24 +21,26 @@ export function PaymentMethodsList(props: PaymentMethodsListProps) {
   const { methodsRef, methods } = props;
 
   return methods?.map((method) => {
+    const { name, description, url, id } = method;
+
     return (
       <Card key={method.name} w={{ base: "sm", md: "lg" }} variant="outline">
         <CardBody>
           <HStack justify="space-between">
             <VStack alignItems="start">
-              <Heading size="sm">{method.name}</Heading>
-              <Text>{method.description}</Text>
-              {method.url && (
-                <Link href={method.url} isExternal>
-                  {removeScheme(method.url).length > 30
-                    ? removeScheme(method.url).slice(0, 30) + "..."
-                    : removeScheme(method.url)}
+              <Heading size="sm">{name}</Heading>
+              <Text>{description}</Text>
+              {url && (
+                <Link href={url} isExternal>
+                  {removeScheme(url).length > 30
+                    ? removeScheme(url).slice(0, 30) + "..."
+                    : removeScheme(url)}
                 </Link>
               )}
             </VStack>
             <IconButton
               onClick={async () => {
-                await onClickDeleteMethod(methodsRef, method.id!);
+                await onClickDeleteMethod(methodsRef, id!);
               }}
               variant="ghost"
               color="red"
